@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">
+    time recoder
+  </string>
+  <string name="main_message">
+    Time Recoser is .
+  </string>
+  <string name="main_button_text_start">
+    start
+  </string>
+  <string name="main_button_text_quit">
+    quit
+  </string>
+
+</resources>
