@@ -8,6 +8,10 @@ import android.view.View.OnClickListener;
 import android.view.View;
 import android.content.Intent;
 import android.util.Log;
+import android.database.sqlite.SQLiteDatabase;
+import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
+import jp.ddo.haselab.timerecoder.dataaccess.Recode;
+import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
 
 /**
  * 主処理Activity.
@@ -17,7 +21,10 @@ import android.util.Log;
  */
 public final class MainActivity extends Activity implements OnClickListener {
 
-    private static final String LOG_TAG = "main";
+    private static final String LOG_TAG = "MainActivity";
+
+    private SQLiteDatabase mDb = null;
+
     /**
      * create.
      * 各種ボタンのイベント登録などを行います。
@@ -26,8 +33,27 @@ public final class MainActivity extends Activity implements OnClickListener {
     @Override
         protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 	Log.v(LOG_TAG,"start onCreate");
         setContentView(R.layout.main);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+	mDb = dbHelper.getWritableDatabase();
+
+	Recode rec = new Recode("2010/05/23 11:11",1,"hoge");
+	RecodeDao dao = new RecodeDao(mDb);
+
+	mDb.beginTransaction();
+	long key = 0;
+	try {
+	    key = dao.insert(rec);
+	    mDb.setTransactionSuccessful();
+	} finally {
+	    mDb.endTransaction();
+	    Log.v(LOG_TAG,"commit key=" + key);
+	}
+	long co = dao.count();
+	Log.v(LOG_TAG,"count =" + co);
 
         Button button;
         button = (Button) findViewById(R.id.button_start);
@@ -35,6 +61,20 @@ public final class MainActivity extends Activity implements OnClickListener {
         button = (Button) findViewById(R.id.button_quit);
         button.setOnClickListener(this);
      }
+
+    /**
+     * onDestroy
+     * DBのclose
+     */
+    @Override
+	protected void onDestroy(){
+	Log.v(LOG_TAG,"start onDestory");
+	if(mDb != null) {
+	    Log.v(LOG_TAG,"close db");
+	    //	    mDb.close();
+	}
+    }
+
 
     /**
      * クリック時の処理.
