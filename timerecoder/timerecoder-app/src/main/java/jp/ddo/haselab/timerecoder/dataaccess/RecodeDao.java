@@ -12,9 +12,9 @@ public class RecodeDao {
     private static final String LOG_TAG = "RecodeDao";
     private static final String TABLE_NAME      = "recode";
     private static final String COLUMN_ID       = "rowid";
-    private static final String COLUMN_DATE     = "date";
-    private static final String COLUMN_EVENT_ID = "eventid";
-    private static final String COLUMN_MEMO     = "memo";
+    private static final String COLUMN_DATE_TIME = "datetime";
+    private static final String COLUMN_EVENT_ID  = "eventid";
+    private static final String COLUMN_MEMO      = "memo";
     
     private SQLiteDatabase db;
     
@@ -25,11 +25,12 @@ public class RecodeDao {
     public long insert(Recode rec) {
 	Log.v(LOG_TAG,"start insert[" + rec + "]" );
 	ContentValues values = new ContentValues();
-	values.put(COLUMN_DATE,     rec.getDate());
+	values.put(COLUMN_DATE_TIME,rec.getDateTime().toMilliSecond());
 	values.put(COLUMN_EVENT_ID, rec.getEventId());
 	values.put(COLUMN_MEMO,     rec.getMemo());
 	long res =  db.insert(TABLE_NAME, null, values);
 	Log.v(LOG_TAG,"result key [" + res + "]" );
+	rec.setRowId(res);
 	return res;
     }
 

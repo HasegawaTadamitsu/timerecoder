@@ -1,22 +1,35 @@
 package jp.ddo.haselab.timerecoder.dataaccess;
 
+import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
+
 public class Recode {
 
-    private String date;
+    private long rowId;
+    private RecodeDateTime dateTime;
     private int    eventId;
     private String memo;
 
-    public Recode(String argDate,
-		  int argEventId,
-		  String argMemo){
 
-	date    = argDate;
-	eventId = argEventId;
-	memo    = argMemo;
+    public Recode(final RecodeDateTime argRecodeDateTime,
+		  final int argEventId,
+		  final String argMemo){
+
+	rowId    = 0;
+	dateTime = argRecodeDateTime;
+	eventId  = argEventId;
+	memo     = argMemo;
     }
 
-    public String getDate() {
-	return date;
+    public void  setRowId(fina long arg){
+	rowId = arg;
+    }
+
+    public long getRowId(){
+	return rowId;
+    }
+
+    public RecodeDateTime getDateTime() {
+	return dateTime;
     }
 
     public int  getEventId() {
@@ -29,7 +42,8 @@ public class Recode {
 
     @Override
 	public String toString() {
-	return "date[" + date + "]" +
+	return "rowId[" + rowId + "]" +
+	    "dateTime[" + dateTime + "]" +
 	    "eventId[" + eventId + "]" +
 	    "memo[" + memo +"]";
     }

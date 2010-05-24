@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
+import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 
 /**
  * 主処理Activity.
@@ -40,7 +41,7 @@ public final class MainActivity extends Activity implements OnClickListener {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
 	mDb = dbHelper.getWritableDatabase();
 
-	Recode rec = new Recode("2010/05/23 11:11",1,"hoge");
+	Recode rec = new Recode(new RecodeDateTime(),1,"hoge");
 	RecodeDao dao = new RecodeDao(mDb);
 
 	mDb.beginTransaction();
