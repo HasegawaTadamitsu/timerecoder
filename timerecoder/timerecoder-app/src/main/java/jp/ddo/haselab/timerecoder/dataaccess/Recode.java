@@ -20,7 +20,7 @@ public class Recode {
 	memo     = argMemo;
     }
 
-    public void  setRowId(fina long arg){
+    public void setRowId(final long arg){
 	rowId = arg;
     }
 

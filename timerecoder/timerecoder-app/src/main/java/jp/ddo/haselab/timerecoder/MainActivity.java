@@ -74,6 +74,7 @@ public final class MainActivity extends Activity implements OnClickListener {
 	    Log.v(LOG_TAG,"close db");
 	    //	    mDb.close();
 	}
+	super.onDestroy();
     }
 
 
@@ -92,11 +93,20 @@ public final class MainActivity extends Activity implements OnClickListener {
         }
 	if (id == R.id.button_start) {
 	    Log.v(LOG_TAG,"button_start");
-	    /*
-	      Intent intent = new Intent(this, ConfigActivity.class);
-	      startActivity(intent);
-	    */
-            finish();
+	    Recode rec = new Recode(new RecodeDateTime(),1,"hoge");
+	    RecodeDao dao = new RecodeDao(mDb);
+	    
+	    mDb.beginTransaction();
+	    long key = 0;
+	    try {
+		key = dao.insert(rec);
+		mDb.setTransactionSuccessful();
+	    } finally {
+		mDb.endTransaction();
+		Log.v(LOG_TAG,"commit key=" + key);
+	    }
+	    long co = dao.count();
+	    Log.v(LOG_TAG,"count =" + co);
             return;
         }
         return;
