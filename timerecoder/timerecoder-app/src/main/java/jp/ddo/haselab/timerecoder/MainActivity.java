@@ -72,7 +72,7 @@ public final class MainActivity extends Activity implements OnClickListener {
 	Log.v(LOG_TAG,"start onDestory");
 	if(mDb != null) {
 	    Log.v(LOG_TAG,"close db");
-	    //	    mDb.close();
+	    mDb.close();
 	}
 	super.onDestroy();
     }
