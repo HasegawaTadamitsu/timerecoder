@@ -14,7 +14,18 @@ public class Recode {
 		  final int argEventId,
 		  final String argMemo){
 
-	rowId    = 0;
+	this(0,
+	     argRecodeDateTime,
+	     argEventId,
+	     argMemo);
+    }
+
+    public Recode(final long argRowId,
+		  final RecodeDateTime argRecodeDateTime,
+		  final int argEventId,
+		  final String argMemo){
+
+	rowId    = argRowId;
 	dateTime = argRecodeDateTime;
 	eventId  = argEventId;
 	memo     = argMemo;

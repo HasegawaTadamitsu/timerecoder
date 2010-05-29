@@ -2,10 +2,15 @@ package jp.ddo.haselab.timerecoder.dataaccess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import android.util.Log;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
+
 
 public class RecodeDao {
 
@@ -52,4 +57,47 @@ public class RecodeDao {
 	c.close();
 	return res;
     }
+
+    public Map<Long, Recode> findByCategory() {
+	Log.v(LOG_TAG,"start findByCategory");
+
+	String[] columns = { 
+	    COLUMN_ID,
+	    COLUMN_DATE_TIME,
+	    COLUMN_EVENT_ID,
+	    COLUMN_MEMO};
+
+	Cursor c = db.query(TABLE_NAME,
+			    columns,
+			    null, // selection
+			    null, // selectionArgs
+			    null, // groupBy
+			    null, // having
+			    COLUMN_DATE_TIME, // order by
+			    null  // limit
+			    );
+
+	long count = c.getCount();
+	Log.v(LOG_TAG,"count [" + count + "]" );
+	HashMap<Long, Recode> result = new HashMap<Long, Recode>(count);
+
+	c.moveToFirst();
+	for (int i = 0; i < count ; i++) {
+	    long rowId = c.getLong(c.getColumnIndex(COLUMN_ID));
+	    Recode data = new Recode(rowId,
+				     new RecodeDateTime(
+						c.getLong(c.getColumnIndex(
+						COLUMN_DATE_TIME))),
+				     c.getInt(c.getColumnIndex(
+					       COLUMN_EVENT_ID)),
+				     c.getString(c.getColumnIndex(
+						  COLUMN_EVENT_ID))
+				     );
+	    result.put(rowId, data);
+	    c.moveToNext();
+	}
+	c.close();
+	return result;
+    }
+
 }
