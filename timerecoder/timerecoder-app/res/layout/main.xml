@@ -15,7 +15,7 @@
      android:layout_width="wrap_content" 
      android:layout_height="wrap_content" 
      android:layout_marginTop="70dp"
-     android:text="@string/main_message"
+     android:text="@string/message"
      />
   <LinearLayout 
 		android:orientation="horizontal"
@@ -23,24 +23,24 @@
 		android:layout_height="wrap_content" 
 		android:gravity="center"
 		>
-    <TextView  
-       android:id="@+id/bestscore_3x3"
-       android:layout_width="wrap_content" 
-       android:layout_height="wrap_content" 
-       android:text="--:--"
-       />
     <Button
        android:id="@+id/button_start"
        android:layout_width="wrap_content" 
        android:layout_height="wrap_content" 
-       android:text="@string/main_button_text_start"
+       android:text="@string/button_text_start"
        />
   </LinearLayout>
+  <Button
+     android:id="@+id/button_config"
+     android:layout_width="wrap_content" 
+     android:layout_height="wrap_content" 
+     android:text="@string/button_text_config"
+     />
   <Button
      android:id="@+id/button_quit"
      android:layout_width="wrap_content" 
      android:layout_height="wrap_content" 
-     android:text="@string/main_button_text_quit"
+     android:text="@string/button_text_quit"
      />
   
 </LinearLayout>

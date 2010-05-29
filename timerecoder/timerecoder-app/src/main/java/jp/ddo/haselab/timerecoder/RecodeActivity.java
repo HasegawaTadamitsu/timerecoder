@@ -95,8 +95,8 @@ public final class RecodeActivity extends Activity implements OnClickListener {
      */
     private void dialogQuit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.recode_dialog_quit_sure_title);
-        builder.setMessage(R.string.recode_dialog_quit_sure_msg);
+        builder.setTitle(R.string.dialog_quit_sure_title);
+        builder.setMessage(R.string.dialog_quit_sure_msg);
 	final Activity ac = this;
         builder.setPositiveButton("OK",
 	  new DialogInterface.OnClickListener() {
@@ -120,8 +120,8 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
     private void dialogClear() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.recode_dialog_clear_sure_title);
-        builder.setMessage(R.string.recode_dialog_clear_sure_msg);
+        builder.setTitle(R.string.dialog_clear_sure_title);
+        builder.setMessage(R.string.dialog_clear_sure_msg);
         builder.setPositiveButton("OK",
           new DialogInterface.OnClickListener() {
               public void onClick(final DialogInterface dialog,

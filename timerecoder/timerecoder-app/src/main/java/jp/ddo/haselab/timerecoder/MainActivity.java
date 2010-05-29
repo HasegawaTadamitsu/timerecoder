@@ -41,6 +41,8 @@ public final class MainActivity extends Activity implements OnClickListener {
         Button button;
         button = (Button) findViewById(R.id.button_start);
         button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.button_config);
+        button.setOnClickListener(this);
         button = (Button) findViewById(R.id.button_quit);
         button.setOnClickListener(this);
      }
@@ -68,17 +70,24 @@ public final class MainActivity extends Activity implements OnClickListener {
     @Override
         public void onClick(final View v) {
         int id = v.getId();
-        if (id == R.id.button_quit) {
-	    Log.v(LOG_TAG,"button_quit");
-            finish();
-            return;
-        }
 	if (id == R.id.button_start) {
 	    Log.v(LOG_TAG,"button_start");
 	    Intent intent = new Intent(this, RecodeActivity.class);
 	    intent.putExtra(RecodeActivity.KEY_CATE, 0);
 	    startActivity(intent);
 	    finish();
+            return;
+        }
+	if (id == R.id.button_config ){
+	    Log.v(LOG_TAG,"button_config");
+	    Intent intent = new Intent(this, ConfigActivity.class);
+	    startActivity(intent);
+	    finish();
+            return;
+        }
+        if (id == R.id.button_quit) {
+	    Log.v(LOG_TAG,"button_quit");
+            finish();
             return;
         }
         return;
