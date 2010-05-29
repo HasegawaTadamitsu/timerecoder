@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="button_text_clear">
+    clear
+  </string>
+<!--
+  <string name="button_text_start">
+    start
+  </string>
+-->
+  <string name="button_text_end">
+    end
+  </string>
+
+  <string name="button_text_etc">
+    etc
+  </string>
+
+  <string name="dialog_quit_sure_title">
+    quit sure
+  </string>
+  <string name="dialog_quit_sure_msg">
+    quit sure
+  </string>
+
+  <string name="dialog_clear_sure_title">
+    quit sure
+  </string>
+  <string name="dialog_clear_sure_msg">
+    quit sure
+  </string>
+</resources>

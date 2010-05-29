@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="title">
+    default recode audio
+  </string>
+  <string name="recode_audio_use_title">
+    default recode audio
+  </string>
+  <string name="recode_audio_use_summary">
+    default recode audio use?
+  </string>
+</resources>

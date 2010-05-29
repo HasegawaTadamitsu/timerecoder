@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+   xmlns:android="http://schemas.android.com/apk/res/android">
+  <PreferenceCategory android:title="@string/title">
+    <CheckBoxPreference
+       android:key="recode_audio_use"
+       android:title="@string/recode_audio_use_title"
+       android:summary="@string/recode_audio_use_summary" />
+    </PreferenceCategory>
+</PreferenceScreen>
