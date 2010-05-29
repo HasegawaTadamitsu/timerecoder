@@ -45,6 +45,19 @@
 	 android:text="@string/button_text_etc"
 	 />
     </LinearLayout>
+
+    <CheckBox
+       android:id="@+id/checkbox_use_audio"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/checkbox_text_use_audio"
+       /> 
+    <CheckBox
+       android:id="@+id/checkbox_use_gps"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/checkbox_text_use_gps"
+       /> 
   </LinearLayout>
   
  

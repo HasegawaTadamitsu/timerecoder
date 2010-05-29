@@ -15,6 +15,12 @@
   <string name="button_text_etc">
     etc
   </string>
+  <string name="checkbox_text_use_audio">
+    audio recode
+  </string>
+  <string name="checkbox_text_use_gps">
+    gps recode
+  </string>
 
   <string name="dialog_quit_sure_title">
     quit sure

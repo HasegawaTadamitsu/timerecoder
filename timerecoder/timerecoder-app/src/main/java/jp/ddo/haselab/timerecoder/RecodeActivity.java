@@ -2,10 +2,13 @@ package jp.ddo.haselab.timerecoder;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.preference.PreferenceManager;
 import android.content.Intent;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.view.View.OnClickListener;
@@ -35,6 +38,34 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
     private SQLiteDatabase mDb = null;
 
+
+    private void initWidget(){
+        Button button;
+        button = (Button) findViewById(R.id.button_clear);
+        button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.button_start);
+        button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.button_end);
+        button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.button_etc);
+        button.setOnClickListener(this);
+
+	SharedPreferences preferences = 
+	    PreferenceManager.getDefaultSharedPreferences(this);
+
+	boolean useAudio = preferences.getBoolean("recode_use_audio",
+						  false);
+        CheckBox checkBox;
+	
+        checkBox = (CheckBox) findViewById(R.id.checkbox_use_audio);
+        checkBox.setChecked(useAudio);
+
+	boolean useGps = preferences.getBoolean("recode_use_gps",
+						  false);
+        checkBox = (CheckBox) findViewById(R.id.checkbox_use_gps);
+        checkBox.setChecked(useGps);
+    }
+
     /**
      * create.
      * 各種ボタンのイベント登録などを行います。
@@ -50,13 +81,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
 	mDb = dbHelper.getWritableDatabase();
 
-        Button button;
-        button = (Button) findViewById(R.id.button_start);
-        button.setOnClickListener(this);
-        button = (Button) findViewById(R.id.button_end);
-        button.setOnClickListener(this);
-        button = (Button) findViewById(R.id.button_etc);
-        button.setOnClickListener(this);
+	initWidget();
      }
 
     /**
@@ -167,9 +192,16 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         public void onClick(final View v) {
         int id = v.getId();
 
+	if (id == R.id.button_clear) {
+	    Log.v(LOG_TAG,"button_clear");
+	    EditText editText = (EditText) findViewById(R.id.edittext_memo);
+	    editText.setText("");
+            return;
+
+	}
+
 	EditText editText = (EditText) findViewById(R.id.edittext_memo);
 	String memo = editText.getText().toString();
-
 
 	if (id == R.id.button_start) {
 	    Log.v(LOG_TAG,"button_start");

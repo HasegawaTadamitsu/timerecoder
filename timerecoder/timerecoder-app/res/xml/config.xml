@@ -3,8 +3,12 @@
    xmlns:android="http://schemas.android.com/apk/res/android">
   <PreferenceCategory android:title="@string/title">
     <CheckBoxPreference
-       android:key="recode_audio_use"
-       android:title="@string/recode_audio_use_title"
-       android:summary="@string/recode_audio_use_summary" />
+       android:key="recode_use_audio"
+       android:title="@string/recode_use_audio_title"
+       android:summary="@string/recode_use_audio_summary" />
+    <CheckBoxPreference
+       android:key="recode_use_gps"
+       android:title="@string/recode_use_gps_title"
+       android:summary="@string/recode_use_gps_summary" />
     </PreferenceCategory>
 </PreferenceScreen>

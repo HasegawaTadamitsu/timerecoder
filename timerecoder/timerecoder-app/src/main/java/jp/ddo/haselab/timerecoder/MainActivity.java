@@ -75,14 +75,14 @@ public final class MainActivity extends Activity implements OnClickListener {
 	    Intent intent = new Intent(this, RecodeActivity.class);
 	    intent.putExtra(RecodeActivity.KEY_CATE, 0);
 	    startActivity(intent);
-	    finish();
+	    //	    finish();
             return;
         }
 	if (id == R.id.button_config ){
 	    Log.v(LOG_TAG,"button_config");
 	    Intent intent = new Intent(this, ConfigActivity.class);
 	    startActivity(intent);
-	    finish();
+	    //	    finish();
             return;
         }
         if (id == R.id.button_quit) {
