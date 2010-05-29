@@ -38,24 +38,6 @@ public final class MainActivity extends Activity implements OnClickListener {
 	Log.v(LOG_TAG,"start onCreate");
         setContentView(R.layout.main);
 
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-	mDb = dbHelper.getWritableDatabase();
-
-	Recode rec = new Recode(new RecodeDateTime(),1,"hoge");
-	RecodeDao dao = new RecodeDao(mDb);
-
-	mDb.beginTransaction();
-	long key = 0;
-	try {
-	    key = dao.insert(rec);
-	    mDb.setTransactionSuccessful();
-	} finally {
-	    mDb.endTransaction();
-	    Log.v(LOG_TAG,"commit key=" + key);
-	}
-	long co = dao.count();
-	Log.v(LOG_TAG,"count =" + co);
-
         Button button;
         button = (Button) findViewById(R.id.button_start);
         button.setOnClickListener(this);
@@ -93,20 +75,10 @@ public final class MainActivity extends Activity implements OnClickListener {
         }
 	if (id == R.id.button_start) {
 	    Log.v(LOG_TAG,"button_start");
-	    Recode rec = new Recode(new RecodeDateTime(),1,"hoge");
-	    RecodeDao dao = new RecodeDao(mDb);
-	    
-	    mDb.beginTransaction();
-	    long key = 0;
-	    try {
-		key = dao.insert(rec);
-		mDb.setTransactionSuccessful();
-	    } finally {
-		mDb.endTransaction();
-		Log.v(LOG_TAG,"commit key=" + key);
-	    }
-	    long co = dao.count();
-	    Log.v(LOG_TAG,"count =" + co);
+	    Intent intent = new Intent(this, RecodeActivity.class);
+	    intent.putExtra(RecodeActivity.KEY_CATE, 0);
+	    startActivity(intent);
+	    finish();
             return;
         }
         return;
