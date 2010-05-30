@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.preference.PreferenceManager;
 import android.content.Intent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.Menu;
@@ -18,6 +22,9 @@ import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.util.Log;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
+
+
 
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
@@ -56,14 +63,14 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	boolean useAudio = preferences.getBoolean("recode_use_audio",
 						  false);
         CheckBox checkBox;
-	
         checkBox = (CheckBox) findViewById(R.id.checkbox_use_audio);
         checkBox.setChecked(useAudio);
-
 	boolean useGps = preferences.getBoolean("recode_use_gps",
 						  false);
         checkBox = (CheckBox) findViewById(R.id.checkbox_use_gps);
         checkBox.setChecked(useGps);
+	
+	initListView();
     }
 
     /**
@@ -143,6 +150,20 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         return;
     }
 
+    private int  deleteAllTransaction(){
+	RecodeDao dao = new RecodeDao(mDb);
+	mDb.beginTransaction();
+	int res = 0;
+	try {
+	    res = dao.deleteAll();
+	    mDb.setTransactionSuccessful();
+	} finally {
+	    mDb.endTransaction();
+	    Log.v(LOG_TAG,"delete all res[" + res +"]");
+	}
+	return res;
+    }
+
     private void dialogClear() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_clear_sure_title);
@@ -151,8 +172,9 @@ public final class RecodeActivity extends Activity implements OnClickListener {
           new DialogInterface.OnClickListener() {
               public void onClick(final DialogInterface dialog,
                                   final int whichButton) {
-                finish();
-                return;
+		  deleteAllTransaction();
+		  initListView();
+		  return;
               }
           }
                                   );
@@ -183,6 +205,31 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         }
     }
 
+    private Recode  insertTransaction(final Recode rec){
+	RecodeDao dao = new RecodeDao(mDb);
+	
+	mDb.beginTransaction();
+	long key = 0;
+	try {
+	    key = dao.insert(rec);
+	    mDb.setTransactionSuccessful();
+	} finally {
+	    mDb.endTransaction();
+	    Log.v(LOG_TAG,"commit key=" + key);
+	}
+	return rec;
+    }
+
+    private void initListView() {
+	RecodeDao dao = new RecodeDao(mDb);
+	Cursor cursor = dao.findByCategory();
+
+	ListAdapter la = new RecodeListAdapter(this, cursor);
+        ListView list = (ListView) findViewById(R.id.listview_data);
+	list.setAdapter(la);
+	list.setSelection(list.getCount());
+    }
+
     /**
      * クリック時の処理.
      * 各種ボタンの処理を行います。
@@ -205,23 +252,28 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
 	if (id == R.id.button_start) {
 	    Log.v(LOG_TAG,"button_start");
-
-	    Recode rec = new Recode(new RecodeDateTime(),1,memo);
-	    RecodeDao dao = new RecodeDao(mDb);
-	    
-	    mDb.beginTransaction();
-	    long key = 0;
-	    try {
-		key = dao.insert(rec);
-		mDb.setTransactionSuccessful();
-	    } finally {
-		mDb.endTransaction();
-		Log.v(LOG_TAG,"commit key=" + key);
-	    }
-	    long co = dao.count();
-	    Log.v(LOG_TAG,"count =" + co);
-            return;
+	    Recode rec = new Recode(new RecodeDateTime(), 1, memo);
+	    insertTransaction(rec);
+	    initListView();
+	    return;
         }
+
+	if (id == R.id.button_end) {
+	    Log.v(LOG_TAG,"button_start");
+	    Recode rec = new Recode(new RecodeDateTime(), 2, memo);
+	    insertTransaction(rec);
+	    initListView();
+	    return;
+        }
+
+	if (id == R.id.button_etc) {
+	    Log.v(LOG_TAG,"button_start");
+	    Recode rec = new Recode(new RecodeDateTime(), 3, memo);
+	    insertTransaction(rec);
+	    initListView();
+	    return;
+        }
+
         return;
     }
 }

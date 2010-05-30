@@ -4,62 +4,70 @@
 	      android:layout_width="fill_parent"
 	      android:layout_height="fill_parent"
 	      >
-  <LinearLayout 
-		android:orientation="vertical"
+  <LinearLayout android:orientation="vertical"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content" 
 		android:gravity="center"
 		>
-      <Button
-	 android:id="@+id/button_clear"
-	 android:layout_width="wrap_content" 
-	 android:layout_height="wrap_content" 
-	 android:text="@string/button_text_clear"
-	 />
-    <EditText android:id="@+id/edittext_memo"
-	      android:layout_width="fill_parent"
-	      android:layout_height="wrap_content"
-	      />
-    <LinearLayout 
-       android:orientation="horizontal"
-       android:layout_width="wrap_content" 
-       android:layout_height="wrap_content" 
-       android:gravity="center"
-       >
-      <Button
-	 android:id="@+id/button_start"
-	 android:layout_width="wrap_content" 
-	 android:layout_height="wrap_content" 
-	 android:text="@string/button_text_start"
-	 />
-      <Button
-	 android:id="@+id/button_end"
-	 android:layout_width="wrap_content" 
-	 android:layout_height="wrap_content" 
-	 android:text="@string/button_text_end"
-	 />
-      <Button
-	 android:id="@+id/button_etc"
-	 android:layout_width="wrap_content" 
-	 android:layout_height="wrap_content" 
-	 android:text="@string/button_text_etc"
-	 />
+
+    <LinearLayout android:orientation="horizontal"
+		  android:layout_width="wrap_content" 
+		  android:layout_height="wrap_content" 
+		  android:gravity="center"
+		  >
+      <Button   android:id="@+id/button_clear"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:text="@string/button_text_clear"
+		/>
+      <EditText android:id="@+id/edittext_memo"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		/>
+    </LinearLayout>
+       
+    <LinearLayout android:orientation="horizontal"
+		  android:layout_width="wrap_content" 
+		  android:layout_height="wrap_content" 
+		  android:gravity="center"
+		  >
+      <Button	 android:id="@+id/button_start"
+		 android:layout_width="wrap_content" 
+		 android:layout_height="wrap_content" 
+		 android:text="@string/button_text_start"
+		 />
+      <Button	 android:id="@+id/button_end"
+		 android:layout_width="wrap_content" 
+		 android:layout_height="wrap_content" 
+		 android:text="@string/button_text_end"
+		 />
+      <Button	 android:id="@+id/button_etc"
+		 android:layout_width="wrap_content" 
+		 android:layout_height="wrap_content" 
+		 android:text="@string/button_text_etc"
+		 />
     </LinearLayout>
 
-    <CheckBox
-       android:id="@+id/checkbox_use_audio"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="@string/checkbox_text_use_audio"
-       /> 
-    <CheckBox
-       android:id="@+id/checkbox_use_gps"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="@string/checkbox_text_use_gps"
-       /> 
+    <CheckBox  android:id="@+id/checkbox_use_audio"
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:text="@string/checkbox_text_use_audio"
+	       /> 
+    <CheckBox  android:id="@+id/checkbox_use_gps"
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:text="@string/checkbox_text_use_gps"
+	       /> 
   </LinearLayout>
-  
- 
+
+  <ListView  android:id="@+id/listview_data"
+	     android:layout_width="wrap_content"
+	     android:layout_height="fill_parent"
+	     /> 
+  <TextView  android:id="@android:id/empty"
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:text="@string/listview_empty"
+	     />
 </LinearLayout>
 

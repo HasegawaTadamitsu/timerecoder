@@ -19,18 +19,14 @@ public class RecodeDateTime {
 	return date.getTime();
     }
 
-    @Override
-	public String toString() {
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:");    
-	return sdf.format(date);
-    }
-    public String toYYYYMMDD() {
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");    
-	return sdf.format(date);
-    }
-    public String toHHMMSS() {
-	SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");    
-	return sdf.format(date);
+    public static String toStaticString( final long val ) {
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");   
+	Date stDate  = new Date(val);
+ 	return sdf.format(stDate);
     }
 
+    @Override
+	public String toString() {
+	return toStaticString(this.toMilliSecond());
+    }
 }

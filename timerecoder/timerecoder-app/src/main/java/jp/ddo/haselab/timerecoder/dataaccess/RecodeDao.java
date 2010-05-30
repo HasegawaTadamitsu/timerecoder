@@ -7,6 +7,7 @@ import java.util.HashMap;
 import android.util.Log;
 import android.content.ContentValues;
 import android.database.Cursor;
+
 import android.database.sqlite.SQLiteDatabase;
 
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
@@ -14,12 +15,14 @@ import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 
 public class RecodeDao {
 
+    private static final int MAX_COUNT = 1000;
+
     private static final String LOG_TAG = "RecodeDao";
     private static final String TABLE_NAME      = "recode";
-    private static final String COLUMN_ID       = "rowid";
-    private static final String COLUMN_DATE_TIME = "datetime";
-    private static final String COLUMN_EVENT_ID  = "eventid";
-    private static final String COLUMN_MEMO      = "memo";
+    public static final String COLUMN_ID       = "_id";
+    public static final String COLUMN_DATE_TIME = "datetime";
+    public static final String COLUMN_EVENT_ID  = "eventid";
+    public static final String COLUMN_MEMO      = "memo";
     
     private SQLiteDatabase db;
     
@@ -36,6 +39,13 @@ public class RecodeDao {
 	long res =  db.insert(TABLE_NAME, null, values);
 	Log.v(LOG_TAG,"result key [" + res + "]" );
 	rec.setRowId(res);
+	return res;
+    }
+
+    public int deleteAll(){
+	Log.v(LOG_TAG,"start deleteAll" );
+	int res =  db.delete(TABLE_NAME, null, null);
+	Log.v(LOG_TAG,"result  [" + res + "]" );
 	return res;
     }
 
@@ -58,6 +68,7 @@ public class RecodeDao {
 	return res;
     }
 
+/*
     public Map<Long, Recode> findByCategory() {
 	Log.v(LOG_TAG,"start findByCategory");
 
@@ -79,7 +90,10 @@ public class RecodeDao {
 
 	long count = c.getCount();
 	Log.v(LOG_TAG,"count [" + count + "]" );
-	HashMap<Long, Recode> result = new HashMap<Long, Recode>(count);
+	int initHashSize = (count<MAX_COUNT)? (int)count : MAX_COUNT;
+
+	HashMap<Long, Recode> result =
+	    new HashMap<Long, Recode>(  initHashSize );
 
 	c.moveToFirst();
 	for (int i = 0; i < count ; i++) {
@@ -99,5 +113,29 @@ public class RecodeDao {
 	c.close();
 	return result;
     }
+*/
+    public  static final String[] FIND_BY_CATEGORY_COLUMN= {
+	COLUMN_ID,
+	COLUMN_DATE_TIME,
+	COLUMN_EVENT_ID,
+	COLUMN_MEMO
+    };
 
+    public Cursor findByCategory() {
+	Log.v(LOG_TAG,"start findByCategory");
+
+	Cursor c = db.query(TABLE_NAME,
+			    FIND_BY_CATEGORY_COLUMN,
+			    null, // selection
+			    null, // selectionArgs
+			    null, // groupBy
+			    null, // having
+			    COLUMN_DATE_TIME, // order by
+			    null  // limit
+			    );
+	long count = c.getCount();
+	Log.v(LOG_TAG,"count [" + count + "]" );
+
+	return c;
+    }
 }

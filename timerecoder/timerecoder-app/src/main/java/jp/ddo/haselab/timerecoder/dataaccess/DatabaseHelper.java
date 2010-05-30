@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_RECODE_TABLE_SQL =
 	"create table recode "
-	+ "(rowid  integer primary key autoincrement, "
+	+ "(_id  integer primary key autoincrement, "
 	+ " datetime integer not null, "
 	+ " eventid  integer not null, "
 	+ " memo    text    not null)";

@@ -23,16 +23,21 @@
   </string>
 
   <string name="dialog_quit_sure_title">
-    quit sure
+    quit
   </string>
   <string name="dialog_quit_sure_msg">
-    quit sure
+    quit sure?
   </string>
 
   <string name="dialog_clear_sure_title">
-    quit sure
+    clear data.
   </string>
   <string name="dialog_clear_sure_msg">
-    quit sure
+    clear data sure?
   </string>
+
+  <string name="listview_empty">
+    empty data.
+  </string>
+
 </resources>
