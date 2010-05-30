@@ -36,6 +36,7 @@ final class RecodeListAdapter extends SimpleCursorAdapter {
     }
 
     class ListViewBinder implements SimpleCursorAdapter.ViewBinder {
+	private int count = 0;
         public ListViewBinder() {
         }
 
@@ -53,6 +54,7 @@ final class RecodeListAdapter extends SimpleCursorAdapter {
 		((TextView)view).setText(val);
 		return true;
 	    }
+
 	    return false;
 	}
     }

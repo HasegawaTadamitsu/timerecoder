@@ -1,26 +1,22 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	      android:orientation="vertical"
-	      android:layout_width="fill_parent"
-	      android:layout_height="fill_parent"
-	      >
-  <LinearLayout android:orientation="horizontal"
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" >
-    <TextView   android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="No"/>
-    <TextView   android:id="@+id/_id"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" />
-    <TextView   android:id="@+id/datetime"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
-    <TextView   android:id="@+id/eventid"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"/>
-  </LinearLayout>
-  <TextView
-     android:id="@+id/memo"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"/>
-</LinearLayout>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	     android:layout_width="fill_parent"
+	     android:layout_height="fill_parent"
+	     android:stretchColumns="3" >
+
+  <TableRow    android:background="#696969">
+    <TextView  android:text="No"/>
+    <TextView  android:id="@+id/_id"
+	       android:paddingRight="15sp"/>
+    <TextView  android:id="@+id/datetime"
+	       android:paddingRight="30sp"/>
+    <TextView  android:id="@+id/eventid" />
+  </TableRow>
+
+  <TableRow>
+    
+    <TextView  android:layout_column="2"
+	       android:layout_span="2" 
+	       android:id="@+id/memo"  />
+  </TableRow>
+
+</TableLayout>
