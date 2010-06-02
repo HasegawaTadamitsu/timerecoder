@@ -15,13 +15,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_RECODE_TABLE_SQL =
 	"create table recode "
-	+ "(_id  integer primary key autoincrement, "
-	+ " datetime integer not null, "
-	+ " eventid  integer not null, "
-	+ " memo    text    not null)";
+	+ "( _id integer not null primary key,"
+	+ " categoryid integer not null ,"
+	+ " datetime   integer not null, "
+	+ " eventid    integer not null, "
+	+ " memo       text    not null)";
 
+    private static final String CREATE_GROUP_TABLE_SQL =
+	"create table group "
+	+ "( groupid   integer not null,"
+	+ "  key       integer not null,"
+	+ "  value     text    not null, "
+	+ "  comment   text,  "
+	+ " primary key(groupid,key) )";
+
+    private static final String INSERT_DEFAULT_GROUP_TABLE_SQL =
+	"insert into group " 
+	+ "set (groupId,key,value,comment)" 
+	+ "value (1000,1,'default','default value')";
+	
     private static final String DROP_RECODE_TABLE_SQL =
 	"drop table if exists recode";
+    private static final String DROP_GROUPE_TABLE_SQL =
+	"drop table if exists group";
 
     public DatabaseHelper(Context context) {
 	super(context, DATABASE_NAME, null, DATABASE_VERSION);

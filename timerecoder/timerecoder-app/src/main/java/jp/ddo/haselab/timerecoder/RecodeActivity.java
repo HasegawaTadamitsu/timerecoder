@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
-import android.util.Log;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.Cursor;
 
@@ -30,6 +29,7 @@ import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
+import jp.ddo.haselab.timerecoder.util.MyLog;
 
 /**
  * 主処理(Recode)Activity.
@@ -40,8 +40,6 @@ import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 public final class RecodeActivity extends Activity implements OnClickListener {
 
     public static final String  KEY_CATE = "CATEGORY_KEY";
-
-    private static final String LOG_TAG = "RecodeActivity";
 
     private SQLiteDatabase mDb = null;
 
@@ -82,7 +80,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-	Log.v(LOG_TAG,"start onCreate");
+	MyLog.getInstance(this).verbose("start onCreate");
         setContentView(R.layout.recode);
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
@@ -97,9 +95,9 @@ public final class RecodeActivity extends Activity implements OnClickListener {
      */
     @Override
 	protected void onDestroy(){
-	Log.v(LOG_TAG,"start onDestory");
+	MyLog.getInstance(this).verbose("start onDestroy");
 	if(mDb != null) {
-	    Log.v(LOG_TAG,"close db");
+	    MyLog.getInstance(this).verbose("close db");
 	    mDb.close();
 	}
 	super.onDestroy();
@@ -159,7 +157,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	    mDb.setTransactionSuccessful();
 	} finally {
 	    mDb.endTransaction();
-	    Log.v(LOG_TAG,"delete all res[" + res +"]");
+	    MyLog.getInstance(this).verbose("delete all res[" + res + "]");
 	}
 	return res;
     }
@@ -215,7 +213,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	    mDb.setTransactionSuccessful();
 	} finally {
 	    mDb.endTransaction();
-	    Log.v(LOG_TAG,"commit key=" + key);
+	    MyLog.getInstance(this).verbose("commit key["+ key+"]");
 	}
 	return rec;
     }
@@ -240,7 +238,6 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         int id = v.getId();
 
 	if (id == R.id.button_clear) {
-	    Log.v(LOG_TAG,"button_clear");
 	    EditText editText = (EditText) findViewById(R.id.edittext_memo);
 	    editText.setText("");
             return;
@@ -251,7 +248,6 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	String memo = editText.getText().toString();
 
 	if (id == R.id.button_start) {
-	    Log.v(LOG_TAG,"button_start");
 	    Recode rec = new Recode(new RecodeDateTime(), 1, memo);
 	    insertTransaction(rec);
 	    initListView();
@@ -259,7 +255,6 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         }
 
 	if (id == R.id.button_end) {
-	    Log.v(LOG_TAG,"button_start");
 	    Recode rec = new Recode(new RecodeDateTime(), 2, memo);
 	    insertTransaction(rec);
 	    initListView();
@@ -267,7 +262,6 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         }
 
 	if (id == R.id.button_etc) {
-	    Log.v(LOG_TAG,"button_start");
 	    Recode rec = new Recode(new RecodeDateTime(), 3, memo);
 	    insertTransaction(rec);
 	    initListView();

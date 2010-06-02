@@ -7,12 +7,13 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.content.Intent;
-import android.util.Log;
+
 import android.database.sqlite.SQLiteDatabase;
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
+import jp.ddo.haselab.timerecoder.util.MyLog;
 
 /**
  * 主処理Activity.
@@ -21,8 +22,6 @@ import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
  * @author T.Hasegawa
  */
 public final class MainActivity extends Activity implements OnClickListener {
-
-    private static final String LOG_TAG = "MainActivity";
 
     private SQLiteDatabase mDb = null;
 
@@ -35,7 +34,8 @@ public final class MainActivity extends Activity implements OnClickListener {
         protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-	Log.v(LOG_TAG,"start onCreate");
+	MyLog.getInstance(this).verbose("start onCreate");
+
         setContentView(R.layout.main);
 
         Button button;
@@ -53,9 +53,9 @@ public final class MainActivity extends Activity implements OnClickListener {
      */
     @Override
 	protected void onDestroy(){
-	Log.v(LOG_TAG,"start onDestory");
+	MyLog.getInstance(this).verbose("start onCreate");
 	if(mDb != null) {
-	    Log.v(LOG_TAG,"close db");
+	    MyLog.getInstance(this).verbose("start onCreate");
 	    mDb.close();
 	}
 	super.onDestroy();
@@ -71,7 +71,8 @@ public final class MainActivity extends Activity implements OnClickListener {
         public void onClick(final View v) {
         int id = v.getId();
 	if (id == R.id.button_start) {
-	    Log.v(LOG_TAG,"button_start");
+	    MyLog.getInstance(this).verbose("start onCreate");
+
 	    Intent intent = new Intent(this, RecodeActivity.class);
 	    intent.putExtra(RecodeActivity.KEY_CATE, 0);
 	    startActivity(intent);
@@ -79,14 +80,16 @@ public final class MainActivity extends Activity implements OnClickListener {
             return;
         }
 	if (id == R.id.button_config ){
-	    Log.v(LOG_TAG,"button_config");
+	    MyLog.getInstance(this).verbose("start onCreate");
+
 	    Intent intent = new Intent(this, ConfigActivity.class);
 	    startActivity(intent);
 	    //	    finish();
             return;
         }
         if (id == R.id.button_quit) {
-	    Log.v(LOG_TAG,"button_quit");
+	    MyLog.getInstance(this).verbose("start onCreate");
+
             finish();
             return;
         }

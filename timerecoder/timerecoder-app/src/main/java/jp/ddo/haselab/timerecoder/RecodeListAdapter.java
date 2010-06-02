@@ -4,7 +4,6 @@ import android.content.Context;
 import android.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.TextView;
-import android.util.Log;
 import android.database.Cursor;
 
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
