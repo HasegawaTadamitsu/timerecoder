@@ -15,8 +15,6 @@ import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
  */
 final class RecodeListAdapter extends SimpleCursorAdapter {
 
-    private static final String LOG_TAG = "RecodeListAdapter";
-
     private static final int[] TO_RECODE_ITEM = {
 	R.id._id,
 	R.id.datetime,

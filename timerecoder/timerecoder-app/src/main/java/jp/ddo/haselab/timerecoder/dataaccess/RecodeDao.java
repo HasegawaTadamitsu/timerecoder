@@ -4,25 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import android.util.Log;
 import android.content.ContentValues;
 import android.database.Cursor;
-
 import android.database.sqlite.SQLiteDatabase;
 
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
+import jp.ddo.haselab.timerecoder.util.MyLog;
 
-
-public class RecodeDao {
+public final class RecodeDao {
 
     private static final int MAX_COUNT = 1000;
 
-    private static final String LOG_TAG = "RecodeDao";
     private static final String TABLE_NAME      = "recode";
-    public static final String COLUMN_ID       = "_id";
-    public static final String COLUMN_DATE_TIME = "datetime";
-    public static final String COLUMN_EVENT_ID  = "eventid";
-    public static final String COLUMN_MEMO      = "memo";
+    public static final String COLUMN_ID          = "_id";
+    public static final String COLUMN_CATEGORY_ID = "categoryid";
+    public static final String COLUMN_DATE_TIME   = "datetime";
+    public static final String COLUMN_EVENT_ID    = "eventid";
+    public static final String COLUMN_MEMO        = "memo";
     
     private SQLiteDatabase db;
     
@@ -30,27 +28,32 @@ public class RecodeDao {
 	this.db = db;
     }
     
-    public long insert(Recode rec) {
-	Log.v(LOG_TAG,"start insert[" + rec + "]" );
+    public long insert(final Recode rec) {
+	MyLog.getInstance().verbose("start");
+	MyLog.getInstance().verbose("insertVal["+ rec + "]");
 	ContentValues values = new ContentValues();
-	values.put(COLUMN_DATE_TIME,rec.getDateTime().toMilliSecond());
-	values.put(COLUMN_EVENT_ID, rec.getEventId());
-	values.put(COLUMN_MEMO,     rec.getMemo());
+	values.put(COLUMN_CATEGORY_ID, rec.getCategoryId());
+	values.put(COLUMN_DATE_TIME,   rec.getDateTime().toMilliSecond());
+	values.put(COLUMN_EVENT_ID,    rec.getEventId());
+	values.put(COLUMN_MEMO,        rec.getMemo());
 	long res =  db.insert(TABLE_NAME, null, values);
-	Log.v(LOG_TAG,"result key [" + res + "]" );
+	MyLog.getInstance().verbose("insert result key["+res+"]");
 	rec.setRowId(res);
 	return res;
     }
 
-    public int deleteAll(){
-	Log.v(LOG_TAG,"start deleteAll" );
-	int res =  db.delete(TABLE_NAME, null, null);
-	Log.v(LOG_TAG,"result  [" + res + "]" );
+    public int deleteByCategoryId(final int argCategoryId){
+	MyLog.getInstance().verbose("deleteByCategoryId.ctegoryid[" +
+					argCategoryId + "]");
+	int res =  db.delete(TABLE_NAME, 
+			     COLUMN_CATEGORY_ID + "=" + argCategoryId,
+			     null);
+	MyLog.getInstance().verbose("delete result arg[" + res + "]");
 	return res;
     }
 
     public long count() {
-	Log.v(LOG_TAG,"start count");
+	MyLog.getInstance().verbose("count");
 	Cursor c = db.rawQuery(
 			       "select count(*) as co from " + TABLE_NAME,
 			       null);
@@ -63,14 +66,14 @@ public class RecodeDao {
 	// }
 	c.moveToFirst();
 	long res = c.getLong(0);
-	Log.v(LOG_TAG,"result count [" + res + "]" );
+	MyLog.getInstance().verbose("result count [" + res + "]" );
 	c.close();
 	return res;
     }
 
 /*
     public Map<Long, Recode> findByCategory() {
-	Log.v(LOG_TAG,"start findByCategory");
+	MyLog.getInstance().verbose("start findByCategory");
 
 	String[] columns = { 
 	    COLUMN_ID,
@@ -89,7 +92,7 @@ public class RecodeDao {
 			    );
 
 	long count = c.getCount();
-	Log.v(LOG_TAG,"count [" + count + "]" );
+	MyLog.getInstance().verbose("count [" + count + "]" );
 	int initHashSize = (count<MAX_COUNT)? (int)count : MAX_COUNT;
 
 	HashMap<Long, Recode> result =
@@ -122,8 +125,7 @@ public class RecodeDao {
     };
 
     public Cursor findByCategory() {
-	Log.v(LOG_TAG,"start findByCategory");
-
+	MyLog.getInstance().verbose("start findByCategory");
 	Cursor c = db.query(TABLE_NAME,
 			    FIND_BY_CATEGORY_COLUMN,
 			    null, // selection
@@ -134,8 +136,7 @@ public class RecodeDao {
 			    null  // limit
 			    );
 	long count = c.getCount();
-	Log.v(LOG_TAG,"count [" + count + "]" );
-
+	MyLog.getInstance().verbose("count [" + count + "]" );
 	return c;
     }
 }

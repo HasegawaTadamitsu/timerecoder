@@ -34,7 +34,7 @@ public final class MainActivity extends Activity implements OnClickListener {
         protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-	MyLog.getInstance(this).verbose("start onCreate");
+	MyLog.getInstance().verbose("start onCreate");
 
         setContentView(R.layout.main);
 
@@ -53,9 +53,9 @@ public final class MainActivity extends Activity implements OnClickListener {
      */
     @Override
 	protected void onDestroy(){
-	MyLog.getInstance(this).verbose("start onCreate");
+	MyLog.getInstance().verbose("start");
 	if(mDb != null) {
-	    MyLog.getInstance(this).verbose("start onCreate");
+	    MyLog.getInstance().verbose("close");
 	    mDb.close();
 	}
 	super.onDestroy();
@@ -71,25 +71,21 @@ public final class MainActivity extends Activity implements OnClickListener {
         public void onClick(final View v) {
         int id = v.getId();
 	if (id == R.id.button_start) {
-	    MyLog.getInstance(this).verbose("start onCreate");
-
+	    MyLog.getInstance().verbose("start button");
 	    Intent intent = new Intent(this, RecodeActivity.class);
 	    intent.putExtra(RecodeActivity.KEY_CATE, 0);
 	    startActivity(intent);
-	    //	    finish();
             return;
         }
 	if (id == R.id.button_config ){
-	    MyLog.getInstance(this).verbose("start onCreate");
 
+	    MyLog.getInstance().verbose("config button");
 	    Intent intent = new Intent(this, ConfigActivity.class);
 	    startActivity(intent);
-	    //	    finish();
             return;
         }
         if (id == R.id.button_quit) {
-	    MyLog.getInstance(this).verbose("start onCreate");
-
+	    MyLog.getInstance().verbose("quit button");
             finish();
             return;
         }

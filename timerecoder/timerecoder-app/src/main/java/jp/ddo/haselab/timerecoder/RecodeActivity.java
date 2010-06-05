@@ -41,6 +41,8 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
     public static final String  KEY_CATE = "CATEGORY_KEY";
 
+    private int categoryId = 0;
+
     private SQLiteDatabase mDb = null;
 
 
@@ -80,7 +82,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-	MyLog.getInstance(this).verbose("start onCreate");
+	MyLog.getInstance().verbose("start onCreate");
         setContentView(R.layout.recode);
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
@@ -95,9 +97,9 @@ public final class RecodeActivity extends Activity implements OnClickListener {
      */
     @Override
 	protected void onDestroy(){
-	MyLog.getInstance(this).verbose("start onDestroy");
+	MyLog.getInstance().verbose("start onDestroy");
 	if(mDb != null) {
-	    MyLog.getInstance(this).verbose("close db");
+	    MyLog.getInstance().verbose("close db");
 	    mDb.close();
 	}
 	super.onDestroy();
@@ -153,11 +155,11 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	mDb.beginTransaction();
 	int res = 0;
 	try {
-	    res = dao.deleteAll();
+	    res = dao.deleteByCategoryId(categoryId);
 	    mDb.setTransactionSuccessful();
 	} finally {
 	    mDb.endTransaction();
-	    MyLog.getInstance(this).verbose("delete all res[" + res + "]");
+	    MyLog.getInstance().verbose("delete all res[" + res + "]");
 	}
 	return res;
     }
@@ -213,7 +215,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	    mDb.setTransactionSuccessful();
 	} finally {
 	    mDb.endTransaction();
-	    MyLog.getInstance(this).verbose("commit key["+ key+"]");
+	    MyLog.getInstance().verbose("commit key["+ key+"]");
 	}
 	return rec;
     }
@@ -248,21 +250,30 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	String memo = editText.getText().toString();
 
 	if (id == R.id.button_start) {
-	    Recode rec = new Recode(new RecodeDateTime(), 1, memo);
+	    Recode rec = new Recode(categoryId,
+				    new RecodeDateTime(),
+				    1,
+				    memo);
 	    insertTransaction(rec);
 	    initListView();
 	    return;
         }
 
 	if (id == R.id.button_end) {
-	    Recode rec = new Recode(new RecodeDateTime(), 2, memo);
+	    Recode rec = new Recode(categoryId,
+				    new RecodeDateTime(),
+				    2,
+				    memo);
 	    insertTransaction(rec);
 	    initListView();
 	    return;
         }
 
 	if (id == R.id.button_etc) {
-	    Recode rec = new Recode(new RecodeDateTime(), 3, memo);
+	    Recode rec = new Recode(categoryId,
+				    new RecodeDateTime(),
+				    3,
+				    memo);
 	    insertTransaction(rec);
 	    initListView();
 	    return;
