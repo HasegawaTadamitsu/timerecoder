@@ -1,5 +1,5 @@
 *~
-/timerecoder/timerecoder-app/target/*
+timerecoder/timerecoder-app/target/
 *.class
 *.apk
 
