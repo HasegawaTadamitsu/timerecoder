@@ -3,6 +3,7 @@ package jp.ddo.haselab.timerecoder.dataaccess;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import jp.ddo.haselab.timerecoder.util.MyLog;
 
 
@@ -45,10 +46,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
 	public void onCreate(SQLiteDatabase db) {
-	MyLog.getInstance().verbose("start create table");
+	MyLog.getInstance().writeDatabase("create tables");
 	db.execSQL(CREATE_RECODE_TABLE_SQL);
 	db.execSQL(CREATE_PROPERTY_TABLE_SQL);
-	MyLog.getInstance().verbose("start create default val");
+	MyLog.getInstance().writeDatabase("insert default");
 	db.execSQL(INSERT_DEFAULT_PROPERTY_TABLE_SQL);
     }
 
@@ -56,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db,
 			      int oldVersion,
 			      int newVersion) {
-	MyLog.getInstance().verbose("start drop tables");
+	MyLog.getInstance().writeDatabase("drop tables");
 	db.execSQL(DROP_RECODE_TABLE_SQL);
 	db.execSQL(DROP_PROPERTY_TABLE_SQL);
 	onCreate(db);

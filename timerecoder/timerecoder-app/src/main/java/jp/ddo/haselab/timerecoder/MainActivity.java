@@ -34,7 +34,7 @@ public final class MainActivity extends Activity implements OnClickListener {
         protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-	MyLog.getInstance().verbose("start onCreate");
+	MyLog.getInstance().verbose("start");
 
         setContentView(R.layout.main);
 
@@ -55,7 +55,7 @@ public final class MainActivity extends Activity implements OnClickListener {
 	protected void onDestroy(){
 	MyLog.getInstance().verbose("start");
 	if(mDb != null) {
-	    MyLog.getInstance().verbose("close");
+	    MyLog.getInstance().verbose("close database");
 	    mDb.close();
 	}
 	super.onDestroy();
@@ -78,7 +78,6 @@ public final class MainActivity extends Activity implements OnClickListener {
             return;
         }
 	if (id == R.id.button_config ){
-
 	    MyLog.getInstance().verbose("config button");
 	    Intent intent = new Intent(this, ConfigActivity.class);
 	    startActivity(intent);

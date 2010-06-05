@@ -29,26 +29,25 @@ public final class RecodeDao {
     }
     
     public long insert(final Recode rec) {
-	MyLog.getInstance().verbose("start");
-	MyLog.getInstance().verbose("insertVal["+ rec + "]");
+	MyLog.getInstance().writeDatabase("insertVal["+ rec + "]");
 	ContentValues values = new ContentValues();
 	values.put(COLUMN_CATEGORY_ID, rec.getCategoryId());
 	values.put(COLUMN_DATE_TIME,   rec.getDateTime().toMilliSecond());
 	values.put(COLUMN_EVENT_ID,    rec.getEventId());
 	values.put(COLUMN_MEMO,        rec.getMemo());
 	long res =  db.insert(TABLE_NAME, null, values);
-	MyLog.getInstance().verbose("insert result key["+res+"]");
+	MyLog.getInstance().writeDatabase("result _id["+ res + "]");
 	rec.setRowId(res);
 	return res;
     }
 
     public int deleteByCategoryId(final int argCategoryId){
-	MyLog.getInstance().verbose("deleteByCategoryId.ctegoryid[" +
-					argCategoryId + "]");
+	MyLog.getInstance().writeDatabase("delete categoryId[" 
+					  + argCategoryId + "]");
 	int res =  db.delete(TABLE_NAME, 
 			     COLUMN_CATEGORY_ID + "=" + argCategoryId,
 			     null);
-	MyLog.getInstance().verbose("delete result arg[" + res + "]");
+	MyLog.getInstance().writeDatabase("result count["+ res + "]");
 	return res;
     }
 
@@ -73,7 +72,7 @@ public final class RecodeDao {
 
 /*
     public Map<Long, Recode> findByCategory() {
-	MyLog.getInstance().verbose("start findByCategory");
+	MyLog.getInstance().verbose("findByCategory");
 
 	String[] columns = { 
 	    COLUMN_ID,
@@ -117,6 +116,7 @@ public final class RecodeDao {
 	return result;
     }
 */
+
     public  static final String[] FIND_BY_CATEGORY_COLUMN= {
 	COLUMN_ID,
 	COLUMN_DATE_TIME,
@@ -124,8 +124,9 @@ public final class RecodeDao {
 	COLUMN_MEMO
     };
 
-    public Cursor findByCategory() {
-	MyLog.getInstance().verbose("start findByCategory");
+    public Cursor findByCategoryId(final int argCategoryId ) {
+	MyLog.getInstance().readDatabase("findByCategoryId " +
+					 "categoryId[" + argCategoryId + "]");
 	Cursor c = db.query(TABLE_NAME,
 			    FIND_BY_CATEGORY_COLUMN,
 			    null, // selection
@@ -136,7 +137,8 @@ public final class RecodeDao {
 			    null  // limit
 			    );
 	long count = c.getCount();
-	MyLog.getInstance().verbose("count [" + count + "]" );
+	MyLog.getInstance().readDatabase("findByCategoryId " +
+					 "result[" + count + "]");
 	return c;
     }
 }

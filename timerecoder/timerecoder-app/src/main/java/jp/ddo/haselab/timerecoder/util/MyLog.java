@@ -7,6 +7,10 @@ public final class MyLog {
 
     public static interface Logger {
 	public void verbose(final String arg);
+	public void writeDatabase(final String arg);
+	public void readDatabase(final String arg);
+	public void startTransaction(final String arg);
+	public void endTransaction(final String arg);
     }
 
     private MyLog(){
@@ -31,6 +35,26 @@ public final class MyLog {
 	    @Override
 		public void verbose(final String arg){
 		Log.v(tag, arg);
+		return ;
+	    }
+	    @Override
+		public void writeDatabase(final String arg){
+		Log.v(tag, "[WRITE DB]" + arg);
+		return ;
+	    }
+	    @Override
+		public void readDatabase(final String arg){
+		Log.v(tag, "[READ DB]" + arg);
+		return ;
+	    }
+	    @Override
+		public void startTransaction(final String arg){
+		Log.v(tag, "[START TR]" + arg);
+		return ;
+	    }
+	    @Override
+		public void endTransaction(final String arg){
+		Log.v(tag, "[end TR]" + arg);
 		return ;
 	    }
 	};

@@ -23,8 +23,6 @@ import android.view.MenuInflater;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.Cursor;
 
-
-
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
@@ -82,7 +80,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-	MyLog.getInstance().verbose("start onCreate");
+	MyLog.getInstance().verbose("start");
         setContentView(R.layout.recode);
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
@@ -97,7 +95,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
      */
     @Override
 	protected void onDestroy(){
-	MyLog.getInstance().verbose("start onDestroy");
+	MyLog.getInstance().verbose("start");
 	if(mDb != null) {
 	    MyLog.getInstance().verbose("close db");
 	    mDb.close();
@@ -150,16 +148,19 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         return;
     }
 
-    private int  deleteAllTransaction(){
+    private int deleteByCategoryId(){
 	RecodeDao dao = new RecodeDao(mDb);
 	mDb.beginTransaction();
+	MyLog.getInstance().startTransaction(
+	     "category[" + categoryId + "]");
 	int res = 0;
 	try {
 	    res = dao.deleteByCategoryId(categoryId);
 	    mDb.setTransactionSuccessful();
+	    MyLog.getInstance().endTransaction(
+			       "success.delete count[" + res + "]");
 	} finally {
 	    mDb.endTransaction();
-	    MyLog.getInstance().verbose("delete all res[" + res + "]");
 	}
 	return res;
     }
@@ -172,7 +173,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
           new DialogInterface.OnClickListener() {
               public void onClick(final DialogInterface dialog,
                                   final int whichButton) {
-		  deleteAllTransaction();
+		  deleteByCategoryId();
 		  initListView();
 		  return;
               }
@@ -209,20 +210,22 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	RecodeDao dao = new RecodeDao(mDb);
 	
 	mDb.beginTransaction();
+	MyLog.getInstance().startTransaction("recode[" + rec + "]");
+
 	long key = 0;
 	try {
 	    key = dao.insert(rec);
 	    mDb.setTransactionSuccessful();
+	    MyLog.getInstance().endTransaction("success.recode["+ rec +"]");
 	} finally {
 	    mDb.endTransaction();
-	    MyLog.getInstance().verbose("commit key["+ key+"]");
 	}
 	return rec;
     }
 
     private void initListView() {
 	RecodeDao dao = new RecodeDao(mDb);
-	Cursor cursor = dao.findByCategory();
+	Cursor cursor = dao.findByCategoryId(categoryId);
 
 	ListAdapter la = new RecodeListAdapter(this, cursor);
         ListView list = (ListView) findViewById(R.id.listview_data);
