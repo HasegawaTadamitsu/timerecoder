@@ -20,7 +20,7 @@ public final class Recode {
 	    public String toString() {
 	    return name();
 	}
-	public static EventId getValueFromDBValue(final int argVal){
+	static EventId getValueFromDBValue(final int argVal){
 	    EventId[] arr = EventId.values();
 	    for (EventId e : arr) {
 		if (e.toDBValue() == argVal) {
