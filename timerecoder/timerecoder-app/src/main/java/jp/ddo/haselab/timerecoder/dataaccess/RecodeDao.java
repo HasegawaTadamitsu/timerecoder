@@ -13,12 +13,23 @@ import jp.ddo.haselab.timerecoder.util.EventId;
 
 public final class RecodeDao {
 
+    static final String CREATE_TABLE_SQL =
+	"create table recode "
+	+ "( _id integer not null primary key,"
+	+ " categoryid integer not null ,"
+	+ " datetime   integer not null, "
+	+ " eventid    integer not null, "
+	+ " memo       text    not null)";
+
+    static final String DROP_TABLE_SQL =
+	"drop table if exists recode";
+
     private static final String TABLE_NAME      = "recode";
-    public static final String COLUMN_ID          = "_id";
-    public static final String COLUMN_CATEGORY_ID = "categoryid";
-    public static final String COLUMN_DATE_TIME   = "datetime";
-    public static final String COLUMN_EVENT_ID    = "eventid";
-    public static final String COLUMN_MEMO        = "memo";
+    private static final String COLUMN_ID          = "_id";
+    private static final String COLUMN_CATEGORY_ID = "categoryid";
+    private static final String COLUMN_DATE_TIME   = "datetime";
+    private static final String COLUMN_EVENT_ID    = "eventid";
+    private static final String COLUMN_MEMO        = "memo";
     
     private SQLiteDatabase db;
     

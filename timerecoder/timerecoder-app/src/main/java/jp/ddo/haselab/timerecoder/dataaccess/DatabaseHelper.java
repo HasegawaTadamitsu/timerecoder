@@ -14,32 +14,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
 
-    private static final String CREATE_RECODE_TABLE_SQL =
-	"create table recode "
-	+ "( _id integer not null primary key,"
-	+ " categoryid integer not null ,"
-	+ " datetime   integer not null, "
-	+ " eventid    integer not null, "
-	+ " memo       text    not null)";
-
-    private static final String CREATE_PROPERTY_TABLE_SQL =
-	"create table property "
-	+ "( groupid   integer not null,"
-	+ "  key       integer not null,"
-	+ "  value     text    not null, "
-	+ "  comment   text,  "
-	+ " primary key(groupid,key) )";
-
-    private static final String INSERT_DEFAULT_PROPERTY_TABLE_SQL =
-	"insert into property " 
-	+ "(groupId,key,value,comment)" 
-	+ "values (1000,1,'default','default value')";
-	
-    private static final String DROP_RECODE_TABLE_SQL =
-	"drop table if exists recode";
-    private static final String DROP_PROPERTY_TABLE_SQL =
-	"drop table if exists property";
-
     public DatabaseHelper(Context context) {
 	super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -47,10 +21,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
 	public void onCreate(SQLiteDatabase db) {
 	MyLog.getInstance().writeDatabase("create tables");
-	db.execSQL(CREATE_RECODE_TABLE_SQL);
-	db.execSQL(CREATE_PROPERTY_TABLE_SQL);
+
+	db.execSQL(RecodeDao.CREATE_TABLE_SQL);
+	db.execSQL(PropertyDao.CREATE_TABLE_SQL);
+
 	MyLog.getInstance().writeDatabase("insert default");
-	db.execSQL(INSERT_DEFAULT_PROPERTY_TABLE_SQL);
+
+	PropertyDao dao = new PropertyDao(db);
+
+	db.beginTransaction();
+	MyLog.getInstance().startTransaction("insert init value");
+	int res = 0;
+	try {
+	    dao.insertDefaultData();
+	    db.setTransactionSuccessful();
+	    MyLog.getInstance().endTransaction("success.");
+	} finally {
+	    db.endTransaction();
+	}
     }
 
     @Override
@@ -58,8 +46,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			      int oldVersion,
 			      int newVersion) {
 	MyLog.getInstance().writeDatabase("drop tables");
-	db.execSQL(DROP_RECODE_TABLE_SQL);
-	db.execSQL(DROP_PROPERTY_TABLE_SQL);
+	db.execSQL(RecodeDao.DROP_TABLE_SQL);
+	db.execSQL(PropertyDao.DROP_TABLE_SQL);
 	onCreate(db);
     }
 }
