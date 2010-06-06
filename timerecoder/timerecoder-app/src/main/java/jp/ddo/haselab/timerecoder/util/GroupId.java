@@ -1,8 +1,8 @@
 package jp.ddo.haselab.timerecoder.util;
 
 public enum GroupId {
-    CATEGORY_GROUP_ID(100),
-	CATEGORY2_GROUP_ID(101),
+    EVENT_ID(100),
+    CATEGORY2_GROUP_ID(101),
 	;
 
 	private int groupId;
