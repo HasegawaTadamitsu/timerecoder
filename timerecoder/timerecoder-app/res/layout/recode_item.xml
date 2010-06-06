@@ -5,7 +5,7 @@
 
   <TableRow    android:background="#696969">
     <TextView  android:text="No"/>
-    <TextView  android:id="@+id/_id"
+    <TextView  android:id="@+id/number"
 	       android:paddingRight="15sp"/>
     <TextView  android:id="@+id/datetime"
 	       android:paddingRight="30sp"/>

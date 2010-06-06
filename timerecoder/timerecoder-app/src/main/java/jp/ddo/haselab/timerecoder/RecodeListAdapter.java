@@ -1,58 +1,83 @@
 package jp.ddo.haselab.timerecoder;
 
+import java.util.List;
+
+import android.widget.BaseAdapter;
 import android.content.Context;
-import android.widget.SimpleCursorAdapter;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.widget.TextView;
-import android.database.Cursor;
 
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
-import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
+import jp.ddo.haselab.timerecoder.dataaccess.Recode;
+import jp.ddo.haselab.timerecoder.util.MyLog;
 
 /**
  *
  * @author T.Hasegawa
  */
-final class RecodeListAdapter extends SimpleCursorAdapter {
+final class RecodeListAdapter extends BaseAdapter {
 
-    private static final int[] TO_RECODE_ITEM = {
-	R.id._id,
-	R.id.datetime,
-	R.id.eventid,
-	R.id.memo
-    };
+    private List<Recode> data;
+    private final Context context;
 
-    public RecodeListAdapter(final Context cx,
-			     final Cursor cursor) {
-	super(cx,
-	      R.layout.recode_item,
-	      cursor,
-	      RecodeDao.FIND_BY_CATEGORY_COLUMN,
-	      TO_RECODE_ITEM);
-	setViewBinder(new ListViewBinder());
+    public RecodeListAdapter(final Context argContext,
+			     final List<Recode> argData){
+	MyLog.getInstance().verbose("start");
+	context = argContext;
+	data = argData;
     }
 
-    class ListViewBinder implements SimpleCursorAdapter.ViewBinder {
-	private int count = 0;
-        public ListViewBinder() {
-        }
+    public void addData(final Recode argData){
+	data.add(argData);
+	notifyDataSetChanged();
+   }
 
-        @Override
-	    public boolean setViewValue(final View view,
-					final Cursor cursor,
-					final int columnIndex ) {
+    @Override
+        public int getCount() {
+	MyLog.getInstance().verbose("called.result["+ data.size() + "]");
+	return data.size();
+    }
+ 
+    @Override
+        public long getItemId(final int argPosition) 
+{	MyLog.getInstance().verbose("argPosition["+ argPosition + "]");
+	return argPosition;
+    }
 
-            int dateTimeIndex = cursor.getColumnIndex(
-					RecodeDao.COLUMN_DATE_TIME);
+    @Override
+        public Object getItem(final int argPosition) {
+	MyLog.getInstance().verbose("argPosition["+ argPosition + "]");
+	MyLog.getInstance().verbose("result["+ data.get(argPosition) + "]");
+	return data.get(argPosition);
+    }
 
-            if (columnIndex  == dateTimeIndex) {
-                long dateTime = cursor.getLong(dateTimeIndex);
-		String val = RecodeDateTime.toStaticString(dateTime);
-		((TextView)view).setText(val);
-		return true;
-	    }
+    @Override
+        public View getView(final int position,
+			    final View convertView,
+			    final ViewGroup parentViewGroup) {
+	View resultView = convertView;
+	if (convertView == null) {
+	    LayoutInflater inflater = (LayoutInflater)
+		context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    resultView  = inflater.inflate(R.layout.recode_item,
+					   null);
+	} 
+	Recode rec = (Recode)this.getItem(position);
 
-	    return false;
-	}
+	TextView number = (TextView)resultView.findViewById(R.id.number);
+	number.setText(position + "");
+
+	TextView dateTime = (TextView)resultView.findViewById(R.id.datetime);
+	dateTime.setText(rec.getDateTime().toString());
+
+	TextView event = (TextView)resultView.findViewById(R.id.eventid);
+	event.setText(rec.getEventId() + "");
+
+	TextView memo = (TextView)resultView.findViewById(R.id.memo);
+	memo.setText(rec.getMemo());
+
+	return resultView;
     }
 }

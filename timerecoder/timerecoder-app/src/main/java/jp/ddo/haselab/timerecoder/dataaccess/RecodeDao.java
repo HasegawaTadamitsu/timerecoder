@@ -2,8 +2,7 @@ package jp.ddo.haselab.timerecoder.dataaccess;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,8 +11,6 @@ import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import jp.ddo.haselab.timerecoder.util.MyLog;
 
 public final class RecodeDao {
-
-    private static final int MAX_COUNT = 1000;
 
     private static final String TABLE_NAME      = "recode";
     public static final String COLUMN_ID          = "_id";
@@ -36,7 +33,7 @@ public final class RecodeDao {
 	values.put(COLUMN_EVENT_ID,    rec.getEventId());
 	values.put(COLUMN_MEMO,        rec.getMemo());
 	long res =  db.insert(TABLE_NAME, null, values);
-	MyLog.getInstance().writeDatabase("result _id["+ res + "]");
+	MyLog.getInstance().writeDatabase("result insert key id["+ res + "]");
 	rec.setRowId(res);
 	return res;
     }
@@ -51,28 +48,47 @@ public final class RecodeDao {
 	return res;
     }
 
-    public  static final String[] FIND_BY_CATEGORY_COLUMN= {
-	COLUMN_ID,
-	COLUMN_DATE_TIME,
-	COLUMN_EVENT_ID,
-	COLUMN_MEMO
-    };
+    public List<Recode> findByCategoryId(final int argCategoryId) {
+	MyLog.getInstance().readDatabase("categoryId[" 
+					  + argCategoryId + "]");
+	String[] columns = {
+	    COLUMN_ID,
+	    COLUMN_DATE_TIME,
+	    COLUMN_EVENT_ID,
+	    COLUMN_MEMO};
 
-    public Cursor findByCategoryId(final int argCategoryId ) {
-	MyLog.getInstance().readDatabase("findByCategoryId " +
-					 "categoryId[" + argCategoryId + "]");
 	Cursor c = db.query(TABLE_NAME,
-			    FIND_BY_CATEGORY_COLUMN,
-			    null, // selection
+			    columns,
+			    COLUMN_CATEGORY_ID + " = " + argCategoryId,
+			               // selection
 			    null, // selectionArgs
 			    null, // groupBy
 			    null, // having
 			    COLUMN_DATE_TIME, // order by
-			    null  // limit
+			    null // limit
 			    );
-	long count = c.getCount();
-	MyLog.getInstance().readDatabase("findByCategoryId " +
-					 "result[" + count + "]");
-	return c;
+
+	int count = c.getCount();
+	MyLog.getInstance().readDatabase("result count[" + count + "]");
+
+	List<Recode> result = new ArrayList<Recode>(count);
+	c.moveToFirst();
+	for (int i = 0; i < count ; i++) {
+	    long rowId = c.getLong(c.getColumnIndex(COLUMN_ID));
+	    Recode data = new Recode(rowId,
+				     argCategoryId,
+				     new RecodeDateTime(
+					c.getLong(c.getColumnIndex(
+						   COLUMN_DATE_TIME))),
+				     c.getInt(c.getColumnIndex(
+						       COLUMN_EVENT_ID)),
+				     c.getString(c.getColumnIndex(
+							  COLUMN_MEMO))
+				     );
+	    result.add(data);
+	    c.moveToNext();
+	}
+	c.close();
+	return result;
     }
 }

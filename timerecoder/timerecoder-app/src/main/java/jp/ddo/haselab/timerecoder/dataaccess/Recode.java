@@ -15,7 +15,7 @@ public final class Recode {
 		  final int argEventId,
 		  final String argMemo){
 
-	this(0,
+	this(0L,
 	     argCategoryId,
 	     argRecodeDateTime,
 	     argEventId,
@@ -41,6 +41,10 @@ public final class Recode {
 
     public long getRowId(){
 	return rowId;
+    }
+
+    public long getKey(){
+	return getRowId();
     }
 
     public int getCategoryId() {

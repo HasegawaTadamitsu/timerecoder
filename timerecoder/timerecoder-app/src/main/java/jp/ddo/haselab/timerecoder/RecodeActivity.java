@@ -1,5 +1,7 @@
 package jp.ddo.haselab.timerecoder;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.preference.PreferenceManager;
@@ -21,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.Cursor;
 
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
@@ -43,6 +44,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
     private SQLiteDatabase mDb = null;
 
+    private RecodeListAdapter listAdapter ;
 
     private void initWidget(){
         Button button;
@@ -225,11 +227,16 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
     private void initListView() {
 	RecodeDao dao = new RecodeDao(mDb);
-	Cursor cursor = dao.findByCategoryId(categoryId);
-
-	ListAdapter la = new RecodeListAdapter(this, cursor);
+	List<Recode> data = dao.findByCategoryId(categoryId);
+	listAdapter = new RecodeListAdapter(this,data);
         ListView list = (ListView) findViewById(R.id.listview_data);
-	list.setAdapter(la);
+	list.setAdapter(listAdapter);
+	list.setSelection(list.getCount());
+    }
+
+    private void appendData(final Recode rec){
+	listAdapter.addData(rec);
+        ListView list = (ListView) findViewById(R.id.listview_data);
 	list.setSelection(list.getCount());
     }
 
@@ -248,40 +255,34 @@ public final class RecodeActivity extends Activity implements OnClickListener {
             return;
 
 	}
-
 	EditText editText = (EditText) findViewById(R.id.edittext_memo);
 	String memo = editText.getText().toString();
-
-	if (id == R.id.button_start) {
-	    Recode rec = new Recode(categoryId,
-				    new RecodeDateTime(),
-				    1,
-				    memo);
-	    insertTransaction(rec);
-	    initListView();
-	    return;
-        }
-
-	if (id == R.id.button_end) {
-	    Recode rec = new Recode(categoryId,
-				    new RecodeDateTime(),
-				    2,
-				    memo);
-	    insertTransaction(rec);
-	    initListView();
-	    return;
-        }
-
-	if (id == R.id.button_etc) {
-	    Recode rec = new Recode(categoryId,
-				    new RecodeDateTime(),
-				    3,
-				    memo);
-	    insertTransaction(rec);
-	    initListView();
-	    return;
-        }
-
+	Recode rec;
+	switch (id){
+	case R.id.button_start:
+	     rec = new Recode(categoryId,
+			      new RecodeDateTime(),
+			      1,
+			      memo);
+	     break;
+        case R.id.button_end:
+	    rec = new Recode(categoryId,
+			     new RecodeDateTime(),
+			     2,
+			     memo);
+	    break;
+	case R.id.button_etc:
+	    rec = new Recode(categoryId,
+			     new RecodeDateTime(),
+			     3,
+			     memo);
+	    break;
+        default:
+	    throw new IllegalArgumentException(
+			       "unknown button(view).id[" + id + "]");
+	}
+	insertTransaction(rec);
+	appendData(rec);
         return;
     }
 }

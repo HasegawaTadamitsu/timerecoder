@@ -3,9 +3,9 @@ package jp.ddo.haselab.timerecoder.util;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-public class RecodeDateTime {
+public final class RecodeDateTime {
 
-    private Date  date;
+    private final Date date;
 
     public RecodeDateTime(){
 	date = new Date();
