@@ -29,7 +29,7 @@ import jp.ddo.haselab.timerecoder.dataaccess.Recode;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import jp.ddo.haselab.timerecoder.util.MyLog;
-import jp.ddo.haselab.timerecoder.util.EventId;
+
 
 /**
  * 主処理(Recode)Activity.
@@ -263,19 +263,19 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	case R.id.button_start:
 	     rec = new Recode(categoryId,
 			      new RecodeDateTime(),
-			      EventId.START,
+			      Recode.EventId.START,
 			      memo);
 	     break;
         case R.id.button_end:
 	    rec = new Recode(categoryId,
 			     new RecodeDateTime(),
-			     EventId.END,
+			     Recode.EventId.END,
 			     memo);
 	    break;
 	case R.id.button_etc:
 	    rec = new Recode(categoryId,
 			     new RecodeDateTime(),
-			     EventId.ETC,
+			     Recode.EventId.ETC,
 			     memo);
 	    break;
         default:

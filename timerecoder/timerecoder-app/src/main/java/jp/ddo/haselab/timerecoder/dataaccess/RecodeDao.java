@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import jp.ddo.haselab.timerecoder.util.MyLog;
-import jp.ddo.haselab.timerecoder.util.EventId;
+
 
 public final class RecodeDao {
 
@@ -87,14 +87,16 @@ public final class RecodeDao {
 	c.moveToFirst();
 	for (int i = 0; i < count ; i++) {
 	    long rowId = c.getLong(c.getColumnIndex(COLUMN_ID));
+
 	    int eventId = c.getInt(c.getColumnIndex(COLUMN_EVENT_ID));
+	    Recode.EventId ev = Recode.EventId.getValueFromDBValue(eventId);
 
 	    Recode data = new Recode(rowId,
 				     argCategoryId,
 				     new RecodeDateTime(
 					c.getLong(c.getColumnIndex(
-					   COLUMN_DATE_TIME))),
-				     EventId.getValueFromDBValue(eventId),
+						   COLUMN_DATE_TIME))),
+				     ev,
 				     c.getString(c.getColumnIndex(
 							  COLUMN_MEMO))
 				     );
