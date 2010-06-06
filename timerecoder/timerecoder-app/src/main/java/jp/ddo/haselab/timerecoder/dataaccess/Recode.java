@@ -1,18 +1,19 @@
 package jp.ddo.haselab.timerecoder.dataaccess;
 
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
+import jp.ddo.haselab.timerecoder.util.EventId;
 
 public final class Recode {
 
     private long  rowId;
     private final int   categoryId;
     private final RecodeDateTime dateTime;
-    private final int    eventId;
+    private final EventId eventId;
     private final String memo;
 
     public Recode(final int argCategoryId,
 		  final RecodeDateTime argRecodeDateTime,
-		  final int argEventId,
+		  final EventId argEventId,
 		  final String argMemo){
 
 	this(0L,
@@ -25,7 +26,7 @@ public final class Recode {
     public Recode(final long argRowId,
 		  final int argCategoryId,
 		  final RecodeDateTime argRecodeDateTime,
-		  final int argEventId,
+		  final EventId argEventId,
 		  final String argMemo){
 
 	rowId      = argRowId;
@@ -55,10 +56,14 @@ public final class Recode {
 	return dateTime;
     }
 
-    public int  getEventId() {
-	return eventId;
+    public String  getEventToString() {
+	return eventId.toString();
     }
-    
+
+    public int  getEventToDBValue() {
+	return eventId.toDBValue();
+    }
+
     public String getMemo() {
 	return memo;
     }

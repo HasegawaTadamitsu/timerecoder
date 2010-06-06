@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import jp.ddo.haselab.timerecoder.util.MyLog;
+import jp.ddo.haselab.timerecoder.util.EventId;
 
 public final class RecodeDao {
 
@@ -30,7 +31,7 @@ public final class RecodeDao {
 	ContentValues values = new ContentValues();
 	values.put(COLUMN_CATEGORY_ID, rec.getCategoryId());
 	values.put(COLUMN_DATE_TIME,   rec.getDateTime().toMilliSecond());
-	values.put(COLUMN_EVENT_ID,    rec.getEventId());
+	values.put(COLUMN_EVENT_ID,    rec.getEventToDBValue());
 	values.put(COLUMN_MEMO,        rec.getMemo());
 	long res =  db.insert(TABLE_NAME, null, values);
 	MyLog.getInstance().writeDatabase("result insert key id["+ res + "]");
@@ -75,13 +76,14 @@ public final class RecodeDao {
 	c.moveToFirst();
 	for (int i = 0; i < count ; i++) {
 	    long rowId = c.getLong(c.getColumnIndex(COLUMN_ID));
+	    int eventId = c.getInt(c.getColumnIndex(COLUMN_EVENT_ID));
+
 	    Recode data = new Recode(rowId,
 				     argCategoryId,
 				     new RecodeDateTime(
 					c.getLong(c.getColumnIndex(
-						   COLUMN_DATE_TIME))),
-				     c.getInt(c.getColumnIndex(
-						       COLUMN_EVENT_ID)),
+					   COLUMN_DATE_TIME))),
+				     EventId.getValueFromDBValue(eventId),
 				     c.getString(c.getColumnIndex(
 							  COLUMN_MEMO))
 				     );

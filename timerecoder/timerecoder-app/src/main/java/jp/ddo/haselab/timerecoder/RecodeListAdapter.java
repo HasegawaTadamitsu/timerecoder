@@ -73,7 +73,7 @@ final class RecodeListAdapter extends BaseAdapter {
 	dateTime.setText(rec.getDateTime().toString());
 
 	TextView event = (TextView)resultView.findViewById(R.id.eventid);
-	event.setText(rec.getEventId() + "");
+	event.setText(rec.getEventToString());
 
 	TextView memo = (TextView)resultView.findViewById(R.id.memo);
 	memo.setText(rec.getMemo());
