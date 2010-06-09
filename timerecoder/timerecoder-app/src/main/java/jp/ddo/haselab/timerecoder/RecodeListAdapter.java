@@ -62,7 +62,8 @@ final class RecodeListAdapter extends BaseAdapter {
 	    LayoutInflater inflater = (LayoutInflater)
 		context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    resultView  = inflater.inflate(R.layout.recode_item,
-					   null);
+					   parentViewGroup,
+					   false);
 	} 
 	Recode rec = (Recode)this.getItem(position);
 
