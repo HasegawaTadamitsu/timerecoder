@@ -233,6 +233,10 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         ListView list = (ListView) findViewById(R.id.listview_data);
 	list.setAdapter(listAdapter);
 	list.setSelection(list.getCount());
+
+        View emptyView =  findViewById(R.id.listview_empty);
+	list.setEmptyView(emptyView);
+
     }
 
     private void appendData(final Recode rec){
