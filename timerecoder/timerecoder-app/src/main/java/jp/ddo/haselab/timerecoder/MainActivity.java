@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.content.Intent;
+import android.content.Context;
 
 import android.database.sqlite.SQLiteDatabase;
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
@@ -38,6 +39,7 @@ public final class MainActivity extends Activity implements OnClickListener {
 	MyLog.getInstance().verbose("start");
 
         setContentView(R.layout.main);
+	RecodeDateTime.setFormat((Context)this);
 
         Button button;
         button = (Button) findViewById(R.id.button_start);

@@ -25,6 +25,6 @@
     clear all datas?
   </string>
   <string name="clear_all_datas_dialog_message">
-    clear all datas. and init database?sure?
+    clear all datas. And init database.sure?
   </string>
 </resources>
