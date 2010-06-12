@@ -10,5 +10,11 @@
        android:key="recode_use_gps"
        android:title="@string/recode_use_gps_title"
        android:summary="@string/recode_use_gps_summary" />
+    <jp.ddo.haselab.timerecoder.util.DialogExPreference
+       android:key="clear_all_datas"
+       android:title="@string/clear_all_datas_title"
+       android:summary="@string/clear_all_datas_summary" 
+       android:dialogTitle="@string/clear_all_datas_dialog_title"
+       android:dialogMessage="@string/clear_all_datas_dialog_message" />
     </PreferenceCategory>
 </PreferenceScreen>

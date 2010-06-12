@@ -18,10 +18,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    private void dropTables(SQLiteDatabase db) {
+	MyLog.getInstance().writeDatabase("drop tables");
+	db.execSQL(RecodeDao.DROP_TABLE_SQL);
+	db.execSQL(PropertyDao.DROP_TABLE_SQL);
+    }
+
     @Override
 	public void onCreate(SQLiteDatabase db) {
-	MyLog.getInstance().writeDatabase("create tables");
+	MyLog.getInstance().writeDatabase("start");
 
+	dropTables(db);
+
+	MyLog.getInstance().writeDatabase("create tables");	
 	db.execSQL(RecodeDao.CREATE_TABLE_SQL);
 	db.execSQL(PropertyDao.CREATE_TABLE_SQL);
 
@@ -45,9 +54,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db,
 			      int oldVersion,
 			      int newVersion) {
-	MyLog.getInstance().writeDatabase("drop tables");
-	db.execSQL(RecodeDao.DROP_TABLE_SQL);
-	db.execSQL(PropertyDao.DROP_TABLE_SQL);
 	onCreate(db);
     }
 }

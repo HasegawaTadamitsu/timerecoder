@@ -15,4 +15,16 @@
   <string name="recode_use_gps_summary">
     recode with gps?
   </string>
+  <string name="clear_all_datas_title">
+    clear all datas.
+  </string>
+  <string name="clear_all_datas_summary">
+    clear all datas. setup init database.
+  </string>
+  <string name="clear_all_datas_dialog_title">
+    clear all datas?
+  </string>
+  <string name="clear_all_datas_dialog_message">
+    clear all datas. and init database?sure?
+  </string>
 </resources>
