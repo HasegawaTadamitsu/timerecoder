@@ -40,4 +40,11 @@
     empty data. touch button.
   </string>
 
+  <string name="dialog_recode_exception_title">
+    recode error.
+  </string>
+  <string name="dialog_recode_exception_msg">
+    can not recode audio.check SDCard mounted and other.
+  </string>
+
 </resources>

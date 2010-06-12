@@ -8,6 +8,7 @@ public final class MyLog {
     public static interface Logger {
 	public void verbose(final String arg);
 	public void warning(final String arg);
+	public void error(final String arg, final Exception e);
 	public void writeDatabase(final String arg);
 	public void readDatabase(final String arg);
 	public void startTransaction(final String arg);
@@ -43,6 +44,13 @@ public final class MyLog {
 		Log.w(tag, arg);
 		return ;
 	    }
+	    @Override
+		public void error(final String arg,
+				  final Exception e){
+		Log.e(tag, arg, e);
+		return ;
+	    }
+
 	    @Override
 		public void writeDatabase(final String arg){
 		Log.v(tag, "[WRITE DB]" + arg);

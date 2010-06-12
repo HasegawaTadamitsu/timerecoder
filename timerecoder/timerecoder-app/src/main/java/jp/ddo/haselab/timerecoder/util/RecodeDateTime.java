@@ -20,15 +20,7 @@ public final class RecodeDateTime {
 	return date.getTime();
     }
 
-    private static java.text.DateFormat dateFormat = null;
-    private static java.text.DateFormat timeFormat = null;
-
-    public static void setFormat( final Context context) {
-	dateFormat = android.text.format.DateFormat.getDateFormat(context);
-	timeFormat = new SimpleDateFormat("HH:mm:ss");
-    }
-
-    public static String toStaticString(final long val ) {
+    private String toAndroidFormatString(){
 	if (dateFormat == null || timeFormat == null ) {
 	    dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	    timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -37,12 +29,28 @@ public final class RecodeDateTime {
 			+ "Use default format." );
 
 	}
-	Date stDate  = new Date(val);
- 	return dateFormat.format(stDate) + " " + timeFormat.format(stDate);
+ 	return dateFormat.format(date) + " " + timeFormat.format(date);
     }
 
     @Override
 	public String toString() {
-	return toStaticString(this.toMilliSecond());
+	return toAndroidFormatString();
     }
+
+    public String toYYYYMMDDHHMMSS(){
+	java.text.DateFormat format = 
+	    new SimpleDateFormat("yyyyMMddHHmmss");
+ 	return format.format(date);
+    }
+
+    private static java.text.DateFormat dateFormat = null;
+    private static java.text.DateFormat timeFormat = null;
+
+    public static void setFormat( final Context context) {
+	dateFormat = android.text.format.DateFormat.getDateFormat(context);
+	timeFormat = new SimpleDateFormat("HH:mm:ss");
+    }
+
+
+
 }

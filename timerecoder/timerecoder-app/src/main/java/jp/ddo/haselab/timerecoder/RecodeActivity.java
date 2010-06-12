@@ -1,6 +1,7 @@
 package jp.ddo.haselab.timerecoder;
 
 import java.util.List;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,6 +28,7 @@ import android.database.sqlite.SQLiteDatabase;
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
+import jp.ddo.haselab.timerecoder.util.RecodeAudio;
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import jp.ddo.haselab.timerecoder.util.MyLog;
 
@@ -45,7 +47,9 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
     private SQLiteDatabase mDb = null;
 
-    private RecodeListAdapter listAdapter ;
+    private RecodeListAdapter listAdapter;
+
+    private  RecodeAudio recodeAudio;
 
     private void initWidget(){
         Button button;
@@ -88,6 +92,8 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
 	mDb = dbHelper.getWritableDatabase();
+
+	recodeAudio = new RecodeAudio();
 
 	initWidget();
      }
@@ -245,6 +251,22 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	list.setSelection(list.getCount());
     }
 
+    private void recodeAudio(final RecodeDateTime  argRecTime){
+	String fileName = "rec" + argRecTime.toYYYYMMDDHHMMSS() + ".3gp";
+	try {
+	    recodeAudio.startRecodingExternalStrage(fileName, 3);
+	} catch(IOException e){
+	    MyLog.getInstance().error("recode error.IOException." +
+				      "fileName["+fileName+"]", e);
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle(R.string.dialog_recode_exception_title);
+	    builder.setMessage(R.string.dialog_recode_exception_msg);
+	    builder.setPositiveButton("OK",null);
+	    AlertDialog dialog = builder.create();
+	    dialog.show();
+	}
+    }
+
     /**
      * クリック時の処理.
      * 各種ボタンの処理を行います。
@@ -262,23 +284,24 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	}
 	EditText editText = (EditText) findViewById(R.id.edittext_memo);
 	String memo = editText.getText().toString();
+	RecodeDateTime dateTime  =  new RecodeDateTime();
 	Recode rec;
 	switch (id){
 	case R.id.button_start:
 	     rec = new Recode(categoryId,
-			      new RecodeDateTime(),
+			      dateTime,
 			      Recode.EventId.START,
 			      memo);
 	     break;
         case R.id.button_end:
 	    rec = new Recode(categoryId,
-			     new RecodeDateTime(),
+			     dateTime,
 			     Recode.EventId.END,
 			     memo);
 	    break;
 	case R.id.button_etc:
 	    rec = new Recode(categoryId,
-			     new RecodeDateTime(),
+			     dateTime,
 			     Recode.EventId.ETC,
 			     memo);
 	    break;
@@ -288,6 +311,12 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	}
 	insertTransaction(rec);
 	appendData(rec);
+
+        CheckBox recodeAudioCheckBox;
+        recodeAudioCheckBox = (CheckBox) findViewById(R.id.checkbox_use_audio);
+        if ( recodeAudioCheckBox.isChecked()){
+	    recodeAudio(dateTime);
+	}
         return;
     }
 }
