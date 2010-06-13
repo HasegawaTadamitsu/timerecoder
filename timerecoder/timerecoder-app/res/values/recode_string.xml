@@ -18,8 +18,8 @@
   <string name="checkbox_text_use_audio">
     audio recode
   </string>
-  <string name="checkbox_text_use_gps">
-    gps recode
+  <string name="checkbox_text_use_location">
+    location recode
   </string>
 
   <string name="dialog_quit_sure_title">
@@ -40,11 +40,18 @@
     empty data. touch button.
   </string>
 
-  <string name="dialog_recode_exception_title">
-    recode error.
+  <string name="dialog_recode_audio_error_title">
+    recode audio error.
   </string>
-  <string name="dialog_recode_exception_msg">
+  <string name="dialog_recode_audio_error_msg">
     can not recode audio.check SDCard mounted and other.
+  </string>
+
+  <string name="dialog_recode_location_error_title">
+    recode locate error.
+  </string>
+  <string name="dialog_recode_location_error_msg">
+    can not recode location.check hmm??
   </string>
 
 </resources>

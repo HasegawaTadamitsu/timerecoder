@@ -50,7 +50,4 @@ public final class RecodeDateTime {
 	dateFormat = android.text.format.DateFormat.getDateFormat(context);
 	timeFormat = new SimpleDateFormat("HH:mm:ss");
     }
-
-
-
 }

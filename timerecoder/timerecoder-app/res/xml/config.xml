@@ -7,9 +7,9 @@
        android:title="@string/recode_use_audio_title"
        android:summary="@string/recode_use_audio_summary" />
     <CheckBoxPreference
-       android:key="recode_use_gps"
-       android:title="@string/recode_use_gps_title"
-       android:summary="@string/recode_use_gps_summary" />
+       android:key="recode_use_location"
+       android:title="@string/recode_use_location_title"
+       android:summary="@string/recode_use_location_summary" />
     <jp.ddo.haselab.timerecoder.util.DialogExPreference
        android:key="clear_all_datas"
        android:title="@string/clear_all_datas_title"

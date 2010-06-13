@@ -6,7 +6,7 @@ import java.io.IOException;
 import android.os.Environment;
 import android.media.MediaRecorder;
 
-public final class RecodeAudio {
+public final class RecodeAudioMgr {
 
     private final MediaRecorder mrec ;
 
@@ -14,7 +14,7 @@ public final class RecodeAudio {
 
     private boolean recodingNow = false;
 
-    public RecodeAudio(){
+    public RecodeAudioMgr(){
         mrec = new MediaRecorder();
 	initRecoder();
     }

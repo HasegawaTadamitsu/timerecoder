@@ -53,10 +53,10 @@
 	       android:layout_height="wrap_content"
 	       android:text="@string/checkbox_text_use_audio"
 	       /> 
-    <CheckBox  android:id="@+id/checkbox_use_gps"
+    <CheckBox  android:id="@+id/checkbox_use_location"
 	       android:layout_width="wrap_content"
 	       android:layout_height="wrap_content"
-	       android:text="@string/checkbox_text_use_gps"
+	       android:text="@string/checkbox_text_use_location"
 	       /> 
   </LinearLayout>
 

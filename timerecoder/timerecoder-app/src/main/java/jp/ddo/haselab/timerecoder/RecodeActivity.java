@@ -28,7 +28,9 @@ import android.database.sqlite.SQLiteDatabase;
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
-import jp.ddo.haselab.timerecoder.util.RecodeAudio;
+import jp.ddo.haselab.timerecoder.util.RecodeAudioMgr;
+import jp.ddo.haselab.timerecoder.util.RecodeLocationMgr;
+import jp.ddo.haselab.timerecoder.util.RecodeLocation;
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import jp.ddo.haselab.timerecoder.util.MyLog;
 
@@ -49,7 +51,8 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
     private RecodeListAdapter listAdapter;
 
-    private  RecodeAudio recodeAudio;
+    private  RecodeAudioMgr recodeAudioMgr;
+    private  RecodeLocationMgr recodeLocationMgr;
 
     private void initWidget(){
         Button button;
@@ -70,10 +73,10 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         CheckBox checkBox;
         checkBox = (CheckBox) findViewById(R.id.checkbox_use_audio);
         checkBox.setChecked(useAudio);
-	boolean useGps = preferences.getBoolean("recode_use_gps",
+	boolean useLocation = preferences.getBoolean("recode_use_location",
 						  false);
-        checkBox = (CheckBox) findViewById(R.id.checkbox_use_gps);
-        checkBox.setChecked(useGps);
+        checkBox = (CheckBox) findViewById(R.id.checkbox_use_location);
+        checkBox.setChecked(useLocation);
 	
 	initListView();
     }
@@ -93,7 +96,8 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
 	mDb = dbHelper.getWritableDatabase();
 
-	recodeAudio = new RecodeAudio();
+	recodeAudioMgr = new RecodeAudioMgr();
+	recodeLocationMgr = new RecodeLocationMgr(this,1);
 
 	initWidget();
      }
@@ -254,19 +258,31 @@ public final class RecodeActivity extends Activity implements OnClickListener {
     private void recodeAudio(final RecodeDateTime  argRecTime){
 	String fileName = "rec" + argRecTime.toYYYYMMDDHHMMSS() + ".3gp";
 	try {
-	    recodeAudio.startRecodingExternalStrage(fileName, 3);
+	    recodeAudioMgr.startRecodingExternalStrage(fileName, 3);
 	} catch(IOException e){
 	    MyLog.getInstance().error("recode error.IOException." +
 				      "fileName["+fileName+"]", e);
 	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    builder.setTitle(R.string.dialog_recode_exception_title);
-	    builder.setMessage(R.string.dialog_recode_exception_msg);
+	    builder.setTitle(R.string.dialog_recode_audio_error_title);
+	    builder.setMessage(R.string.dialog_recode_audio_error_msg);
 	    builder.setPositiveButton("OK",null);
 	    AlertDialog dialog = builder.create();
 	    dialog.show();
 	}
     }
 
+    private void recodeLocation(final Recode rec){
+	RecodeLocation location = recodeLocationMgr.getRecodeLocation();
+	if (location == null){
+	    MyLog.getInstance().error("recode location error");
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle(R.string.dialog_recode_location_error_title);
+	    builder.setMessage(R.string.dialog_recode_location_error_msg);
+	    builder.setPositiveButton("OK",null);
+	    AlertDialog dialog = builder.create();
+	    dialog.show();
+	}
+    }
     /**
      * クリック時の処理.
      * 各種ボタンの処理を行います。
@@ -313,10 +329,17 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	appendData(rec);
 
         CheckBox recodeAudioCheckBox;
-        recodeAudioCheckBox = (CheckBox) findViewById(R.id.checkbox_use_audio);
+        recodeAudioCheckBox = (CheckBox)findViewById(R.id.checkbox_use_audio);
         if ( recodeAudioCheckBox.isChecked()){
 	    recodeAudio(dateTime);
 	}
+        CheckBox recodeLocationCheckBox;
+        recodeLocationCheckBox = (CheckBox)
+	    findViewById(R.id.checkbox_use_location);
+        if ( recodeLocationCheckBox.isChecked()){
+	    recodeLocation(rec);
+	}
+
         return;
     }
 }
