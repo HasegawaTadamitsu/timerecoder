@@ -9,7 +9,17 @@
     <CheckBoxPreference
        android:key="recode_use_location"
        android:title="@string/recode_use_location_title"
-       android:summary="@string/recode_use_location_summary" />
+       android:summary="@string/recode_use_location_summary"/>
+    <jp.ddo.haselab.timerecoder.util.EditTextExPreference
+       android:key="audio_recode_time"
+       android:title="@string/audio_recode_time_title"
+       android:summary="@string/audio_recode_time_summary" />
+    <jp.ddo.haselab.timerecoder.util.EditTextExPreference
+       inputType="digits"
+       android:key="locale_timeout"
+       android:title="@string/locale_timeout_title"
+       android:inputType="number"
+       android:summary="@string/locale_timeout_summary" />
     <jp.ddo.haselab.timerecoder.util.DialogExPreference
        android:key="clear_all_datas"
        android:title="@string/clear_all_datas_title"
