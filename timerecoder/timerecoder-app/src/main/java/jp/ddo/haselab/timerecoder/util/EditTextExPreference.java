@@ -104,7 +104,7 @@ public final class EditTextExPreference extends EditTextPreference {
     }
 
     private void setInputValueTextView(){
-        String val = super.getText().toString();
+	String val = super.getText();
 	if( val == null || val.equals("") ) {
 	    inputValueTextView.setText("");
 	    return;
