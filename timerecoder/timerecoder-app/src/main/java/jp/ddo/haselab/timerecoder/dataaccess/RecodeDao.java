@@ -19,6 +19,11 @@ public final class RecodeDao {
 	+ " categoryid integer not null ,"
 	+ " datetime   integer not null, "
 	+ " eventid    integer not null, "
+	+ " Latitude    integer not null, "
+	+ " Longitude    integer not null, "
+	+ " Altitude    integer not null, "
+	+ " Speed    integer not null, "
+	+ " Bearing    integer not null, "
 	+ " memo       text    not null)";
 
     static final String DROP_TABLE_SQL =
