@@ -20,14 +20,14 @@
     audio recode time
   </string>
   <string name="audio_recode_time_summary">
-    How many recode time(second)?
+    How many recode time(second)? It is ..
   </string>
 
   <string name="locale_timeout_title">
     locale timeout
   </string>
   <string name="locale_timeout_summary">
-    How many timeout second time for scanning locale?
+    How many timeout second time for scanning locale?  It is..
   </string>
 
   <string name="clear_all_datas_title">

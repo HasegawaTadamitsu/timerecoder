@@ -23,6 +23,8 @@
       <EditText android:id="@+id/edittext_memo"
 		android:layout_width="150sp"
 		android:layout_height="wrap_content" 
+		android:lines="1"
+		android:ellipsize="end"
 		/>
     </LinearLayout>
        

@@ -16,7 +16,9 @@
     
     <TextView  android:layout_column="2"
 	       android:layout_span="2" 
-	       android:id="@+id/memo"  />
+	       android:id="@+id/memo" 
+	       android:lines="1"
+	       android:ellipsize="end" />
   </TableRow>
 
 </TableLayout>
