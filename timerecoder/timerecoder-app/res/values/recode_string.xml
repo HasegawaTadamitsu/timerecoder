@@ -40,18 +40,11 @@
     empty data. touch button.
   </string>
 
-  <string name="dialog_recode_audio_error_title">
+  <string name="toast_recode_audio_error_msg">
     recode audio error.
-  </string>
-  <string name="dialog_recode_audio_error_msg">
     can not recode audio.check SDCard mounted and other.
   </string>
-
-  <string name="dialog_recode_location_error_title">
-    recode locate error.
+  <string name="toast_recode_location_error_msg">
+    recode locate error.can not recode location.check hmm??
   </string>
-  <string name="dialog_recode_location_error_msg">
-    can not recode location.check hmm??
-  </string>
-
 </resources>
