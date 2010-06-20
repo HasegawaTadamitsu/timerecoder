@@ -2,5 +2,8 @@
 timerecoder/timerecoder-app/target/
 *.class
 *.apk
+.classpath
+.project
+.settings/
 
 
