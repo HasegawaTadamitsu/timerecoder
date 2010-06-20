@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
 import android.view.View;
@@ -28,9 +29,10 @@ import android.database.sqlite.SQLiteDatabase;
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
+import jp.ddo.haselab.timerecoder.dataaccess.RecodeLocation;
 import jp.ddo.haselab.timerecoder.util.RecodeAudioMgr;
 import jp.ddo.haselab.timerecoder.util.RecodeLocationMgr;
-import jp.ddo.haselab.timerecoder.util.RecodeLocation;
+
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import jp.ddo.haselab.timerecoder.util.MyLog;
 
@@ -255,34 +257,30 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	list.setSelection(list.getCount());
     }
 
-    private void recodeAudio(final RecodeDateTime  argRecTime){
+    private void doRecodeAudio(final RecodeDateTime  argRecTime){
 	String fileName = "rec" + argRecTime.toYYYYMMDDHHMMSS() + ".3gp";
 	try {
 	    recodeAudioMgr.startRecodingExternalStrage(fileName, 3);
 	} catch(IOException e){
 	    MyLog.getInstance().error("recode error.IOException." +
 				      "fileName["+fileName+"]", e);
-	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    builder.setTitle(R.string.dialog_recode_audio_error_title);
-	    builder.setMessage(R.string.dialog_recode_audio_error_msg);
-	    builder.setPositiveButton("OK",null);
-	    AlertDialog dialog = builder.create();
-	    dialog.show();
+	    Toast.makeText(this,
+			   R.string.toast_recode_audio_error_msg,
+			   Toast.LENGTH_LONG).show();
 	}
     }
 
-    private void recodeLocation(final Recode rec){
+    private RecodeLocation doRecodeLocation(){
 	RecodeLocation location = recodeLocationMgr.getRecodeLocation();
 	if (location == null){
 	    MyLog.getInstance().error("recode location error");
-	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    builder.setTitle(R.string.dialog_recode_location_error_title);
-	    builder.setMessage(R.string.dialog_recode_location_error_msg);
-	    builder.setPositiveButton("OK",null);
-	    AlertDialog dialog = builder.create();
-	    dialog.show();
+	    Toast.makeText(this,
+			   R.string.toast_recode_location_error_msg,
+			   Toast.LENGTH_LONG).show();
 	}
+	return location;
     }
+
     /**
      * クリック時の処理.
      * 各種ボタンの処理を行います。
@@ -301,25 +299,38 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	EditText editText = (EditText) findViewById(R.id.edittext_memo);
 	String memo = editText.getText().toString();
 	RecodeDateTime dateTime  =  new RecodeDateTime();
+
+	RecodeLocation location = null;
+
+        CheckBox recodeLocationCheckBox;
+        recodeLocationCheckBox = (CheckBox)
+	    findViewById(R.id.checkbox_use_location);
+        if ( recodeLocationCheckBox.isChecked()){
+	    location = doRecodeLocation();
+	}
+
 	Recode rec;
 	switch (id){
 	case R.id.button_start:
 	     rec = new Recode(categoryId,
 			      dateTime,
 			      Recode.EventId.START,
-			      memo);
+			      memo,
+			      location);
 	     break;
         case R.id.button_end:
 	    rec = new Recode(categoryId,
 			     dateTime,
 			     Recode.EventId.END,
-			     memo);
+			     memo,
+			     location);
 	    break;
 	case R.id.button_etc:
 	    rec = new Recode(categoryId,
 			     dateTime,
 			     Recode.EventId.ETC,
-			     memo);
+			     memo,
+			     location);
 	    break;
         default:
 	    throw new IllegalArgumentException(
@@ -331,13 +342,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         CheckBox recodeAudioCheckBox;
         recodeAudioCheckBox = (CheckBox)findViewById(R.id.checkbox_use_audio);
         if ( recodeAudioCheckBox.isChecked()){
-	    recodeAudio(dateTime);
-	}
-        CheckBox recodeLocationCheckBox;
-        recodeLocationCheckBox = (CheckBox)
-	    findViewById(R.id.checkbox_use_location);
-        if ( recodeLocationCheckBox.isChecked()){
-	    recodeLocation(rec);
+	    doRecodeAudio(dateTime);
 	}
 
         return;
