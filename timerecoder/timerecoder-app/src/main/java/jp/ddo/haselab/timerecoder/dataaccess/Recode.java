@@ -37,6 +37,21 @@ public final class Recode {
     private final RecodeDateTime dateTime;
     private final EventId eventId;
     private final String memo;
+    private       RecodeLocation recodeLocation = null;
+
+    public Recode(final int argCategoryId,
+		  final RecodeDateTime argRecodeDateTime,
+		  final EventId argEventId,
+		  final String argMemo,
+		  final RecodeLocation argRecodeLocation){
+
+	this(0L,
+	     argCategoryId,
+	     argRecodeDateTime,
+	     argEventId,
+	     argMemo);
+	recodeLocation = argRecodeLocation;
+    }
 
     public Recode(final int argCategoryId,
 		  final RecodeDateTime argRecodeDateTime,
@@ -95,12 +110,17 @@ public final class Recode {
 	return memo;
     }
 
+    public RecodeLocation getRecodeLocation(){
+	return recodeLocation;
+    }
+
     @Override
 	public String toString() {
 	return "rowId[" + rowId + "]" +
 	    "categoryId[" + categoryId + "]" +
 	    "dateTime[" + dateTime + "]" +
 	    "eventId[" + eventId + "]" +
-	    "memo[" + memo +"]";
+	    "memo[" + memo +"]" +
+	    "recodeLocation[" + recodeLocation +"]";
     }
 }

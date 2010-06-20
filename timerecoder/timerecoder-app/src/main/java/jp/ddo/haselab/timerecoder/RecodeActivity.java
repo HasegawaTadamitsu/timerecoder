@@ -32,7 +32,6 @@ import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeLocation;
 import jp.ddo.haselab.timerecoder.util.RecodeAudioMgr;
 import jp.ddo.haselab.timerecoder.util.RecodeLocationMgr;
-
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import jp.ddo.haselab.timerecoder.util.MyLog;
 
@@ -266,7 +265,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 				      "fileName["+fileName+"]", e);
 	    Toast.makeText(this,
 			   R.string.toast_recode_audio_error_msg,
-			   Toast.LENGTH_LONG).show();
+			   Toast.LENGTH_SHORT).show();
 	}
     }
 
@@ -276,7 +275,7 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 	    MyLog.getInstance().error("recode location error");
 	    Toast.makeText(this,
 			   R.string.toast_recode_location_error_msg,
-			   Toast.LENGTH_LONG).show();
+			   Toast.LENGTH_SHORT).show();
 	}
 	return location;
     }

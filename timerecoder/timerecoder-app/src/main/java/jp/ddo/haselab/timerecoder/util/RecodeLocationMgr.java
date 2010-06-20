@@ -6,6 +6,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.location.LocationProvider;
+import jp.ddo.haselab.timerecoder.dataaccess.RecodeLocation;
 
 /**
  * GPS のみとする。

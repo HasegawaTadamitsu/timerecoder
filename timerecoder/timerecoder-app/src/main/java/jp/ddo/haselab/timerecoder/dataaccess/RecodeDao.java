@@ -19,12 +19,13 @@ public final class RecodeDao {
 	+ " categoryid integer not null ,"
 	+ " datetime   integer not null, "
 	+ " eventid    integer not null, "
-	+ " Latitude    integer not null, "
-	+ " Longitude    integer not null, "
-	+ " Altitude    integer not null, "
-	+ " Speed    integer not null, "
-	+ " Bearing    integer not null, "
-	+ " memo       text    not null)";
+	+ " latitude   real, "
+	+ " longitude  real, "
+	+ " altitude   real, "
+	+ " accuracy   real, "
+	+ " speed      real, "
+	+ " bearing    real, "
+	+ " memo       text)";
 
     static final String DROP_TABLE_SQL =
 	"drop table if exists recode";
@@ -34,6 +35,12 @@ public final class RecodeDao {
     private static final String COLUMN_CATEGORY_ID = "categoryid";
     private static final String COLUMN_DATE_TIME   = "datetime";
     private static final String COLUMN_EVENT_ID    = "eventid";
+    private static final String COLUMN_LATITUDE    = "latitude";
+    private static final String COLUMN_LONGITUDE   = "longitude";
+    private static final String COLUMN_ALTITUDE    = "altitude";
+    private static final String COLUMN_ACCURACY    = "accuracy";
+    private static final String COLUMN_SPEED       = "speed";
+    private static final String COLUMN_BEARING     = "bearing";
     private static final String COLUMN_MEMO        = "memo";
     
     private SQLiteDatabase db;
@@ -49,6 +56,16 @@ public final class RecodeDao {
 	values.put(COLUMN_DATE_TIME,   rec.getDateTime().toMilliSecond());
 	values.put(COLUMN_EVENT_ID,    rec.getEventToDBValue());
 	values.put(COLUMN_MEMO,        rec.getMemo());
+
+	RecodeLocation location = rec.getRecodeLocation();
+	if (location != null){
+	    values.put(COLUMN_LATITUDE, location.getLatitude());
+	    values.put(COLUMN_LONGITUDE,location.getLongitude());
+	    values.put(COLUMN_ALTITUDE, location.getAltitude());
+	    values.put(COLUMN_ACCURACY, location.getAccuracy());
+	    values.put(COLUMN_SPEED,    location.getSpeed());
+	    values.put(COLUMN_BEARING,  location.getBearing());
+	}
 	long res =  db.insert(TABLE_NAME, null, values);
 	MyLog.getInstance().writeDatabase("result insert key id["+ res + "]");
 	rec.setRowId(res);
