@@ -25,7 +25,7 @@ public final class RecodeLocationMgr
     /**
      * 一回の取得に対し、何回値をチェックするのかの値
      */
-    private int LOCATION_COUNT_PER_ONE_GET = 10;
+    private int LOCATION_COUNT_PER_ONE_GET = 1000;
 
 
     private final String PROVIDER = LocationManager.GPS_PROVIDER;
@@ -97,7 +97,7 @@ public final class RecodeLocationMgr
 	locationMgr.requestLocationUpdates(
 				   PROVIDER,
 				   0, // interval milli sec
-				   0, // interval meter
+				   0.1f, // interval meter
 				   this);
 
 	enableLocation = true;

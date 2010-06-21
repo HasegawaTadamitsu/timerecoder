@@ -52,8 +52,10 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 
     private RecodeListAdapter listAdapter;
 
-    private  RecodeAudioMgr recodeAudioMgr;
-    private  RecodeLocationMgr recodeLocationMgr;
+    private RecodeAudioMgr recodeAudioMgr;
+    private RecodeLocationMgr recodeLocationMgr;
+
+    private int defaultRecodeTime ; // second time
 
     private void initWidget(){
         Button button;
@@ -78,6 +80,16 @@ public final class RecodeActivity extends Activity implements OnClickListener {
 						  false);
         checkBox = (CheckBox) findViewById(R.id.checkbox_use_location);
         checkBox.setChecked(useLocation);
+
+	recodeAudioMgr = new RecodeAudioMgr();
+
+	defaultRecodeTime = Integer.valueOf(
+		   preferences.getString("audio_recode_time","10"));
+
+	int localeTimeout = Integer.valueOf(
+		    preferences.getString("locale_timeout", "1"));
+
+	recodeLocationMgr = new RecodeLocationMgr(this,localeTimeout);
 	
 	initListView();
     }
@@ -97,8 +109,6 @@ public final class RecodeActivity extends Activity implements OnClickListener {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
 	mDb = dbHelper.getWritableDatabase();
 
-	recodeAudioMgr = new RecodeAudioMgr();
-	recodeLocationMgr = new RecodeLocationMgr(this,1);
 
 	initWidget();
      }
@@ -259,7 +269,8 @@ public final class RecodeActivity extends Activity implements OnClickListener {
     private void doRecodeAudio(final RecodeDateTime  argRecTime){
 	String fileName = "rec" + argRecTime.toYYYYMMDDHHMMSS() + ".3gp";
 	try {
-	    recodeAudioMgr.startRecodingExternalStrage(fileName, 3);
+	    recodeAudioMgr.startRecodingExternalStrage(fileName, 
+						       defaultRecodeTime);
 	} catch(IOException e){
 	    MyLog.getInstance().error("recode error.IOException." +
 				      "fileName["+fileName+"]", e);
