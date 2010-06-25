@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="target/generated-sources/r"/>
 	<classpathentry kind="src" path="target/android-classes"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="/mnt/home/hasegawa/.m2/repository/android/android/1.6_r2/android-1.6_r2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/mnt/home/hasegawa/.m2/repository/android/android/1.6_r2/android-1.6_r2.jar" sourcepath="/mnt/bigTmp/internet/src/25.android/00.public/base.git/core/java/"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -12,9 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
-import java.lang.CharSequence;
 
 public final class EditTextExPreference extends EditTextPreference {
 
@@ -45,6 +43,7 @@ public final class EditTextExPreference extends EditTextPreference {
 
 	unit = argAttrs.getAttributeValue(null, "unit");
 
+	
 	EditText et = getEditText();
 
 	String argInpType = argAttrs.getAttributeValue(null, "inputType");

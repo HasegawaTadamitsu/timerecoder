@@ -125,6 +125,6 @@ public final class RecodeDao {
 	    c.moveToNext();
 	}
 	c.close();
-	return result;
-    }
+		return result;
+	}
 }
