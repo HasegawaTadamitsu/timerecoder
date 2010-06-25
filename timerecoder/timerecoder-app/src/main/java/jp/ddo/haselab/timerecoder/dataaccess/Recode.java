@@ -4,109 +4,94 @@ import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 
 public final class Recode {
 
-	public enum EventId {
-		START(0), END(1), ETC(2), ;
-		private int dbValue;
+    public enum EventId {
+        START(0), END(1), ETC(2), ;
+        private int dbValue;
 
-		private EventId(final int arg) {
-			dbValue = arg;
-		}
+        private EventId(final int arg) {
+            dbValue = arg;
+        }
 
-		public int toDBValue() {
-			return dbValue;
-		}
+        public int toDBValue() {
+            return dbValue;
+        }
 
-		@Override
-		public String toString() {
-			return name();
-		}
+        @Override
+        public String toString() {
+            return name();
+        }
 
-		static EventId getValueFromDBValue(final int argVal) {
-			EventId[] arr = EventId.values();
-			for (EventId e : arr) {
-				if (e.toDBValue() == argVal) {
-					return e;
-				}
-			}
-			throw new IllegalArgumentException("unknown value.val[" + argVal
-					+ "]");
-		}
-	}
+        static EventId getValueFromDBValue(final int argVal) {
+            EventId[] arr = EventId.values();
+            for (EventId e : arr) {
+                if (e.toDBValue() == argVal) {
+                    return e;
+                }
+            }
+            throw new IllegalArgumentException("unknown value.val["
+                    + argVal + "]");
+        }
+    }
 
-	private long rowId;
-	private final int categoryId;
-	private final RecodeDateTime dateTime;
-	private final EventId eventId;
-	private final String memo;
-	private RecodeLocation recodeLocation = null;
+    private long rowId;
+    private final int categoryId;
+    private final RecodeDateTime dateTime;
+    private final EventId eventId;
+    private final String memo;
 
-	public Recode(final int argCategoryId,
-			final RecodeDateTime argRecodeDateTime, final EventId argEventId,
-			final String argMemo, final RecodeLocation argRecodeLocation) {
+    public Recode(final int argCategoryId,
+            final RecodeDateTime argRecodeDateTime,
+            final EventId argEventId, final String argMemo) {
+        this(0L, argCategoryId, argRecodeDateTime, argEventId, argMemo);
+    }
 
-		this(0L, argCategoryId, argRecodeDateTime, argEventId, argMemo);
-		recodeLocation = argRecodeLocation;
-	}
+    public Recode(final long argRowId, final int argCategoryId,
+            final RecodeDateTime argRecodeDateTime,
+            final EventId argEventId, final String argMemo) {
 
-	public Recode(final int argCategoryId,
-			final RecodeDateTime argRecodeDateTime, final EventId argEventId,
-			final String argMemo) {
+        rowId = argRowId;
+        categoryId = argCategoryId;
+        dateTime = argRecodeDateTime;
+        eventId = argEventId;
+        memo = argMemo;
+    }
 
-		this(0L, argCategoryId, argRecodeDateTime, argEventId, argMemo);
-	}
+    public void setRowId(final long arg) {
+        rowId = arg;
+    }
 
-	public Recode(final long argRowId, final int argCategoryId,
-			final RecodeDateTime argRecodeDateTime, final EventId argEventId,
-			final String argMemo) {
+    public long getRowId() {
+        return rowId;
+    }
 
-		rowId = argRowId;
-		categoryId = argCategoryId;
-		dateTime = argRecodeDateTime;
-		eventId = argEventId;
-		memo = argMemo;
-	}
+    public long getKey() {
+        return getRowId();
+    }
 
-	public void setRowId(final long arg) {
-		rowId = arg;
-	}
+    public int getCategoryId() {
+        return categoryId;
+    }
 
-	public long getRowId() {
-		return rowId;
-	}
+    public RecodeDateTime getDateTime() {
+        return dateTime;
+    }
 
-	public long getKey() {
-		return getRowId();
-	}
+    public String getEventToString() {
+        return eventId.toString();
+    }
 
-	public int getCategoryId() {
-		return categoryId;
-	}
+    public int getEventToDBValue() {
+        return eventId.toDBValue();
+    }
 
-	public RecodeDateTime getDateTime() {
-		return dateTime;
-	}
+    public String getMemo() {
+        return memo;
+    }
 
-	public String getEventToString() {
-		return eventId.toString();
-	}
-
-	public int getEventToDBValue() {
-		return eventId.toDBValue();
-	}
-
-	public String getMemo() {
-		return memo;
-	}
-
-	public RecodeLocation getRecodeLocation() {
-		return recodeLocation;
-	}
-
-	@Override
-	public String toString() {
-		return "rowId[" + rowId + "]" + "categoryId[" + categoryId + "]"
-				+ "dateTime[" + dateTime + "]" + "eventId[" + eventId + "]"
-				+ "memo[" + memo + "]" + "recodeLocation[" + recodeLocation
-				+ "]";
-	}
+    @Override
+    public String toString() {
+        return "rowId[" + rowId + "]" + "categoryId[" + categoryId + "]"
+                + "dateTime[" + dateTime + "]" + "eventId[" + eventId
+                + "]" + "memo[" + memo + "]";
+    }
 }

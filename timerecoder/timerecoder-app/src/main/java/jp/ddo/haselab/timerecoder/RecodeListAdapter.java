@@ -15,66 +15,69 @@ import android.widget.TextView;
  * 
  * @author T.Hasegawa
  */
-final class RecodeListAdapter extends BaseAdapter {
+final class RecodeListAdapter
+        extends BaseAdapter {
 
-	private List<Recode> data;
-	private final Context context;
+    private List<Recode> data;
+    private final Context context;
 
-	public RecodeListAdapter(final Context argContext,
-			final List<Recode> argData) {
-		MyLog.getInstance().verbose("start");
-		context = argContext;
-		data = argData;
-	}
+    public RecodeListAdapter(final Context argContext,
+            final List<Recode> argData) {
+        MyLog.getInstance().verbose("start");
+        context = argContext;
+        data = argData;
+    }
 
-	public void addData(final Recode argData) {
-		data.add(argData);
-		notifyDataSetChanged();
-	}
+    public void addData(final Recode argData) {
+        data.add(argData);
+        notifyDataSetChanged();
+    }
 
-	@Override
-	public int getCount() {
-		MyLog.getInstance().verbose("called.result[" + data.size() + "]");
-		return data.size();
-	}
+    @Override
+    public int getCount() {
+        MyLog.getInstance().verbose("called.result[" + data.size() + "]");
+        return data.size();
+    }
 
-	@Override
-	public long getItemId(final int argPosition) {
-		MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
-		return argPosition;
-	}
+    @Override
+    public long getItemId(final int argPosition) {
+        MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
+        return argPosition;
+    }
 
-	@Override
-	public Object getItem(final int argPosition) {
-		MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
-		MyLog.getInstance().verbose("result[" + data.get(argPosition) + "]");
-		return data.get(argPosition);
-	}
+    @Override
+    public Object getItem(final int argPosition) {
+        MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
+        MyLog.getInstance().verbose(
+                "result[" + data.get(argPosition) + "]");
+        return data.get(argPosition);
+    }
 
-	@Override
-	public View getView(final int position, final View convertView,
-			final ViewGroup parentViewGroup) {
-		View resultView = convertView;
-		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			resultView = inflater.inflate(R.layout.recode_item,
-					parentViewGroup, false);
-		}
-		Recode rec = (Recode) this.getItem(position);
+    @Override
+    public View getView(final int position, final View convertView,
+            final ViewGroup parentViewGroup) {
+        View resultView = convertView;
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            resultView = inflater.inflate(R.layout.recode_item,
+                    parentViewGroup, false);
+        }
+        Recode rec = (Recode) this.getItem(position);
 
-		TextView number = (TextView) resultView.findViewById(R.id.number);
-		number.setText(position + "");
+        TextView number = (TextView) resultView.findViewById(R.id.number);
+        number.setText(position + "");
 
-		TextView dateTime = (TextView) resultView.findViewById(R.id.datetime);
-		dateTime.setText(rec.getDateTime().toString());
+        TextView dateTime = (TextView) resultView
+                .findViewById(R.id.datetime);
+        dateTime.setText(rec.getDateTime().toString());
 
-		TextView event = (TextView) resultView.findViewById(R.id.eventid);
-		event.setText(rec.getEventToString());
+        TextView event = (TextView) resultView.findViewById(R.id.eventid);
+        event.setText(rec.getEventToString());
 
-		TextView memo = (TextView) resultView.findViewById(R.id.memo);
-		memo.setText(rec.getMemo());
+        TextView memo = (TextView) resultView.findViewById(R.id.memo);
+        memo.setText(rec.getMemo());
 
-		return resultView;
-	}
+        return resultView;
+    }
 }

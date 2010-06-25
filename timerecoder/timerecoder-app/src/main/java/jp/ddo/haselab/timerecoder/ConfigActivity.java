@@ -8,24 +8,25 @@ import jp.ddo.haselab.timerecoder.util.DialogExPreference;
 import jp.ddo.haselab.timerecoder.util.MyLog;
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 
-public class ConfigActivity extends PreferenceActivity implements
-		DialogExPreference.ButtonListener {
+public class ConfigActivity
+        extends PreferenceActivity implements
+        DialogExPreference.ButtonListener {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.config);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.config);
 
-		DialogExPreference dialog = (DialogExPreference) findPreference("clear_all_datas");
-		dialog.setButtonListener(this);
-	}
+        DialogExPreference dialog = (DialogExPreference) findPreference("clear_all_datas");
+        dialog.setButtonListener(this);
+    }
 
-	@Override
-	public void onPositiveClick() {
-		MyLog.getInstance().verbose("start");
+    @Override
+    public void onPositiveClick() {
+        MyLog.getInstance().verbose("start");
 
-		DatabaseHelper dbHelper = new DatabaseHelper(this);
-		SQLiteDatabase mDb = dbHelper.getWritableDatabase();
-		dbHelper.onCreate(mDb);
-	}
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        SQLiteDatabase mDb = dbHelper.getWritableDatabase();
+        dbHelper.onCreate(mDb);
+    }
 }
