@@ -313,6 +313,7 @@ public final class RecodeActivity extends
 
             RecodeLocationMgr.Callback callBack = new RecodeLocationMgr.Callback() {
 
+                @SuppressWarnings("synthetic-access")
                 @Override
                 public void doneGet(MyLocation arg) {
 
