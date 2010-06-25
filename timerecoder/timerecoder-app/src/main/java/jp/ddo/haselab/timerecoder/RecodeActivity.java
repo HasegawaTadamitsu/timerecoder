@@ -91,6 +91,7 @@ public final class RecodeActivity extends
         builder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
 
+                    @SuppressWarnings("synthetic-access")
                     public void onClick(final DialogInterface dialog,
                             final int whichButton) {
 
@@ -108,7 +109,9 @@ public final class RecodeActivity extends
     }
 
     /**
-     * 終了ダイアログの作成／処理. 終了ダイアログの作成／処理します。 OKならばゲーム終了させます。
+     * 終了ダイアログの作成／処理. 
+     * 終了ダイアログの作成／処理します。
+     * OKならば終了させます。
      */
     private void dialogQuit() {
 
