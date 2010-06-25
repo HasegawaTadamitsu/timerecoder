@@ -327,8 +327,13 @@ public final class RecodeActivity extends
                 }
             };
 
-            this.mRecodeLocationMgr.getRecodeLocation(rec.getKey(),
+            boolean canRecode = this.mRecodeLocationMgr.getRecodeLocation(rec.getKey(),
                     callBack);
+            if (canRecode == false){
+                Toast.makeText(this,
+                        R.string.toast_recode_location_now_msg,
+                        Toast.LENGTH_SHORT).show();
+            }
         }
 
         return;

@@ -29,6 +29,8 @@ public final class RecodeLocationMgr implements
 
     private boolean          enableLocation;
 
+    private boolean          nowRecoding;
+
     private static final int LOCATION_COUNT_PER_ONE_GET = 1000;
 
     /**
@@ -58,6 +60,8 @@ public final class RecodeLocationMgr implements
         this.context = argContext;
         this.locationTotalWaitSecondTime = argTotalWaitSecondTime;
         this.enableLocation = false;
+        this.nowRecoding = false;
+
     }
 
     /**
@@ -65,10 +69,18 @@ public final class RecodeLocationMgr implements
      * 
      * @param key
      *            MyLocation 's key
-     * @param callback  取得完了時に呼ばれる.
+     * @param callback
+     *            取得完了時に呼ばれる.
+     * @return true 測定開始を行う。/false すでに測定中なので測定を行わない。
      */
-    public void  getRecodeLocation(final long key,
+    public boolean getRecodeLocation(final long key,
             final Callback callback) {
+
+        if (this.nowRecoding == true) {
+            return false;
+        }
+
+        this.nowRecoding = true;
 
         final LocationManager locationMgr;
         locationMgr = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
@@ -88,11 +100,14 @@ public final class RecodeLocationMgr implements
 
         final Handler handler = new Handler();
 
+        final RecodeLocationMgr mgr = this;
+
         new Thread() {
 
             @SuppressWarnings("synthetic-access")
             @Override
             public void run() {
+
                 MyLog.getInstance().verbose("location start");
 
                 for (int i = 0; i < LOCATION_COUNT_PER_ONE_GET; i++) {
@@ -115,17 +130,20 @@ public final class RecodeLocationMgr implements
 
                         locationMgr.removeUpdates(lc);
 
+                        mgr.nowRecoding = false;
+
                         if (RecodeLocationMgr.this.lastLocation == null) {
                             callback.doneGet(null);
                             return;
                         }
+
                         callback.doneGet(new MyLocation(key,
                                 RecodeLocationMgr.this.lastLocation));
                     }
                 });
             }
         }.start();
-
+        return true;
     }
 
     @Override

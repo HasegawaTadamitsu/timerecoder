@@ -50,4 +50,7 @@
   <string name="toast_recode_location_error_msg">
     recode locate error.can not recode location.check hmm??
   </string>
+  <string name="toast_recode_location_now_msg">
+    now location recode...please wait.
+  </string>
 </resources>
