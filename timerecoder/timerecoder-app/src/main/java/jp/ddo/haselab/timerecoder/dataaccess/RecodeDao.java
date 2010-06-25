@@ -2,7 +2,6 @@ package jp.ddo.haselab.timerecoder.dataaccess;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
