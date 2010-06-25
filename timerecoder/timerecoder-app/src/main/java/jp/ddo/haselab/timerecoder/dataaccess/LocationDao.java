@@ -14,13 +14,28 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public final class LocationDao {
 
-    static final String         CREATE_TABLE_SQL = "create table location " + "( _id integer not null primary key,"
+    /*
+     * 06-25 20:46:20.293: ERROR/Database(13053): Failure 1 (near "recode":
+     * syntax error) on 0x8231670 when preparing 'create table location (
+     * _id integer not null primary key, latitude real, longitude real,
+     * altitude real, accuracy real, speed real, bearing real,foreign key (
+     * _id ) recode ( _id ) )'.
+     */
+
+    static final String         CREATE_TABLE_SQL = "create table location ( " + "_id integer not null "
+                                                         + "primary key "
+                                                         + "REFERENCES "
+                                                         + RecodeDao.TABLE_NAME
+                                                         + " ( "
+                                                         + RecodeDao.COLUMN_ID
+                                                         + " ),"
                                                          + " latitude   real, "
                                                          + " longitude  real, "
                                                          + " altitude   real, "
                                                          + " accuracy   real, "
                                                          + " speed      real, "
-                                                         + " bearing    real)";
+                                                         + " bearing    real"
+                                                         + " )";
 
     static final String         DROP_TABLE_SQL   = "drop table if exists location";
 

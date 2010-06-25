@@ -33,6 +33,7 @@ public class DatabaseHelper extends
         MyLog.getInstance().writeDatabase("drop tables");
         db.execSQL(RecodeDao.DROP_TABLE_SQL);
         db.execSQL(PropertyDao.DROP_TABLE_SQL);
+        db.execSQL(LocationDao.DROP_TABLE_SQL);
     }
 
     @Override
@@ -44,6 +45,7 @@ public class DatabaseHelper extends
 
         MyLog.getInstance().writeDatabase("create tables");
         db.execSQL(RecodeDao.CREATE_TABLE_SQL);
+        db.execSQL(LocationDao.CREATE_TABLE_SQL);
         db.execSQL(PropertyDao.CREATE_TABLE_SQL);
 
         MyLog.getInstance().writeDatabase("insert default");

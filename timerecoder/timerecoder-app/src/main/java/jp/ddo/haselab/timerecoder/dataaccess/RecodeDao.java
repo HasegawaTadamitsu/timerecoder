@@ -12,8 +12,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 /**
  * recode dao.
+ * 
  * @author hasegawa
- *
+ * 
  */
 public final class RecodeDao {
 
@@ -25,9 +26,15 @@ public final class RecodeDao {
 
     static final String         DROP_TABLE_SQL     = "drop table if exists recode";
 
-    private static final String TABLE_NAME         = "recode";
+    /**
+     * 外部キーがはられているため　デフォルト可視性
+     */
+    static final String         TABLE_NAME         = "recode";
 
-    private static final String COLUMN_ID          = "_id";
+    /**
+     * 外部キーがはられているため　デフォルト可視性
+     */
+    static final String         COLUMN_ID          = "_id";
 
     private static final String COLUMN_CATEGORY_ID = "categoryid";
 
@@ -41,6 +48,7 @@ public final class RecodeDao {
 
     /**
      * constractor.
+     * 
      * @param db1
      */
     public RecodeDao(final SQLiteDatabase db1) {
@@ -50,6 +58,7 @@ public final class RecodeDao {
 
     /**
      * constractor.
+     * 
      * @param argCategoryId
      * @return delete count.
      */
@@ -65,6 +74,7 @@ public final class RecodeDao {
 
     /**
      * find by category id.
+     * 
      * @param argCategoryId
      * @return list.
      */
@@ -111,8 +121,8 @@ public final class RecodeDao {
     }
 
     /**
-     * insert.
-     * rec.key is undefined. after called seted.
+     * insert. rec.key is undefined. after called seted.
+     * 
      * @param rec
      * @return key.
      */
@@ -132,4 +142,5 @@ public final class RecodeDao {
         rec.setRowId(res);
         return res;
     }
+
 }
