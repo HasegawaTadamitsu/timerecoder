@@ -60,7 +60,7 @@ public final class LocationDao {
      *            id
      * @return deleted count.
      */
-    public int deleteById(final int id) {
+    public int deleteById(final long id) {
 
         MyLog.getInstance().writeDatabase("delete categoryId[" + id + "]");
         int res = this.db.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
@@ -85,7 +85,7 @@ public final class LocationDao {
      * @param id
      * @return delete count.
      */
-    public MyLocation findById(final int id) {
+    public MyLocation findById(final long id) {
 
         MyLog.getInstance().readDatabase("categoryId[" + id + "]");
         String[] columns = {

@@ -11,7 +11,7 @@ import android.location.Location;
  */
 public final class MyLocation {
 
-    private final int    id;
+    private final long    id;
 
     private final double latitude;
 
@@ -25,7 +25,7 @@ public final class MyLocation {
 
     private final double bearing;
 
-    MyLocation(final int id1,
+    MyLocation(final long id1,
             final double a,
             final double b,
             final double c,
@@ -50,7 +50,7 @@ public final class MyLocation {
      * @param location
      *            at android.location
      */
-    public MyLocation(final int id1, final Location location) {
+    public MyLocation(final long id1, final Location location) {
 
         this(id1,
                 location.getLatitude(),
@@ -96,7 +96,7 @@ public final class MyLocation {
      * 
      * @return id
      */
-    public int getId() {
+    public long getId() {
 
         return this.id;
     }

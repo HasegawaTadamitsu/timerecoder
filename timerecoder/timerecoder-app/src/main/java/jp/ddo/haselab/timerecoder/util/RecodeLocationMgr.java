@@ -37,99 +37,104 @@ public final class RecodeLocationMgr implements
      * 
      * @param argContext
      *            コンテキスト。ここからサービスを取得.
+     * @param argTotalWaitSecondTime 総待ち時間　単位秒
      * @param argWaitSecondTime
      *            取得にあたって最大待つ時間。単位秒.
      */
     public RecodeLocationMgr(final Context argContext,
             final int argTotalWaitSecondTime) {
 
-        context = argContext;
-        locationTotalWaitSecondTime = argTotalWaitSecondTime;
-        enableLocation = false;
+        this.context = argContext;
+        this.locationTotalWaitSecondTime = argTotalWaitSecondTime;
+        this.enableLocation = false;
     }
 
-    public MyLocation getRecodeLocation() {
+    /**
+     * get Location.
+     * @param key MyLocation 's key
+     * @return MyLocation
+     */
+    public MyLocation getRecodeLocation(final long key) {
 
         LocationManager locationMgr;
-        locationMgr = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationMgr = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
 
-        locationMgr.requestLocationUpdates(PROVIDER, 0, // interval milli
+        locationMgr.requestLocationUpdates(this.PROVIDER, 0, // interval milli
                 // sec
                 0.1f, // interval meter
                 this);
 
-        enableLocation = true;
-        lastLocation = null;
+        this.enableLocation = true;
+        this.lastLocation = null;
 
-        final int intervalMilliSecondTime = locationTotalWaitSecondTime * 1000 // milli
-                // second
-                / LOCATION_COUNT_PER_ONE_GET;
+        final int intervalMilliSecondTime = this.locationTotalWaitSecondTime * 1000 // milli second
+                / this.LOCATION_COUNT_PER_ONE_GET;
 
-        for (int i = 0; i < LOCATION_COUNT_PER_ONE_GET; i++) {
+        for (int i = 0; i < this.LOCATION_COUNT_PER_ONE_GET; i++) {
             try {
                 Thread.sleep(intervalMilliSecondTime);
             } catch (InterruptedException e) {
                 MyLog.getInstance().error("sleep error.", e);
             }
-            if (lastLocation != null) {
+            if (this.lastLocation != null) {
                 break;
             }
-            if (enableLocation == false) {
+            if (this.enableLocation == false) {
                 break;
             }
         }
         locationMgr.removeUpdates(this);
         locationMgr = null;
 
-        if (lastLocation == null) {
+        if (this.lastLocation == null) {
             return null;
         }
 
-        return new MyLocation(0, lastLocation);
+        return new MyLocation(key, this.lastLocation);
     }
 
     @Override
     public void onLocationChanged(final Location location) {
 
-        lastLocation = location;
+        this.lastLocation = location;
     }
 
     @Override
     public void onProviderDisabled(final String provider) {
 
-        if (!provider.equals(PROVIDER)) {
+        if (!provider.equals(this.PROVIDER)) {
             return;
         }
-        enableLocation = false;
+        this.enableLocation = false;
     }
 
     @Override
     public void onProviderEnabled(final String provider) {
 
-        if (!provider.equals(PROVIDER)) {
+        if (!provider.equals(this.PROVIDER)) {
             return;
         }
-        enableLocation = true;
+        this.enableLocation = true;
     }
 
     public void onStatusChanged(final String provider,
             final int status,
             final Bundle extras) {
 
-        if (!provider.equals(PROVIDER)) {
+        if (!provider.equals(this.PROVIDER)) {
             return;
         }
         if (status == LocationProvider.AVAILABLE) {
-            enableLocation = true;
+            this.enableLocation = true;
             return;
         }
 
         if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE) {
-            enableLocation = false;
+            this.enableLocation = false;
             return;
         }
 
-        enableLocation = false;
+        this.enableLocation = false;
         return;
     }
 }

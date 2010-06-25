@@ -5,28 +5,125 @@ import java.util.regex.Pattern;
 
 import android.util.Log;
 
+/**
+ * My Logger. auto tag and transaction/database level append.
+ * 
+ * @author hasegawa
+ * 
+ */
 public final class MyLog {
 
+    /**
+     * Logger interface
+     * 
+     * @author hasegawa
+     * 
+     */
     public static interface Logger {
 
-        public void endTransaction(final String arg);
-
-        public void error(final String arg);
-
-        public void error(final String arg,
-                final Exception e);
-
-        public void readDatabase(final String arg);
-
+        /**
+         * startTransaction
+         * 
+         * <pre>
+         * MyLog.getInstance().startTransaction(&quot;recode[&quot; + rec + &quot;]&quot;);
+         * try {
+         *     dao.insert(rec);
+         *     this.mDb.setTransactionSuccessful();
+         *     MyLog.getInstance().endTransaction(&quot;success.recode[&quot; + rec + &quot;]&quot;);
+         * } finally {
+         *     this.mDb.endTransaction();
+         * }
+         * </pre>
+         * 
+         * @param arg
+         *            write message.
+         */
         public void startTransaction(final String arg);
 
+        /**
+         * end Transaction.
+         * 
+         * @see startTransaction
+         * @param arg
+         *            message
+         */
+        public void endTransaction(final String arg);
+
+        /**
+         * write database.
+         * 
+         * <pre>
+         * MyLog.getInstance().writeDatabase(&quot;insertVal[&quot; + loc + &quot;]&quot;);
+         * 
+         * ContentValues values = new ContentValues();
+         * ...
+         * long res = this.db.insert(TABLE_NAME, null, values);
+         * MyLog.getInstance().writeDatabase(&quot;result insert key id[&quot; + res + &quot;]&quot;);
+         *</pre>
+         * 
+         * @param arg
+         *            message
+         */
+        public void writeDatabase(final String arg);
+
+        /**
+         * read database.
+         * 
+         * <pre>
+         * MyLog.getInstance().readDatabase(&quot;categoryId[&quot; + id + &quot;]&quot;);
+         * 
+         * Cursor c = this.db.query(TABLE_NAME, columns, COLUMN_ID + &quot; = &quot; + id, // selection
+         *         null, // selectionArgs
+         * 
+         * int count = c.getCount();
+         *  MyLog.getInstance().readDatabase("result count[" + count + "]");
+         *</pre>
+         * 
+         * @param arg
+         *            message
+         */
+        public void readDatabase(final String arg);
+
+        /**
+         * level verbose
+         * 
+         * @param arg
+         *            message
+         */
         public void verbose(final String arg);
 
+        /**
+         * level warning
+         * 
+         * @param arg
+         *            message
+         */
         public void warning(final String arg);
 
-        public void writeDatabase(final String arg);
+        /**
+         * level error.
+         * 
+         * @param arg
+         *            message
+         */
+        public void error(final String arg);
+
+        /**
+         * level error with exception.
+         * 
+         * @param arg
+         *            message
+         * @param e
+         */
+        public void error(final String arg,
+                final Exception e);
     }
 
+    /**
+     * getInstance.
+     * 
+     * @return instance
+     */
     public static Logger getInstance() {
 
         final StackTraceElement trace = Thread.currentThread()
@@ -103,6 +200,7 @@ public final class MyLog {
     }
 
     private MyLog() {
+
         // nothing
     }
 }

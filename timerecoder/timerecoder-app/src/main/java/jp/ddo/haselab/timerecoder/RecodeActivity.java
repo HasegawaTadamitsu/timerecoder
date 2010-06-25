@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
+import jp.ddo.haselab.timerecoder.dataaccess.LocationDao;
 import jp.ddo.haselab.timerecoder.dataaccess.MyLocation;
 import jp.ddo.haselab.timerecoder.dataaccess.Recode;
 import jp.ddo.haselab.timerecoder.dataaccess.RecodeDao;
@@ -43,23 +44,23 @@ public final class RecodeActivity extends
     /**
      * category key.use for database and other.{@value}
      */
-    public static final String KEY_CATE   = "CATEGORY_KEY";
+    public static final String KEY_CATE    = "CATEGORY_KEY";
 
-    private int                categoryId = 0;
+    private int                mCategoryId = 0;
 
-    private SQLiteDatabase     mDb        = null;
+    private SQLiteDatabase     mDb         = null;
 
-    private RecodeListAdapter  listAdapter;
+    private RecodeListAdapter  mListAdapter;
 
-    private RecodeAudioMgr     recodeAudioMgr;
+    private RecodeAudioMgr     mRecodeAudioMgr;
 
-    private RecodeLocationMgr  recodeLocationMgr;
+    private RecodeLocationMgr  mRecodeLocationMgr;
 
-    private int                defaultRecodeTime;          // second time
+    private int                mDefaultRecodeTime;          // second time
 
-    private void appendData(final Recode rec) {
+    private void appendListView(final Recode rec) {
 
-        this.listAdapter.addData(rec);
+        this.mListAdapter.addData(rec);
         ListView list = (ListView) findViewById(R.id.listview_data);
         list.setSelection(list.getCount());
     }
@@ -68,11 +69,11 @@ public final class RecodeActivity extends
 
         RecodeDao dao = new RecodeDao(this.mDb);
         this.mDb.beginTransaction();
-        MyLog.getInstance().startTransaction("category[" + this.categoryId
-                + "]");
+        MyLog.getInstance()
+                .startTransaction("category[" + this.mCategoryId + "]");
         int res = 0;
         try {
-            res = dao.deleteByCategoryId(this.categoryId);
+            res = dao.deleteByCategoryId(this.mCategoryId);
             this.mDb.setTransactionSuccessful();
             MyLog.getInstance()
                     .endTransaction("success.delete count[" + res + "]");
@@ -140,8 +141,8 @@ public final class RecodeActivity extends
 
         String fileName = "rec" + argRecTime.toYYYYMMDDHHMMSS() + ".3gp";
         try {
-            this.recodeAudioMgr.startRecodingExternalStrage(fileName,
-                    this.defaultRecodeTime);
+            this.mRecodeAudioMgr.startRecodingExternalStrage(fileName,
+                    this.mDefaultRecodeTime);
         } catch (IOException e) {
             MyLog.getInstance()
                     .error("recode error.IOException." + "fileName["
@@ -154,9 +155,9 @@ public final class RecodeActivity extends
         }
     }
 
-    private MyLocation doRecodeLocation() {
+    private MyLocation doRecodeLocation(final long key) {
 
-        MyLocation location = this.recodeLocationMgr.getRecodeLocation();
+        MyLocation location = this.mRecodeLocationMgr.getRecodeLocation(key);
         if (location == null) {
             MyLog.getInstance().error("recode location error");
             Toast.makeText(this,
@@ -169,11 +170,11 @@ public final class RecodeActivity extends
     private void doInitListView() {
 
         RecodeDao dao = new RecodeDao(this.mDb);
-        List<Recode> data = dao.findByCategoryId(this.categoryId);
-        this.listAdapter = new RecodeListAdapter(this, data);
+        List<Recode> data = dao.findByCategoryId(this.mCategoryId);
+        this.mListAdapter = new RecodeListAdapter(this, data);
 
         ListView list = (ListView) findViewById(R.id.listview_data);
-        list.setAdapter(this.listAdapter);
+        list.setAdapter(this.mListAdapter);
         list.setSelection(list.getCount());
 
         View emptyView = findViewById(R.id.listview_empty);
@@ -205,20 +206,21 @@ public final class RecodeActivity extends
         checkBox = (CheckBox) findViewById(R.id.checkbox_use_location);
         checkBox.setChecked(useLocation);
 
-        this.recodeAudioMgr = new RecodeAudioMgr();
+        this.mRecodeAudioMgr = new RecodeAudioMgr();
 
-        this.defaultRecodeTime = Integer.parseInt(preferences.getString("audio_recode_time",
+        this.mDefaultRecodeTime = Integer.parseInt(preferences.getString("audio_recode_time",
                 "10"));
 
         int localeTimeout = Integer.parseInt(preferences.getString("locale_timeout",
                 "1"));
 
-        this.recodeLocationMgr = new RecodeLocationMgr(this, localeTimeout);
+        this.mRecodeLocationMgr = new RecodeLocationMgr(this,
+                localeTimeout);
 
         doInitListView();
     }
 
-    private Recode insertTransaction(final Recode rec) {
+    private Recode insertRecode(final Recode rec) {
 
         RecodeDao dao = new RecodeDao(this.mDb);
 
@@ -234,6 +236,23 @@ public final class RecodeActivity extends
             this.mDb.endTransaction();
         }
         return rec;
+    }
+
+    private void insertLocation(final MyLocation loc) {
+
+        LocationDao dao = new LocationDao(this.mDb);
+
+        this.mDb.beginTransaction();
+        MyLog.getInstance().startTransaction("location[" + loc + "]");
+
+        try {
+            dao.insert(loc);
+            this.mDb.setTransactionSuccessful();
+            MyLog.getInstance().endTransaction("success.loc[" + loc + "]");
+        } finally {
+            this.mDb.endTransaction();
+        }
+        return;
     }
 
     /**
@@ -257,28 +276,22 @@ public final class RecodeActivity extends
         String memo = editText.getText().toString();
         RecodeDateTime dateTime = new RecodeDateTime();
 
-        CheckBox recodeLocationCheckBox;
-        recodeLocationCheckBox = (CheckBox) findViewById(R.id.checkbox_use_location);
-        if (recodeLocationCheckBox.isChecked()) {
-            MyLocation loc = doRecodeLocation();
-        }
-
         Recode rec;
         switch (id) {
         case R.id.button_start:
-            rec = new Recode(this.categoryId,
+            rec = new Recode(this.mCategoryId,
                     dateTime,
                     Recode.EventId.START,
                     memo);
             break;
         case R.id.button_end:
-            rec = new Recode(this.categoryId,
+            rec = new Recode(this.mCategoryId,
                     dateTime,
                     Recode.EventId.END,
                     memo);
             break;
         case R.id.button_etc:
-            rec = new Recode(this.categoryId,
+            rec = new Recode(this.mCategoryId,
                     dateTime,
                     Recode.EventId.ETC,
                     memo);
@@ -287,13 +300,19 @@ public final class RecodeActivity extends
             throw new IllegalArgumentException("unknown button(view).id[" + id
                     + "]");
         }
-        insertTransaction(rec);
-        appendData(rec);
+        insertRecode(rec);
+        appendListView(rec);
 
-        CheckBox recodeAudioCheckBox;
-        recodeAudioCheckBox = (CheckBox) findViewById(R.id.checkbox_use_audio);
-        if (recodeAudioCheckBox.isChecked()) {
+        CheckBox cb;
+        cb = (CheckBox) findViewById(R.id.checkbox_use_audio);
+        if (cb.isChecked()) {
             doRecodeAudio(dateTime);
+        }
+
+        cb = (CheckBox) findViewById(R.id.checkbox_use_location);
+        if (cb.isChecked()) {
+            MyLocation loc = doRecodeLocation(rec.getKey());
+            insertLocation(loc);
         }
 
         return;

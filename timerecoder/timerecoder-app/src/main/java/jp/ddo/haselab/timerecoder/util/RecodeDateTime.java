@@ -6,28 +6,48 @@ import java.util.Date;
 
 import android.content.Context;
 
+/**
+ * date time utility.
+ * 
+ * @author hasegawa
+ * 
+ */
 public final class RecodeDateTime {
 
-    private final Date date;
+    private final Date                  date;
 
     private static java.text.DateFormat dateFormat = null;
 
     private static java.text.DateFormat timeFormat = null;
 
+    /**
+     * set format.
+     * 
+     * @param context
+     *            context.
+     */
     public static void setFormat(final Context context) {
 
         dateFormat = android.text.format.DateFormat.getDateFormat(context);
         timeFormat = new SimpleDateFormat("HH:mm:ss");
     }
 
+    /**
+     * constractor.
+     */
     public RecodeDateTime() {
 
-        date = new Date();
+        this.date = new Date();
     }
 
+    /**
+     * constractor. 引数はlong.
+     * 
+     * @param arg
+     */
     public RecodeDateTime(final long arg) {
 
-        date = new Date(arg);
+        this.date = new Date(arg);
     }
 
     private String toAndroidFormatString() {
@@ -39,12 +59,18 @@ public final class RecodeDateTime {
                     .warning("setFromat was not called before this method." + "Use default format.");
 
         }
-        return dateFormat.format(date) + " " + timeFormat.format(date);
+        return dateFormat.format(this.date) + " "
+                + timeFormat.format(this.date);
     }
 
+    /**
+     * このクラスが保持しているミリ秒を返します.
+     * 
+     * @return ミリ秒.
+     */
     public long toMilliSecond() {
 
-        return date.getTime();
+        return this.date.getTime();
     }
 
     @Override
@@ -53,9 +79,14 @@ public final class RecodeDateTime {
         return toAndroidFormatString();
     }
 
+    /**
+     * このクラスの保持している値を文字列で返します。
+     * YYYYMMDDHHMMSSの形式で返します。
+     * @return 文字列
+     */
     public String toYYYYMMDDHHMMSS() {
 
         java.text.DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        return format.format(date);
+        return format.format(this.date);
     }
 }

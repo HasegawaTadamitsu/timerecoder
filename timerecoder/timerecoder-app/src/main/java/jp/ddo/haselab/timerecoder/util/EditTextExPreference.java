@@ -14,6 +14,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * My edit box.
+ * 数値モードにした場合でも、文字列として、取得してから数値に直してください。
+ * 
+ * @author hasegawa
+ *
+ */
 public final class EditTextExPreference extends
         EditTextPreference {
 
@@ -23,7 +30,9 @@ public final class EditTextExPreference extends
 
     private String           unit               = "";
 
-    private int              originalLayoutId   = -1;
+    private static final int FIRST_CALL_LAYOUT_ID = -1;
+
+    private int              originalLayoutId   = FIRST_CALL_LAYOUT_ID;
 
     /**
      * set your xml config file.
@@ -37,13 +46,15 @@ public final class EditTextExPreference extends
      *     android:title="@string/audio_recode_time_title"
      *     android:summary="@string/audio_recode_time_summary"
      * </pre>
+     * @param argContext context
+     * @param argAttrs  attrs
      */
     public EditTextExPreference(final Context argContext,
             final AttributeSet argAttrs) {
 
         super(argContext, argAttrs);
 
-        unit = argAttrs.getAttributeValue(null, "unit");
+        this.unit = argAttrs.getAttributeValue(null, "unit");
 
         EditText et = getEditText();
 
@@ -86,19 +97,19 @@ public final class EditTextExPreference extends
 
         final LayoutInflater layoutInflater = (LayoutInflater) ct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (originalLayoutId == -1) {
-            originalLayoutId = getLayoutResource();
+        if (this.originalLayoutId == FIRST_CALL_LAYOUT_ID) {
+            this.originalLayoutId = getLayoutResource();
         }
-        final View orgLayout = layoutInflater.inflate(originalLayoutId,
+        final View orgLayout = layoutInflater.inflate(this.originalLayoutId,
                 null);
 
-        inputValueTextView = new TextView(ct);
-        inputValueTextView.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+        this.inputValueTextView = new TextView(ct);
+        this.inputValueTextView.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
         baseLayout.addView(orgLayout,
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        baseLayout.addView(inputValueTextView,
+        baseLayout.addView(this.inputValueTextView,
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -117,9 +128,9 @@ public final class EditTextExPreference extends
 
         String val = super.getText();
         if (val == null || val.equals("")) {
-            inputValueTextView.setText("");
+            this.inputValueTextView.setText("");
             return;
         }
-        inputValueTextView.setText(val + unit + " ");
+        this.inputValueTextView.setText(val + this.unit + " ");
     }
 }
