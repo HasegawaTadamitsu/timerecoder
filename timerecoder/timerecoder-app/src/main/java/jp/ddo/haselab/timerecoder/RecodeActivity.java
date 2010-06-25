@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -96,7 +97,7 @@ public final class RecodeActivity extends
                             final int whichButton) {
 
                         doDeleteByCategoryId();
-                        doInitListView();
+                        initListView();
                         return;
                     }
                 });
@@ -109,9 +110,7 @@ public final class RecodeActivity extends
     }
 
     /**
-     * 終了ダイアログの作成／処理. 
-     * 終了ダイアログの作成／処理します。
-     * OKならば終了させます。
+     * 終了ダイアログの作成／処理. 終了ダイアログの作成／処理します。 OKならば終了させます。
      */
     private void dialogQuit() {
 
@@ -143,6 +142,14 @@ public final class RecodeActivity extends
     private void doRecodeAudio(final RecodeDateTime argRecTime) {
 
         String fileName = "rec" + argRecTime.toYYYYMMDDHHMMSS() + ".3gp";
+
+        if (this.mRecodeAudioMgr.isRecodingNow()) {
+            Toast.makeText(this,
+                    R.string.toast_recode_audio_now_msg,
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         try {
             this.mRecodeAudioMgr.startRecodingExternalStrage(fileName,
                     this.mDefaultRecodeTime);
@@ -158,19 +165,7 @@ public final class RecodeActivity extends
         }
     }
 
-    private MyLocation doRecodeLocation(final long key) {
-
-        MyLocation location = this.mRecodeLocationMgr.getRecodeLocation(key);
-        if (location == null) {
-            MyLog.getInstance().error("recode location error");
-            Toast.makeText(this,
-                    R.string.toast_recode_location_error_msg,
-                    Toast.LENGTH_SHORT).show();
-        }
-        return location;
-    }
-
-    private void doInitListView() {
+    private void initListView() {
 
         RecodeDao dao = new RecodeDao(this.mDb);
         List<Recode> data = dao.findByCategoryId(this.mCategoryId);
@@ -220,10 +215,10 @@ public final class RecodeActivity extends
         this.mRecodeLocationMgr = new RecodeLocationMgr(this,
                 localeTimeout);
 
-        doInitListView();
+        initListView();
     }
 
-    private Recode insertRecode(final Recode rec) {
+    private Recode insertDBRecode(final Recode rec) {
 
         RecodeDao dao = new RecodeDao(this.mDb);
 
@@ -241,7 +236,7 @@ public final class RecodeActivity extends
         return rec;
     }
 
-    private void insertLocation(final MyLocation loc) {
+    private void insertDBLocation(final MyLocation loc) {
 
         LocationDao dao = new LocationDao(this.mDb);
 
@@ -273,8 +268,8 @@ public final class RecodeActivity extends
             EditText editText = (EditText) findViewById(R.id.edittext_memo);
             editText.setText("");
             return;
-
         }
+
         EditText editText = (EditText) findViewById(R.id.edittext_memo);
         String memo = editText.getText().toString();
         RecodeDateTime dateTime = new RecodeDateTime();
@@ -303,7 +298,7 @@ public final class RecodeActivity extends
             throw new IllegalArgumentException("unknown button(view).id[" + id
                     + "]");
         }
-        insertRecode(rec);
+        insertDBRecode(rec);
         appendListView(rec);
 
         CheckBox cb;
@@ -314,8 +309,25 @@ public final class RecodeActivity extends
 
         cb = (CheckBox) findViewById(R.id.checkbox_use_location);
         if (cb.isChecked()) {
-            MyLocation loc = doRecodeLocation(rec.getKey());
-            insertLocation(loc);
+            final RecodeActivity act = this;
+
+            RecodeLocationMgr.Callback callBack = new RecodeLocationMgr.Callback() {
+
+                @Override
+                public void doneGet(MyLocation arg) {
+
+                    if (arg == null) {
+                        Toast.makeText(act,
+                                R.string.toast_recode_location_error_msg,
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    act.insertDBLocation(arg);
+                }
+            };
+
+            this.mRecodeLocationMgr.getRecodeLocation(rec.getKey(),
+                    callBack);
         }
 
         return;
@@ -358,7 +370,7 @@ public final class RecodeActivity extends
     }
 
     /**
-     * onDestroy DBのclose
+     * onDestroy. DBのclose
      */
     @Override
     protected void onDestroy() {
@@ -372,7 +384,7 @@ public final class RecodeActivity extends
     }
 
     /**
-     * menu処理の分岐. menu押下時の処理です。終了・シャッフルなどあります。
+     * menu処理の分岐. menu押下時の処理です。 終了や、同一カテゴリのデータ削除などあります。
      * 
      * @param item
      *            押下されたitem

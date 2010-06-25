@@ -44,6 +44,9 @@
     recode audio error.
     can not recode audio.check SDCard mounted and other.
   </string>
+  <string name="toast_recode_audio_now_msg">
+    now recoding..please wait.
+  </string>
   <string name="toast_recode_location_error_msg">
     recode locate error.can not recode location.check hmm??
   </string>

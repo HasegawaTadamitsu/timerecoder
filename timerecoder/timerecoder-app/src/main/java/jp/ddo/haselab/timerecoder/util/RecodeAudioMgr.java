@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import android.media.MediaRecorder;
 import android.os.Environment;
+import android.os.Handler;
 
 /**
  * Recode audio and write file.
@@ -53,6 +54,7 @@ public final class RecodeAudioMgr {
 
     /**
      * is now Recoding?
+     * 
      * @return true yes Now recoding/false no.I'm not recoding.
      */
     public boolean isRecodingNow() {
@@ -62,9 +64,13 @@ public final class RecodeAudioMgr {
 
     /**
      * start recoding.
-     * @param argFileName filename
-     * @param argRecodeSecondTime recoding time (second)
-     * @throws IOException when can not write file.
+     * 
+     * @param argFileName
+     *            filename
+     * @param argRecodeSecondTime
+     *            recoding time (second)
+     * @throws IOException
+     *             when can not write file.
      */
     public void startRecodingExternalStrage(final String argFileName,
             final int argRecodeSecondTime) throws IOException {
@@ -78,23 +84,43 @@ public final class RecodeAudioMgr {
         if (argRecodeSecondTime <= 0) {
             return;
         }
-        try {
-            Thread.sleep(argRecodeSecondTime * 1000); // mill second
-        } catch (InterruptedException e) {
-            MyLog.getInstance().error("sleep error.", e);
-        }
-        stopRecording();
+
+        final Handler handler = new Handler();
+
+        new Thread() {
+
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(argRecodeSecondTime * 1000);
+                    // mill second
+                } catch (InterruptedException e) {
+                    MyLog.getInstance().error("sleep error.", e);
+                }
+
+                handler.post(new Runnable() {
+
+                    public void run() {
+
+                        stopRecording();
+                    }
+                });
+            }
+        }.start();
+
         return;
     }
 
     /**
      * stop recoding.
+     * 
      * @return true レコード中で、中止した/false すでにレコード中ではなかった。
      */
     public boolean stopRecording() {
 
-        if (this.recodingNow == false){
-                return false;
+        if (this.recodingNow == false) {
+            return false;
         }
         this.mrec.stop();
         this.recodingNow = false;

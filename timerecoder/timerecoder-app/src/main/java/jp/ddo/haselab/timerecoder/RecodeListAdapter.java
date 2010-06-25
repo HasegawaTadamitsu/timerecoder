@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 /**
  * 
- * @author T.Hasegawa
  */
 final class RecodeListAdapter extends
         BaseAdapter {

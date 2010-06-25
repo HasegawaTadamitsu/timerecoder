@@ -8,6 +8,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.os.Handler;
 
 /**
  * GPS のみとする。 Wifi やら他の位置取得情報があるけど、使わない。
@@ -15,31 +16,41 @@ import android.os.Bundle;
 public final class RecodeLocationMgr implements
         LocationListener {
 
-    private final Context context;
+    private final Context    context;
 
     /**
      * 値取得に対し、合計何秒待つか.その待ち時間
      */
-    private int           locationTotalWaitSecondTime;
+    private final int        locationTotalWaitSecondTime;
+
+    private final String     PROVIDER                   = LocationManager.GPS_PROVIDER;
+
+    private Location         lastLocation;
+
+    private boolean          enableLocation;
+
+    private static final int LOCATION_COUNT_PER_ONE_GET = 1000;
 
     /**
-     * 一回の取得に対し、何回値をチェックするのかの値
+     * RecodeedCallBack interface
      */
-    private int           LOCATION_COUNT_PER_ONE_GET = 1000;
+    public static interface Callback {
 
-    private final String  PROVIDER                   = LocationManager.GPS_PROVIDER;
-
-    private Location      lastLocation;
-
-    private boolean       enableLocation;
+        /**
+         * 取得完了コールバック
+         * 
+         * @param arg
+         *            取得した値。エラー発生時は、null.原因は、ログ出力される。
+         */
+        public void doneGet(final MyLocation arg);
+    }
 
     /**
      * 
      * @param argContext
      *            コンテキスト。ここからサービスを取得.
-     * @param argTotalWaitSecondTime 総待ち時間　単位秒
-     * @param argWaitSecondTime
-     *            取得にあたって最大待つ時間。単位秒.
+     * @param argTotalWaitSecondTime
+     *            総待ち時間　単位秒
      */
     public RecodeLocationMgr(final Context argContext,
             final int argTotalWaitSecondTime) {
@@ -51,46 +62,70 @@ public final class RecodeLocationMgr implements
 
     /**
      * get Location.
-     * @param key MyLocation 's key
-     * @return MyLocation
+     * 
+     * @param key
+     *            MyLocation 's key
+     * @param callback  取得完了時に呼ばれる.
      */
-    public MyLocation getRecodeLocation(final long key) {
+    public void  getRecodeLocation(final long key,
+            final Callback callback) {
 
-        LocationManager locationMgr;
+        final LocationManager locationMgr;
         locationMgr = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
 
-        locationMgr.requestLocationUpdates(this.PROVIDER, 0, // interval milli
-                // sec
+        final LocationListener lc = this;
+        locationMgr.requestLocationUpdates(this.PROVIDER, 0, // interval
+                // milli sec
                 0.1f, // interval meter
-                this);
+                lc);
 
         this.enableLocation = true;
         this.lastLocation = null;
 
-        final int intervalMilliSecondTime = this.locationTotalWaitSecondTime * 1000 // milli second
-                / this.LOCATION_COUNT_PER_ONE_GET;
+        final int intervalMilliSecondTime = this.locationTotalWaitSecondTime * 1000
+                // milli // second
+                / LOCATION_COUNT_PER_ONE_GET;
 
-        for (int i = 0; i < this.LOCATION_COUNT_PER_ONE_GET; i++) {
-            try {
-                Thread.sleep(intervalMilliSecondTime);
-            } catch (InterruptedException e) {
-                MyLog.getInstance().error("sleep error.", e);
-            }
-            if (this.lastLocation != null) {
-                break;
-            }
-            if (this.enableLocation == false) {
-                break;
-            }
-        }
-        locationMgr.removeUpdates(this);
-        locationMgr = null;
+        final Handler handler = new Handler();
 
-        if (this.lastLocation == null) {
-            return null;
-        }
+        new Thread() {
 
-        return new MyLocation(key, this.lastLocation);
+            @SuppressWarnings("synthetic-access")
+            @Override
+            public void run() {
+                MyLog.getInstance().verbose("location start");
+
+                for (int i = 0; i < LOCATION_COUNT_PER_ONE_GET; i++) {
+                    try {
+                        Thread.sleep(intervalMilliSecondTime);
+                    } catch (InterruptedException e) {
+                        MyLog.getInstance().error("sleep error.", e);
+                    }
+                    if (RecodeLocationMgr.this.lastLocation != null) {
+                        break;
+                    }
+                    if (RecodeLocationMgr.this.enableLocation == false) {
+                        break;
+                    }
+                }
+
+                handler.post(new Runnable() {
+
+                    public void run() {
+
+                        locationMgr.removeUpdates(lc);
+
+                        if (RecodeLocationMgr.this.lastLocation == null) {
+                            callback.doneGet(null);
+                            return;
+                        }
+                        callback.doneGet(new MyLocation(key,
+                                RecodeLocationMgr.this.lastLocation));
+                    }
+                });
+            }
+        }.start();
+
     }
 
     @Override
