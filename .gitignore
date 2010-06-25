@@ -1,5 +1,6 @@
 *~
 timerecoder/timerecoder-app/target/
+timerecoder/timerecoder-app/gen/
 *.class
 *.apk
 
