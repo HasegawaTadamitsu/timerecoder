@@ -1,6 +1,7 @@
+
 package jp.ddo.haselab.timerecoder.dataaccess;
 
-import android.location.*;
+import android.location.Location;
 
 /**
  * My locatin.
@@ -10,80 +11,124 @@ import android.location.*;
  */
 public final class MyLocation {
 
-    final int id;
-    final double latitude;
-    final double longitude;
-    final double altitude;
-    final double accuracy;
-    final double speed;
-    final double bearing;
+    private final int    id;
 
-    public MyLocation(final int id, final Location location) {
-        this(id, location.getLatitude(), location.getLongitude(), location
-                .getAltitude(), location.getAccuracy(), location
-                .getSpeed(), location.getBearing());
+    private final double latitude;
+
+    private final double longitude;
+
+    private final double altitude;
+
+    private final double accuracy;
+
+    private final double speed;
+
+    private final double bearing;
+
+    MyLocation(final int id1,
+            final double a,
+            final double b,
+            final double c,
+            final double d,
+            final double e,
+            final double f) {
+
+        this.id = id1;
+        this.latitude = a;
+        this.longitude = b;
+        this.altitude = c;
+        this.accuracy = d;
+        this.speed = e;
+        this.bearing = f;
     }
 
-    MyLocation(final int id, final double a, final double b,
-            final double c, final double d, final double e, final double f) {
-        this.id = id;
-        latitude = a;
-        longitude = b;
-        altitude = c;
-        accuracy = d;
-        speed = e;
-        bearing = f;
+    /**
+     * constractor.
+     * 
+     * @param id1
+     *            id *
+     * @param location
+     *            at android.location
+     */
+    public MyLocation(final int id1, final Location location) {
+
+        this(id1,
+                location.getLatitude(),
+                location.getLongitude(),
+                location.getAltitude(),
+                location.getAccuracy(),
+                location.getSpeed(),
+                location.getBearing());
+    }
+
+    /**
+     * 加速度
+     * 
+     * @return 加速度
+     */
+    public double getAccuracy() {
+
+        return this.accuracy;
+    }
+
+    /**
+     * 標高
+     * 
+     * @return 標高
+     */
+    public double getAltitude() {
+
+        return this.altitude;
+    }
+
+    /**
+     * 方向
+     * 
+     * @return 方向
+     */
+    public double getBearing() {
+
+        return this.bearing;
     }
 
     /**
      * ID
      * 
-     * @return
+     * @return id
      */
     public int getId() {
-        return id;
+
+        return this.id;
     }
 
     /**
      * 緯度
+     * 
+     * @return 緯度
      */
     public double getLatitude() {
-        return latitude;
+
+        return this.latitude;
     }
 
     /**
      * 経度
+     * 
+     * @return 経度
      */
     public double getLongitude() {
-        return longitude;
-    }
 
-    /**
-     * 標高
-     */
-    public double getAltitude() {
-        return altitude;
-    }
-
-    /**
-     * 加速度
-     */
-    public double getAccuracy() {
-        return accuracy;
+        return this.longitude;
     }
 
     /**
      * speed
+     * 
+     * @return speed
      */
     public double getSpeed() {
-        return speed;
-    }
 
-    /**
-     * 方向
-     */
-    public double getBearing() {
-        return bearing;
+        return this.speed;
     }
 
 }

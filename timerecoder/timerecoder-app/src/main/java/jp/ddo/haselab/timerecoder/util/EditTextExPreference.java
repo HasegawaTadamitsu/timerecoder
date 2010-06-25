@@ -1,29 +1,29 @@
+
 package jp.ddo.haselab.timerecoder.util;
 
-import android.preference.EditTextPreference;
 import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.LinearLayout;
-import android.text.InputType;
+import android.preference.EditTextPreference;
 import android.text.InputFilter;
-import android.view.LayoutInflater;
+import android.text.InputType;
+import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-public final class EditTextExPreference
-        extends EditTextPreference {
+public final class EditTextExPreference extends
+        EditTextPreference {
 
-    private TextView inputValueTextView;
+    private TextView         inputValueTextView;
 
     private static final int DEFAULT_MAX_LENGTH = 10;
 
-    private String unit = "";
+    private String           unit               = "";
 
-    private int originalLayoutId = -1;
+    private int              originalLayoutId   = -1;
 
     /**
      * set your xml config file.
@@ -40,6 +40,7 @@ public final class EditTextExPreference
      */
     public EditTextExPreference(final Context argContext,
             final AttributeSet argAttrs) {
+
         super(argContext, argAttrs);
 
         unit = argAttrs.getAttributeValue(null, "unit");
@@ -50,20 +51,28 @@ public final class EditTextExPreference
 
         int inputType;
         if (argInpType == null) {
-            inputType = EditorInfo.TYPE_NULL;
+            inputType = InputType.TYPE_NULL;
         } else if (argInpType.equals("digits")) {
             inputType = InputType.TYPE_CLASS_NUMBER;
         } else {
-            throw new IllegalArgumentException(
-                    "unknown attr in xml file.argInputType[" + argInpType
-                            + "]");
+            throw new IllegalArgumentException("unknown attr in xml file.argInputType[" + argInpType
+                    + "]");
         }
         et.setInputType(inputType);
 
-        int maxLength = argAttrs.getAttributeIntValue(null, "maxLength",
+        int maxLength = argAttrs.getAttributeIntValue(null,
+                "maxLength",
                 DEFAULT_MAX_LENGTH);
-        et.setFilters(new InputFilter[] { new InputFilter.LengthFilter(
-                maxLength) });
+        et.setFilters(new InputFilter[] {
+            new InputFilter.LengthFilter(maxLength)
+        });
+    }
+
+    @Override
+    protected void onBindView(View view) {
+
+        setInputValueTextView();
+        super.onBindView(view);
     }
 
     @Override
@@ -75,8 +84,7 @@ public final class EditTextExPreference
         baseLayout.setOrientation(LinearLayout.HORIZONTAL);
         baseLayout.setGravity(Gravity.CENTER_VERTICAL);
 
-        final LayoutInflater layoutInflater = (LayoutInflater) ct
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater layoutInflater = (LayoutInflater) ct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (originalLayoutId == -1) {
             originalLayoutId = getLayoutResource();
@@ -85,39 +93,33 @@ public final class EditTextExPreference
                 null);
 
         inputValueTextView = new TextView(ct);
-        inputValueTextView.setGravity(Gravity.CENTER_VERTICAL
-                | Gravity.RIGHT);
-        baseLayout.addView(orgLayout, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
+        inputValueTextView.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+        baseLayout.addView(orgLayout,
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
 
         baseLayout.addView(inputValueTextView,
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.FILL_PARENT,
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT));
 
         setLayoutResource(android.R.id.widget_frame);
         return baseLayout;
     }
 
+    @Override
+    protected void onDialogClosed(boolean positiveResult) {
+
+        super.onDialogClosed(positiveResult);
+        setInputValueTextView();
+    }
+
     private void setInputValueTextView() {
+
         String val = super.getText();
         if (val == null || val.equals("")) {
             inputValueTextView.setText("");
             return;
         }
         inputValueTextView.setText(val + unit + " ");
-    }
-
-    @Override
-    protected void onBindView(View view) {
-        setInputValueTextView();
-        super.onBindView(view);
-    }
-
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
-        setInputValueTextView();
     }
 }

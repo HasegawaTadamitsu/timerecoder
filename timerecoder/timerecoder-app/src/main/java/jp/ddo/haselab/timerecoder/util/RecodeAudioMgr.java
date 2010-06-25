@@ -1,34 +1,43 @@
+
 package jp.ddo.haselab.timerecoder.util;
 
 import java.io.File;
 import java.io.IOException;
 
-import android.os.Environment;
 import android.media.MediaRecorder;
+import android.os.Environment;
 
 public final class RecodeAudioMgr {
 
-    private final MediaRecorder mrec;
-
-    private boolean recodingNow = false;
-
-    public RecodeAudioMgr() {
-        mrec = new MediaRecorder();
-        initRecoder();
-    }
-
-    public void initRecoder() {
-        mrec.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mrec.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mrec.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-    }
-
     public static boolean canRecode() {
+
         String status = Environment.getExternalStorageState();
         if (!status.equals(Environment.MEDIA_MOUNTED)) {
             return false;
         }
         return true;
+    }
+
+    private final MediaRecorder mrec;
+
+    private boolean             recodingNow = false;
+
+    public RecodeAudioMgr() {
+
+        mrec = new MediaRecorder();
+        initRecoder();
+    }
+
+    public void initRecoder() {
+
+        mrec.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mrec.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mrec.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+    }
+
+    public boolean isRecodingNow() {
+
+        return recodingNow;
     }
 
     public void startRecodingExternalStrage(final String argFileName,
@@ -53,12 +62,9 @@ public final class RecodeAudioMgr {
     }
 
     public void stopRecording() {
+
         mrec.stop();
         recodingNow = false;
         mrec.release();
-    }
-
-    public boolean isRecodingNow() {
-        return recodingNow;
     }
 }

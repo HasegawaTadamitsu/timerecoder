@@ -1,3 +1,4 @@
+
 package jp.ddo.haselab.timerecoder;
 
 import java.util.List;
@@ -15,61 +16,69 @@ import android.widget.TextView;
  * 
  * @author T.Hasegawa
  */
-final class RecodeListAdapter
-        extends BaseAdapter {
+final class RecodeListAdapter extends
+        BaseAdapter {
 
-    private List<Recode> data;
+    private List<Recode>  data;
+
     private final Context context;
 
     public RecodeListAdapter(final Context argContext,
             final List<Recode> argData) {
+
         MyLog.getInstance().verbose("start");
-        context = argContext;
-        data = argData;
+        this.context = argContext;
+        this.data = argData;
     }
 
     public void addData(final Recode argData) {
-        data.add(argData);
+
+        this.data.add(argData);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        MyLog.getInstance().verbose("called.result[" + data.size() + "]");
-        return data.size();
+
+        MyLog.getInstance().verbose("called.result[" + this.data.size()
+                + "]");
+        return this.data.size();
+    }
+
+    @Override
+    public Object getItem(final int argPosition) {
+
+        MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
+        MyLog.getInstance().verbose("result[" + this.data.get(argPosition)
+                + "]");
+        return this.data.get(argPosition);
     }
 
     @Override
     public long getItemId(final int argPosition) {
+
         MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
         return argPosition;
     }
 
     @Override
-    public Object getItem(final int argPosition) {
-        MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
-        MyLog.getInstance().verbose(
-                "result[" + data.get(argPosition) + "]");
-        return data.get(argPosition);
-    }
-
-    @Override
-    public View getView(final int position, final View convertView,
+    public View getView(final int position,
+            final View convertView,
             final ViewGroup parentViewGroup) {
+
         View resultView = convertView;
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             resultView = inflater.inflate(R.layout.recode_item,
-                    parentViewGroup, false);
+                    parentViewGroup,
+                    false);
         }
         Recode rec = (Recode) this.getItem(position);
 
         TextView number = (TextView) resultView.findViewById(R.id.number);
         number.setText(position + "");
 
-        TextView dateTime = (TextView) resultView
-                .findViewById(R.id.datetime);
+        TextView dateTime = (TextView) resultView.findViewById(R.id.datetime);
         dateTime.setText(rec.getDateTime().toString());
 
         TextView event = (TextView) resultView.findViewById(R.id.eventid);
