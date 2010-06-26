@@ -40,7 +40,7 @@ public class DatabaseHelper extends
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        MyLog.getInstance().writeDatabase("start");
+        MyLog.getInstance().writeDatabase("start init database");
 
         dropTables(db);
 
@@ -62,6 +62,7 @@ public class DatabaseHelper extends
         } finally {
             db.endTransaction();
         }
+        MyLog.getInstance().writeDatabase("end init database");
     }
 
     @Override

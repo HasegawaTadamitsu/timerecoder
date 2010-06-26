@@ -39,24 +39,18 @@ final class RecodeListAdapter extends
     @Override
     public int getCount() {
 
-        MyLog.getInstance().verbose("called.result[" + this.data.size()
-                + "]");
         return this.data.size();
     }
 
     @Override
     public Object getItem(final int argPosition) {
 
-        MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
-        MyLog.getInstance().verbose("result[" + this.data.get(argPosition).toString()
-                + "]");
         return this.data.get(argPosition);
     }
 
     @Override
     public long getItemId(final int argPosition) {
 
-        MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
         return argPosition;
     }
 

@@ -31,13 +31,13 @@ public class ConfigActivity extends
     @Override
     public void onPositiveClick() {
 
-        MyLog.getInstance().verbose("start");
+        MyLog.getInstance().verbose("start init database");
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         dbHelper.onCreate(db);
 
-        MyLog.getInstance().verbose("close db");
+        MyLog.getInstance().verbose("end init database");
         db.close();
 
     }
