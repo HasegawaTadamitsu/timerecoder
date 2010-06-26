@@ -34,7 +34,11 @@ public class ConfigActivity extends
         MyLog.getInstance().verbose("start");
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        SQLiteDatabase mDb = dbHelper.getWritableDatabase();
-        dbHelper.onCreate(mDb);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        dbHelper.onCreate(db);
+
+        MyLog.getInstance().verbose("close db");
+        db.close();
+
     }
 }

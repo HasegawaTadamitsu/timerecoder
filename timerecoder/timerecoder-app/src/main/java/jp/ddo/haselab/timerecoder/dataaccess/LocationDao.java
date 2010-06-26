@@ -2,6 +2,7 @@
 package jp.ddo.haselab.timerecoder.dataaccess;
 
 import jp.ddo.haselab.timerecoder.util.MyLog;
+import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,14 +15,6 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public final class LocationDao {
 
-    /*
-     * 06-25 20:46:20.293: ERROR/Database(13053): Failure 1 (near "recode":
-     * syntax error) on 0x8231670 when preparing 'create table location (
-     * _id integer not null primary key, latitude real, longitude real,
-     * altitude real, accuracy real, speed real, bearing real,foreign key (
-     * _id ) recode ( _id ) )'.
-     */
-
     static final String         CREATE_TABLE_SQL = "create table location ( " + "_id integer not null "
                                                          + "primary key "
                                                          + "REFERENCES "
@@ -29,6 +22,7 @@ public final class LocationDao {
                                                          + " ( "
                                                          + RecodeDao.COLUMN_ID
                                                          + " ),"
+                                                         + " datetime   integer not null, "
                                                          + " latitude   real, "
                                                          + " longitude  real, "
                                                          + " altitude   real, "
@@ -39,9 +33,11 @@ public final class LocationDao {
 
     static final String         DROP_TABLE_SQL   = "drop table if exists location";
 
-    private static final String TABLE_NAME       = "locale";
+    private static final String TABLE_NAME       = "location";
 
     private static final String COLUMN_ID        = "_id";
+
+    private static final String COLUMN_DATETIME  = "datetime";
 
     private static final String COLUMN_LATITUDE  = "latitude";
 
@@ -105,6 +101,7 @@ public final class LocationDao {
         MyLog.getInstance().readDatabase("categoryId[" + id + "]");
         String[] columns = {
                 COLUMN_ID,
+                COLUMN_DATETIME,
                 COLUMN_LATITUDE,
                 COLUMN_LONGITUDE,
                 COLUMN_ALTITUDE,
@@ -127,6 +124,7 @@ public final class LocationDao {
 
         c.moveToFirst();
         MyLocation loc = new MyLocation(c.getInt(c.getColumnIndex(COLUMN_ID)),
+                new RecodeDateTime(c.getLong(c.getColumnIndex(COLUMN_DATETIME))),
                 c.getDouble(c.getColumnIndex(COLUMN_LATITUDE)),
                 c.getDouble(c.getColumnIndex(COLUMN_LONGITUDE)),
                 c.getDouble(c.getColumnIndex(COLUMN_ALTITUDE)),
@@ -150,6 +148,7 @@ public final class LocationDao {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, loc.getId());
+        values.put(COLUMN_DATETIME, loc.getDateTime().toMilliSecond());
         values.put(COLUMN_LATITUDE, loc.getLatitude());
         values.put(COLUMN_LONGITUDE, loc.getLongitude());
         values.put(COLUMN_ALTITUDE, loc.getAltitude());

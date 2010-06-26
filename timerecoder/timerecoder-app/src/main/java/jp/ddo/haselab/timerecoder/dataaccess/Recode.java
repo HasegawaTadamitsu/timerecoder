@@ -100,6 +100,7 @@ public final class Recode {
 
     /**
      * constractor with rowId
+     * 
      * @param argRowId
      * @param argCategoryId
      * @param argRecodeDateTime
@@ -121,6 +122,7 @@ public final class Recode {
 
     /**
      * get category id.
+     * 
      * @return category id.
      */
     public int getCategoryId() {
@@ -130,6 +132,7 @@ public final class Recode {
 
     /**
      * get date time.
+     * 
      * @return dateTime.
      */
     public RecodeDateTime getDateTime() {
@@ -138,7 +141,8 @@ public final class Recode {
     }
 
     /**
-     * event Id for db value 
+     * event Id for db value
+     * 
      * @return eventId
      */
     public int getEventIdToDBValue() {
@@ -148,6 +152,7 @@ public final class Recode {
 
     /**
      * eventId to String.
+     * 
      * @return String eventId.
      */
     public String getEventToString() {
@@ -157,6 +162,7 @@ public final class Recode {
 
     /**
      * get key ar Database.
+     * 
      * @return getRowID.
      */
     public long getKey() {
@@ -166,6 +172,7 @@ public final class Recode {
 
     /**
      * get Memo.
+     * 
      * @return memo.
      */
     public String getMemo() {
@@ -175,6 +182,7 @@ public final class Recode {
 
     /**
      * get RowId.
+     * 
      * @return rowid.
      */
     public long getRowId() {
@@ -183,8 +191,8 @@ public final class Recode {
     }
 
     /**
-     * setting row id. 
-     * because this value decide when isert to database.
+     * setting row id. because this value decide when isert to database.
+     * 
      * @param arg
      */
     public void setRowId(final long arg) {
@@ -195,18 +203,14 @@ public final class Recode {
     @Override
     public String toString() {
 
-        return "rowId[" + this.rowId
-                + "]"
-                + "categoryId["
+        return "Recode [rowId=" + this.rowId
+                + ", categoryId="
                 + this.categoryId
-                + "]"
-                + "dateTime["
+                + ", dateTime="
                 + this.dateTime
-                + "]"
-                + "eventId["
-                + this.eventId
-                + "]"
-                + "memo["
+                + ", eventId="
+                + getEventToString()
+                + ", memo="
                 + this.memo
                 + "]";
     }

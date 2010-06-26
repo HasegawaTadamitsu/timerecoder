@@ -1,6 +1,7 @@
 
 package jp.ddo.haselab.timerecoder.dataaccess;
 
+import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import android.location.Location;
 
 /**
@@ -11,21 +12,24 @@ import android.location.Location;
  */
 public final class MyLocation {
 
-    private final long    id;
+    private final long           id;
 
-    private final double latitude;
+    private final RecodeDateTime dateTime;
 
-    private final double longitude;
+    private final double         latitude;
 
-    private final double altitude;
+    private final double         longitude;
 
-    private final double accuracy;
+    private final double         altitude;
 
-    private final double speed;
+    private final double         accuracy;
 
-    private final double bearing;
+    private final double         speed;
+
+    private final double         bearing;
 
     MyLocation(final long id1,
+            final RecodeDateTime dateTime1,
             final double a,
             final double b,
             final double c,
@@ -34,6 +38,7 @@ public final class MyLocation {
             final double f) {
 
         this.id = id1;
+        this.dateTime = dateTime1;
         this.latitude = a;
         this.longitude = b;
         this.altitude = c;
@@ -46,13 +51,18 @@ public final class MyLocation {
      * constractor.
      * 
      * @param id1
-     *            id *
+     *            id
+     * @param dateTime1
+     *            datetime*
      * @param location
      *            at android.location
      */
-    public MyLocation(final long id1, final Location location) {
+    public MyLocation(final long id1,
+            final RecodeDateTime dateTime1,
+            final Location location) {
 
         this(id1,
+                dateTime1,
                 location.getLatitude(),
                 location.getLongitude(),
                 location.getAltitude(),
@@ -129,6 +139,37 @@ public final class MyLocation {
     public double getSpeed() {
 
         return this.speed;
+    }
+
+    /**
+     * get date time.
+     * 
+     * @return dateTime.
+     */
+    public RecodeDateTime getDateTime() {
+
+        return this.dateTime;
+    }
+
+    @Override
+    public String toString() {
+
+        return "MyLocation [id=" + this.id
+                + ", dateTime="
+                + this.dateTime
+                + ", latitude="
+                + this.latitude
+                + ", longitude="
+                + this.longitude
+                + ", altitude="
+                + this.altitude
+                + ", accuracy="
+                + this.accuracy
+                + ", speed="
+                + this.speed
+                + ", bearing="
+                + this.bearing
+                + "]";
     }
 
 }

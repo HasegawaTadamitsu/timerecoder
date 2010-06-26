@@ -8,8 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Data helper.
+ * 
  * @author hasegawa
- *
+ * 
  */
 public class DatabaseHelper extends
         SQLiteOpenHelper {
@@ -19,8 +20,8 @@ public class DatabaseHelper extends
     private static final int    DATABASE_VERSION = 1;
 
     /**
-     * constracer.called SQLLiteOpenHelper.
-     * super this.
+     * constracer.called SQLLiteOpenHelper. super this.
+     * 
      * @param context
      */
     public DatabaseHelper(Context context) {

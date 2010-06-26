@@ -48,7 +48,7 @@ final class RecodeListAdapter extends
     public Object getItem(final int argPosition) {
 
         MyLog.getInstance().verbose("argPosition[" + argPosition + "]");
-        MyLog.getInstance().verbose("result[" + this.data.get(argPosition)
+        MyLog.getInstance().verbose("result[" + this.data.get(argPosition).toString()
                 + "]");
         return this.data.get(argPosition);
     }

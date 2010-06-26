@@ -130,7 +130,7 @@ public final class RecodeLocationMgr implements
 
                         locationMgr.removeUpdates(lc);
 
-                        mgr.nowRecoding = false;
+                        RecodeLocationMgr.this.nowRecoding = false;
 
                         if (RecodeLocationMgr.this.lastLocation == null) {
                             callback.doneGet(null);
@@ -138,6 +138,7 @@ public final class RecodeLocationMgr implements
                         }
 
                         callback.doneGet(new MyLocation(key,
+                                new RecodeDateTime(),
                                 RecodeLocationMgr.this.lastLocation));
                     }
                 });

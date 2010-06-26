@@ -116,14 +116,14 @@ public final class RecodeActivity extends
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_quit_sure_title);
         builder.setMessage(R.string.dialog_quit_sure_msg);
-        final Activity ac = this;
         builder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
 
                     public void onClick(final DialogInterface dialog,
                             final int whichButton) {
 
-                        Intent intent = new Intent(ac, MainActivity.class);
+                        Intent intent = new Intent(RecodeActivity.this,
+                                MainActivity.class);
                         intent.putExtra(RecodeActivity.KEY_CATE, 0);
                         startActivity(intent);
                         finish();
@@ -225,13 +225,15 @@ public final class RecodeActivity extends
         RecodeDao dao = new RecodeDao(this.mDb);
 
         this.mDb.beginTransaction();
-        MyLog.getInstance().startTransaction("recode[" + rec + "]");
+        MyLog.getInstance().startTransaction("recode[" + rec.toString()
+                + "]");
 
         try {
             dao.insert(rec);
             this.mDb.setTransactionSuccessful();
-            MyLog.getInstance().endTransaction("success.recode[" + rec
-                    + "]");
+            MyLog.getInstance()
+                    .endTransaction("success.recode[" + rec.toString()
+                            + "]");
         } finally {
             this.mDb.endTransaction();
         }
@@ -243,12 +245,14 @@ public final class RecodeActivity extends
         LocationDao dao = new LocationDao(this.mDb);
 
         this.mDb.beginTransaction();
-        MyLog.getInstance().startTransaction("location[" + loc + "]");
+        MyLog.getInstance().startTransaction("location[" + loc.toString()
+                + "]");
 
         try {
             dao.insert(loc);
             this.mDb.setTransactionSuccessful();
-            MyLog.getInstance().endTransaction("success.loc[" + loc + "]");
+            MyLog.getInstance()
+                    .endTransaction("success.loc[" + loc.toString() + "]");
         } finally {
             this.mDb.endTransaction();
         }
@@ -311,7 +315,6 @@ public final class RecodeActivity extends
 
         cb = (CheckBox) findViewById(R.id.checkbox_use_location);
         if (cb.isChecked()) {
-            final RecodeActivity act = this;
 
             RecodeLocationMgr.Callback callBack = new RecodeLocationMgr.Callback() {
 
@@ -320,12 +323,12 @@ public final class RecodeActivity extends
                 public void doneGet(MyLocation arg) {
 
                     if (arg == null) {
-                        Toast.makeText(act,
+                        Toast.makeText(RecodeActivity.this,
                                 R.string.toast_recode_location_error_msg,
                                 Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    act.insertDBLocation(arg);
+                    RecodeActivity.this.insertDBLocation(arg);
                 }
             };
 
