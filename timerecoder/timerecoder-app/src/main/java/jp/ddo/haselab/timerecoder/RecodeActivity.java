@@ -65,22 +65,31 @@ public final class RecodeActivity extends
         list.setSelection(list.getCount());
     }
 
+    /**
+     * カテゴリIDで削除します.
+     * 
+     * @return RecodeDaoの削除件数(Locationの結果ではない）
+     */
     private int doDeleteByCategoryId() {
 
-        RecodeDao dao = new RecodeDao(this.mDb);
+        RecodeDao rDao = new RecodeDao(this.mDb);
+        LocationDao lDao = new LocationDao(this.mDb);
+
         this.mDb.beginTransaction();
         MyLog.getInstance()
                 .startTransaction("category[" + this.mCategoryId + "]");
-        int res = 0;
+        int rRes = 0;
         try {
-            res = dao.deleteByCategoryId(this.mCategoryId);
+            rRes = rDao.deleteByCategoryId(this.mCategoryId);
+            lDao.deleteByCategoryId(this.mCategoryId);
             this.mDb.setTransactionSuccessful();
             MyLog.getInstance()
-                    .endTransaction("success.delete count[" + res + "]");
+                    .endTransaction("success.delete count[Recode=" + rRes
+                            + "]");
         } finally {
             this.mDb.endTransaction();
         }
-        return res;
+        return rRes;
     }
 
     private void dialogClear() {

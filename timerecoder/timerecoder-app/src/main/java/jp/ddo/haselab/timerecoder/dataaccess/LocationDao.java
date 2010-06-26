@@ -88,6 +88,34 @@ public final class LocationDao {
     }
 
     /**
+     * delete by category ID in Location.
+     * 
+     * @param categoryId
+     * @return delete count.
+     */
+    public void deleteByCategoryId(final int categoryId) {
+
+        MyLog.getInstance()
+                .writeDatabase("delete location [categoryId=" + categoryId
+                        + "]");
+
+        String where = " where " +COLUMN_ID + " in ( "
+                + " select "
+                + RecodeDao.COLUMN_ID
+                + " from "
+                + RecodeDao.TABLE_NAME
+                + " where "
+                + RecodeDao.COLUMN_CATEGORY_ID
+                + " = "
+                + categoryId
+                + " ) ";
+        String delete = "delete from " + TABLE_NAME  +" ";
+
+        this.db.execSQL(delete + where);
+        return;
+    }
+
+    /**
      * find by ID.
      * 
      * @param id

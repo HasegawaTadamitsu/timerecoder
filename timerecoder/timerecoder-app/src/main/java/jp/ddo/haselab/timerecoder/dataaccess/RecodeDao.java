@@ -36,7 +36,10 @@ public final class RecodeDao {
      */
     static final String         COLUMN_ID          = "_id";
 
-    private static final String COLUMN_CATEGORY_ID = "categoryid";
+    /**
+     * カテゴリ単位での削除時使われるため　デフォルト可視性
+     */
+    static final String COLUMN_CATEGORY_ID = "categoryid";
 
     private static final String COLUMN_DATE_TIME   = "datetime";
 
