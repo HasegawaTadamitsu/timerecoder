@@ -12,24 +12,22 @@ import android.location.Location;
  */
 public final class MyLocation {
 
-    private final long           id;
+    private final long   id;
 
-    private final RecodeDateTime dateTime;
+    private final double latitude;
 
-    private final double         latitude;
+    private final double longitude;
 
-    private final double         longitude;
+    private final double altitude;
 
-    private final double         altitude;
+    private final double accuracy;
 
-    private final double         accuracy;
+    private final double speed;
 
-    private final double         speed;
-
-    private final double         bearing;
+    private final double bearing;
 
     MyLocation(final long id1,
-            final RecodeDateTime dateTime1,
+
             final double a,
             final double b,
             final double c,
@@ -38,7 +36,6 @@ public final class MyLocation {
             final double f) {
 
         this.id = id1;
-        this.dateTime = dateTime1;
         this.latitude = a;
         this.longitude = b;
         this.altitude = c;
@@ -57,12 +54,9 @@ public final class MyLocation {
      * @param location
      *            at android.location
      */
-    public MyLocation(final long id1,
-            final RecodeDateTime dateTime1,
-            final Location location) {
+    public MyLocation(final long id1, final Location location) {
 
         this(id1,
-                dateTime1,
                 location.getLatitude(),
                 location.getLongitude(),
                 location.getAltitude(),
@@ -141,22 +135,10 @@ public final class MyLocation {
         return this.speed;
     }
 
-    /**
-     * get date time.
-     * 
-     * @return dateTime.
-     */
-    public RecodeDateTime getDateTime() {
-
-        return this.dateTime;
-    }
-
     @Override
     public String toString() {
 
         return "MyLocation [id=" + this.id
-                + ", dateTime="
-                + this.dateTime
                 + ", latitude="
                 + this.latitude
                 + ", longitude="

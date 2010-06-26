@@ -100,8 +100,6 @@ public final class RecodeLocationMgr implements
 
         final Handler handler = new Handler();
 
-        final RecodeLocationMgr mgr = this;
-
         new Thread() {
 
             @SuppressWarnings("synthetic-access")
@@ -138,7 +136,6 @@ public final class RecodeLocationMgr implements
                         }
 
                         callback.doneGet(new MyLocation(key,
-                                new RecodeDateTime(),
                                 RecodeLocationMgr.this.lastLocation));
                     }
                 });

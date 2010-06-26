@@ -22,7 +22,6 @@ public final class LocationDao {
                                                          + " ( "
                                                          + RecodeDao.COLUMN_ID
                                                          + " ),"
-                                                         + " datetime   integer not null, "
                                                          + " latitude   real, "
                                                          + " longitude  real, "
                                                          + " altitude   real, "
@@ -36,8 +35,6 @@ public final class LocationDao {
     private static final String TABLE_NAME       = "location";
 
     private static final String COLUMN_ID        = "_id";
-
-    private static final String COLUMN_DATETIME  = "datetime";
 
     private static final String COLUMN_LATITUDE  = "latitude";
 
@@ -91,17 +88,16 @@ public final class LocationDao {
     }
 
     /**
-     * delete by ID.
+     * find by ID.
      * 
      * @param id
      * @return delete count.
      */
     public MyLocation findById(final long id) {
 
-        MyLog.getInstance().readDatabase("categoryId[" + id + "]");
+        MyLog.getInstance().readDatabase("id[" + id + "]");
         String[] columns = {
                 COLUMN_ID,
-                COLUMN_DATETIME,
                 COLUMN_LATITUDE,
                 COLUMN_LONGITUDE,
                 COLUMN_ALTITUDE,
@@ -124,7 +120,6 @@ public final class LocationDao {
 
         c.moveToFirst();
         MyLocation loc = new MyLocation(c.getInt(c.getColumnIndex(COLUMN_ID)),
-                new RecodeDateTime(c.getLong(c.getColumnIndex(COLUMN_DATETIME))),
                 c.getDouble(c.getColumnIndex(COLUMN_LATITUDE)),
                 c.getDouble(c.getColumnIndex(COLUMN_LONGITUDE)),
                 c.getDouble(c.getColumnIndex(COLUMN_ALTITUDE)),
@@ -148,7 +143,6 @@ public final class LocationDao {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, loc.getId());
-        values.put(COLUMN_DATETIME, loc.getDateTime().toMilliSecond());
         values.put(COLUMN_LATITUDE, loc.getLatitude());
         values.put(COLUMN_LONGITUDE, loc.getLongitude());
         values.put(COLUMN_ALTITUDE, loc.getAltitude());

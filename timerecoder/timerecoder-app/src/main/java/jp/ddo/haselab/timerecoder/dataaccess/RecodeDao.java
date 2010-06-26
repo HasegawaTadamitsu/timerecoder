@@ -57,7 +57,7 @@ public final class RecodeDao {
     }
 
     /**
-     * constractor.
+     * delete by same categorID.
      * 
      * @param argCategoryId
      * @return delete count.
