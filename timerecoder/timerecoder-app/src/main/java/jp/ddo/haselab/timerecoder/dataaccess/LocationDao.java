@@ -2,7 +2,6 @@
 package jp.ddo.haselab.timerecoder.dataaccess;
 
 import jp.ddo.haselab.timerecoder.util.MyLog;
-import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -91,7 +90,6 @@ public final class LocationDao {
      * delete by category ID in Location.
      * 
      * @param categoryId
-     * @return delete count.
      */
     public void deleteByCategoryId(final int categoryId) {
 

@@ -1,7 +1,6 @@
 
 package jp.ddo.haselab.timerecoder.dataaccess;
 
-import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import android.location.Location;
 
 /**
