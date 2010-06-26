@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -143,16 +142,16 @@ public final class RecodeActivity extends
 
         String fileName = "rec" + argRecTime.toYYYYMMDDHHMMSS() + ".3gp";
 
-        if (this.mRecodeAudioMgr.isRecodingNow()) {
-            Toast.makeText(this,
-                    R.string.toast_recode_audio_now_msg,
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         try {
-            this.mRecodeAudioMgr.startRecodingExternalStrage(fileName,
+            boolean res = this.mRecodeAudioMgr.startRecodingExternalStrage(fileName,
                     this.mDefaultRecodeTime);
+            if (res == false) {
+                Toast.makeText(this,
+                        R.string.toast_recode_audio_now_msg,
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
         } catch (IOException e) {
             MyLog.getInstance()
                     .error("recode error.IOException." + "fileName["
@@ -199,19 +198,22 @@ public final class RecodeActivity extends
         CheckBox checkBox;
         checkBox = (CheckBox) findViewById(R.id.checkbox_use_audio);
         checkBox.setChecked(useAudio);
-        boolean useLocation = preferences.getBoolean("recode_use_location",
-                false);
-        checkBox = (CheckBox) findViewById(R.id.checkbox_use_location);
-        checkBox.setChecked(useLocation);
+        if (RecodeAudioMgr.canRecodeMachine() == false) {
+            checkBox.setEnabled(false);
+            checkBox.setChecked(false);
+        }
 
         this.mRecodeAudioMgr = new RecodeAudioMgr();
-
         this.mDefaultRecodeTime = Integer.parseInt(preferences.getString("audio_recode_time",
                 "10"));
 
+        checkBox = (CheckBox) findViewById(R.id.checkbox_use_location);
+        boolean useLocation = preferences.getBoolean("recode_use_location",
+                false);
+        checkBox.setChecked(useLocation);
+
         int localeTimeout = Integer.parseInt(preferences.getString("locale_timeout",
                 "1"));
-
         this.mRecodeLocationMgr = new RecodeLocationMgr(this,
                 localeTimeout);
 
@@ -329,7 +331,7 @@ public final class RecodeActivity extends
 
             boolean canRecode = this.mRecodeLocationMgr.getRecodeLocation(rec.getKey(),
                     callBack);
-            if (canRecode == false){
+            if (canRecode == false) {
                 Toast.makeText(this,
                         R.string.toast_recode_location_now_msg,
                         Toast.LENGTH_SHORT).show();

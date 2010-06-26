@@ -18,9 +18,9 @@ public final class RecodeAudioMgr {
     /**
      * can recode?
      * 
-     * @return true now recode ok/false can not recode
+     * @return true now recode OK/false can not recode
      */
-    public static boolean canRecode() {
+    public static boolean canRecodeMachine() {
 
         String status = Environment.getExternalStorageState();
         if (!status.equals(Environment.MEDIA_MOUNTED)) {
@@ -69,20 +69,31 @@ public final class RecodeAudioMgr {
      *            filename
      * @param argRecodeSecondTime
      *            recoding time (second)
+     * @return true 録音開始する/false　今録音中のため、録音しない。
      * @throws IOException
      *             when can not write file.
      */
-    public void startRecodingExternalStrage(final String argFileName,
+    public boolean startRecodingExternalStrage(final String argFileName,
             final int argRecodeSecondTime) throws IOException {
+
+        if (canRecodeMachine() == false) {
+            return false;
+        }
+
+        if (this.recodingNow == true) {
+            return false;
+        }
 
         File dir = Environment.getExternalStorageDirectory();
         File file = new File(dir, argFileName);
         this.mrec.setOutputFile(file.getAbsolutePath());
         this.mrec.prepare();
         this.mrec.start();
+
         this.recodingNow = true;
+
         if (argRecodeSecondTime <= 0) {
-            return;
+            return true;
         }
 
         final Handler handler = new Handler();
@@ -109,7 +120,7 @@ public final class RecodeAudioMgr {
             }
         }.start();
 
-        return;
+        return true;
     }
 
     /**
