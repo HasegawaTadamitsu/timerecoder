@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
-    android:id="@+id/menu_maptorecode"
-     android:title="toRecodeMode"
-     android:numericShortcut="1" />
-  <item
-    android:id="@+id/menu_maptoquit"
+    android:id="@+id/menu_configtoquit"
      android:title="quit"
      android:numericShortcut="9" />
 </menu>

@@ -15,24 +15,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * My edit box.
- * 数値モードにした場合でも、文字列として、取得してから数値に直してください。
+ * My edit box. 数値モードにした場合でも、文字列として、 取得してから数値に直してください。
  * 
  * @author hasegawa
- *
+ * 
  */
 public final class EditTextExPreference extends
         EditTextPreference {
 
-    private TextView         inputValueTextView;
+    private TextView inputValueTextView;
 
     private static final int DEFAULT_MAX_LENGTH = 10;
 
-    private String           unit               = "";
+    private String unit = "";
 
     private static final int FIRST_CALL_LAYOUT_ID = -1;
 
-    private int              originalLayoutId   = FIRST_CALL_LAYOUT_ID;
+    private int originalLayoutId = FIRST_CALL_LAYOUT_ID;
 
     /**
      * set your xml config file.
@@ -46,19 +45,25 @@ public final class EditTextExPreference extends
      *     android:title="@string/audio_recode_time_title"
      *     android:summary="@string/audio_recode_time_summary"
      * </pre>
-     * @param argContext context
-     * @param argAttrs  attrs
+     * 
+     * @param argContext
+     *            context
+     * @param argAttrs
+     *            attrs
      */
     public EditTextExPreference(final Context argContext,
             final AttributeSet argAttrs) {
 
-        super(argContext, argAttrs);
+        super(argContext,
+                argAttrs);
 
-        this.unit = argAttrs.getAttributeValue(null, "unit");
+        this.unit = argAttrs.getAttributeValue(null,
+                "unit");
 
         EditText et = getEditText();
 
-        String argInpType = argAttrs.getAttributeValue(null, "inputType");
+        String argInpType = argAttrs.getAttributeValue(null,
+                "inputType");
 
         int inputType;
         if (argInpType == null) {
@@ -66,8 +71,10 @@ public final class EditTextExPreference extends
         } else if (argInpType.equals("digits")) {
             inputType = InputType.TYPE_CLASS_NUMBER;
         } else {
-            throw new IllegalArgumentException("unknown attr in xml file.argInputType[" + argInpType
-                    + "]");
+            throw new IllegalArgumentException(
+                    "unknown attr in xml file.argInputType["
+                            + argInpType
+                                + "]");
         }
         et.setInputType(inputType);
 
@@ -75,7 +82,7 @@ public final class EditTextExPreference extends
                 "maxLength",
                 DEFAULT_MAX_LENGTH);
         et.setFilters(new InputFilter[] {
-            new InputFilter.LengthFilter(maxLength)
+                new InputFilter.LengthFilter(maxLength)
         });
     }
 
@@ -95,23 +102,34 @@ public final class EditTextExPreference extends
         baseLayout.setOrientation(LinearLayout.HORIZONTAL);
         baseLayout.setGravity(Gravity.CENTER_VERTICAL);
 
-        final LayoutInflater layoutInflater = (LayoutInflater) ct.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater layoutInflater = (LayoutInflater) ct.
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (this.originalLayoutId == FIRST_CALL_LAYOUT_ID) {
             this.originalLayoutId = getLayoutResource();
         }
-        final View orgLayout = layoutInflater.inflate(this.originalLayoutId,
+        final View orgLayout = layoutInflater.inflate(
+                this.originalLayoutId,
                 null);
 
         this.inputValueTextView = new TextView(ct);
-        this.inputValueTextView.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+        this.inputValueTextView.setGravity(
+                Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+        this.inputValueTextView.setPadding(
+                this.inputValueTextView.getPaddingLeft(),
+                this.inputValueTextView.getPaddingTop(),
+                orgLayout.getPaddingRight() ,
+                this.inputValueTextView.getPaddingBottom());
+
         baseLayout.addView(orgLayout,
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT));
 
         baseLayout.addView(this.inputValueTextView,
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
+                new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.FILL_PARENT,
+                        ViewGroup.LayoutParams.FILL_PARENT));
 
         setLayoutResource(android.R.id.widget_frame);
         return baseLayout;
@@ -131,6 +149,7 @@ public final class EditTextExPreference extends
             this.inputValueTextView.setText("");
             return;
         }
-        this.inputValueTextView.setText(val + this.unit + " ");
+        this.inputValueTextView.setText(val + this.unit
+                                        + " ");
     }
 }

@@ -11,5 +11,5 @@
   <item
     android:id="@+id/menu_quit"
      android:title="quit"
-     android:numericShortcut="3" />
+     android:numericShortcut="9" />
 </menu>

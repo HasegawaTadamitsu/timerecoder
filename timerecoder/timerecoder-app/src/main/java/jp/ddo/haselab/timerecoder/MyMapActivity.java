@@ -3,8 +3,15 @@ package jp.ddo.haselab.timerecoder;
 
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.util.MyLog;
+import jp.ddo.haselab.timerecoder.util.YesJumpDialog;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -67,4 +74,60 @@ public final class MyMapActivity extends
 
         return false;
     }
+
+    /**
+     * Menuの作成. Menuの作成します.
+     * 
+     * @param menu
+     *            メニュー
+     */
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mymap,
+                menu);
+        return true;
+    }
+
+    /**
+     * menu処理の分岐. menu押下時の処理です。 終了や、同一カテゴリのデータ削除などあります。
+     * 
+     * @param item
+     *            押下されたitem
+     */
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        switch (item.getItemId()) {
+        case R.id.menu_maptoquit:
+            new YesJumpDialog(this,
+                    MainActivity.class,
+                      R.string.dialog_quit_sure_title,
+                      R.string.dialog_quit_sure_msg).execute();
+            return true;
+        case R.id.menu_maptorecode:
+            toRecodeActivity();
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * MyMapActivityへ遷移します。
+     */
+    private void toRecodeActivity() {
+
+        Intent intent = new Intent(MyMapActivity.this,
+                                RecodeActivity.class);
+        intent.putExtra(RecodeActivity.KEY_CATE,
+                                0);
+        startActivity(intent);
+        finish();
+        return;
+    }
+
 }

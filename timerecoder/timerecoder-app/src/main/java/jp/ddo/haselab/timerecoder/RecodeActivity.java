@@ -13,6 +13,7 @@ import jp.ddo.haselab.timerecoder.util.MyLog;
 import jp.ddo.haselab.timerecoder.util.RecodeAudioMgr;
 import jp.ddo.haselab.timerecoder.util.RecodeDateTime;
 import jp.ddo.haselab.timerecoder.util.RecodeLocationMgr;
+import jp.ddo.haselab.timerecoder.util.YesJumpDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -107,38 +108,6 @@ public final class RecodeActivity extends
 
                         doDeleteByCategoryId();
                         initListView();
-                        return;
-                    }
-                });
-
-        builder.setNegativeButton("No",
-                null);
-        builder.setCancelable(false);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        return;
-    }
-
-    /**
-     * 終了ダイアログの作成／処理. 終了ダイアログの作成／処理します。 OKならば終了させます。
-     */
-    private void dialogQuit() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.dialog_quit_sure_title);
-        builder.setMessage(R.string.dialog_quit_sure_msg);
-        builder.setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-
-                    public void onClick(final DialogInterface dialog,
-                            final int whichButton) {
-
-                        Intent intent = new Intent(RecodeActivity.this,
-                                MainActivity.class);
-                        intent.putExtra(RecodeActivity.KEY_CATE,
-                                0);
-                        startActivity(intent);
-                        finish();
                         return;
                     }
                 });
@@ -446,7 +415,10 @@ public final class RecodeActivity extends
 
         switch (item.getItemId()) {
         case R.id.menu_quit:
-            dialogQuit();
+            new YesJumpDialog(this,
+                    MainActivity.class,
+                      R.string.dialog_quit_sure_title,
+                      R.string.dialog_quit_sure_msg).execute();
             return true;
         case R.id.menu_tomap:
             toMapActivity();
