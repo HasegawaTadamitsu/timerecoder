@@ -14,7 +14,7 @@ import android.preference.PreferenceActivity;
  * @author hasegawa
  * 
  */
-public class ConfigActivity extends
+public final  class ConfigActivity extends
         PreferenceActivity implements
         DialogExPreference.ButtonListener {
 

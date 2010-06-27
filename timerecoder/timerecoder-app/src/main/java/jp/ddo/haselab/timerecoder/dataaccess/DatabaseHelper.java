@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * @author hasegawa
  * 
  */
-public class DatabaseHelper extends
+public final class DatabaseHelper extends
         SQLiteOpenHelper {
 
     private static final String DATABASE_NAME    = "data";

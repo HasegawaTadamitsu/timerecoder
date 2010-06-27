@@ -13,9 +13,12 @@
     </activity>
     <activity android:name=".RecodeActivity" />
     <activity android:name=".ConfigActivity" />
+    <activity android:name=".MyMapActivity" />
+    <uses-library android:name="com.google.android.maps" />
   </application>
   <uses-permission 
      android:name="android.permission.RECORD_AUDIO" />
   <uses-permission 
-     android:name="android.permission.ACCESS_FINE_LOCATION"/>
+     android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

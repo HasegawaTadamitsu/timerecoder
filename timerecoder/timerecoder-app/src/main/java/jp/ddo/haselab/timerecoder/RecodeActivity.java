@@ -44,19 +44,19 @@ public final class RecodeActivity extends
     /**
      * category key.use for database and other.{@value}
      */
-    public static final String KEY_CATE    = "CATEGORY_KEY";
+    public static final String KEY_CATE = "CATEGORY_KEY";
 
-    private int                mCategoryId = 0;
+    private int mCategoryId = 0;
 
-    private SQLiteDatabase     mDb         = null;
+    private SQLiteDatabase mDb = null;
 
-    private RecodeListAdapter  mListAdapter;
+    private RecodeListAdapter mListAdapter;
 
-    private RecodeAudioMgr     mRecodeAudioMgr;
+    private RecodeAudioMgr mRecodeAudioMgr;
 
-    private RecodeLocationMgr  mRecodeLocationMgr;
+    private RecodeLocationMgr mRecodeLocationMgr;
 
-    private int                mDefaultRecodeTime;          // second time
+    private int mDefaultRecodeTime; // second time
 
     private void appendListView(final Recode rec) {
 
@@ -77,7 +77,8 @@ public final class RecodeActivity extends
 
         this.mDb.beginTransaction();
         MyLog.getInstance()
-                .startTransaction("category[" + this.mCategoryId + "]");
+                .startTransaction("category[" + this.mCategoryId
+                                  + "]");
         int rRes = 0;
         try {
             rRes = rDao.deleteByCategoryId(this.mCategoryId);
@@ -85,7 +86,7 @@ public final class RecodeActivity extends
             this.mDb.setTransactionSuccessful();
             MyLog.getInstance()
                     .endTransaction("success.delete count[Recode=" + rRes
-                            + "]");
+                                    + "]");
         } finally {
             this.mDb.endTransaction();
         }
@@ -110,7 +111,8 @@ public final class RecodeActivity extends
                     }
                 });
 
-        builder.setNegativeButton("No", null);
+        builder.setNegativeButton("No",
+                null);
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -133,23 +135,40 @@ public final class RecodeActivity extends
 
                         Intent intent = new Intent(RecodeActivity.this,
                                 MainActivity.class);
-                        intent.putExtra(RecodeActivity.KEY_CATE, 0);
+                        intent.putExtra(RecodeActivity.KEY_CATE,
+                                0);
                         startActivity(intent);
                         finish();
                         return;
                     }
                 });
 
-        builder.setNegativeButton("No", null);
+        builder.setNegativeButton("No",
+                null);
         builder.setCancelable(false);
         AlertDialog dialog = builder.create();
         dialog.show();
         return;
     }
 
+    /**
+     * MyMapActivityへ遷移します。
+     */
+    private void toMapActivity() {
+
+        Intent intent = new Intent(RecodeActivity.this,
+                                MyMapActivity.class);
+        intent.putExtra(RecodeActivity.KEY_CATE,
+                                0);
+        startActivity(intent);
+        finish();
+        return;
+    }
+
     private void doRecodeAudio(final RecodeDateTime argRecTime) {
 
-        String fileName = "rec" + argRecTime.toYYYYMMDDHHMMSS() + ".3gp";
+        String fileName = "rec" + argRecTime.toYYYYMMDDHHMMSS()
+                          + ".3gp";
 
         try {
             boolean res = this.mRecodeAudioMgr.startRecodingExternalStrage(fileName,
@@ -157,7 +176,8 @@ public final class RecodeActivity extends
             if (res == false) {
                 Toast.makeText(this,
                         R.string.toast_recode_audio_now_msg,
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT)
+                        .show();
                 return;
             }
 
@@ -169,7 +189,8 @@ public final class RecodeActivity extends
                             e);
             Toast.makeText(this,
                     R.string.toast_recode_audio_error_msg,
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -177,7 +198,8 @@ public final class RecodeActivity extends
 
         RecodeDao dao = new RecodeDao(this.mDb);
         List<Recode> data = dao.findByCategoryId(this.mCategoryId);
-        this.mListAdapter = new RecodeListAdapter(this, data);
+        this.mListAdapter = new RecodeListAdapter(this,
+                data);
 
         ListView list = (ListView) findViewById(R.id.listview_data);
         list.setAdapter(this.mListAdapter);
@@ -234,15 +256,16 @@ public final class RecodeActivity extends
         RecodeDao dao = new RecodeDao(this.mDb);
 
         this.mDb.beginTransaction();
-        MyLog.getInstance().startTransaction("recode[" + rec.toString()
-                + "]");
+        MyLog.getInstance()
+                .startTransaction("recode[" + rec.toString()
+                                  + "]");
 
         try {
             dao.insert(rec);
             this.mDb.setTransactionSuccessful();
             MyLog.getInstance()
                     .endTransaction("success.recode[" + rec.toString()
-                            + "]");
+                                    + "]");
         } finally {
             this.mDb.endTransaction();
         }
@@ -254,14 +277,16 @@ public final class RecodeActivity extends
         LocationDao dao = new LocationDao(this.mDb);
 
         this.mDb.beginTransaction();
-        MyLog.getInstance().startTransaction("location[" + loc.toString()
-                + "]");
+        MyLog.getInstance()
+                .startTransaction("location[" + loc.toString()
+                                  + "]");
 
         try {
             dao.insert(loc);
             this.mDb.setTransactionSuccessful();
             MyLog.getInstance()
-                    .endTransaction("success.loc[" + loc.toString() + "]");
+                    .endTransaction("success.loc[" + loc.toString()
+                                    + "]");
         } finally {
             this.mDb.endTransaction();
         }
@@ -286,7 +311,8 @@ public final class RecodeActivity extends
         }
 
         EditText editText = (EditText) findViewById(R.id.edittext_memo);
-        String memo = editText.getText().toString();
+        String memo = editText.getText()
+                .toString();
         RecodeDateTime dateTime = new RecodeDateTime();
 
         Recode rec;
@@ -311,7 +337,7 @@ public final class RecodeActivity extends
             break;
         default:
             throw new IllegalArgumentException("unknown button(view).id[" + id
-                    + "]");
+                                               + "]");
         }
         insertDBRecode(rec);
         appendListView(rec);
@@ -334,7 +360,8 @@ public final class RecodeActivity extends
                     if (arg == null) {
                         Toast.makeText(RecodeActivity.this,
                                 R.string.toast_recode_location_error_msg,
-                                Toast.LENGTH_SHORT).show();
+                                Toast.LENGTH_SHORT)
+                                .show();
                         return;
                     }
                     RecodeActivity.this.insertDBLocation(arg);
@@ -346,7 +373,8 @@ public final class RecodeActivity extends
             if (canRecode == false) {
                 Toast.makeText(this,
                         R.string.toast_recode_location_now_msg,
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT)
+                        .show();
             }
         }
 
@@ -364,7 +392,8 @@ public final class RecodeActivity extends
 
         super.onCreate(savedInstanceState);
 
-        MyLog.getInstance().verbose("start");
+        MyLog.getInstance()
+                .verbose("start");
         setContentView(R.layout.recode);
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
@@ -385,7 +414,8 @@ public final class RecodeActivity extends
         super.onCreateOptionsMenu(menu);
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.recode, menu);
+        inflater.inflate(R.menu.recode,
+                menu);
         return true;
     }
 
@@ -395,9 +425,11 @@ public final class RecodeActivity extends
     @Override
     protected void onDestroy() {
 
-        MyLog.getInstance().verbose("start");
+        MyLog.getInstance()
+                .verbose("start");
         if (this.mDb != null) {
-            MyLog.getInstance().verbose("close db");
+            MyLog.getInstance()
+                    .verbose("close db");
             this.mDb.close();
         }
         super.onDestroy();
@@ -415,6 +447,9 @@ public final class RecodeActivity extends
         switch (item.getItemId()) {
         case R.id.menu_quit:
             dialogQuit();
+            return true;
+        case R.id.menu_tomap:
+            toMapActivity();
             return true;
         case R.id.menu_clear:
             dialogClear();
