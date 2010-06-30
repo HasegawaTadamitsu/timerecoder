@@ -5,7 +5,6 @@ import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
 import jp.ddo.haselab.timerecoder.util.DialogExPreference;
 import jp.ddo.haselab.timerecoder.util.MyLog;
 import jp.ddo.haselab.timerecoder.util.YesJumpDialog;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -16,7 +15,6 @@ import android.view.MenuItem;
 /**
  * ConfigActivity.
  * 
- * @author hasegawa
  * 
  */
 public final class ConfigActivity extends

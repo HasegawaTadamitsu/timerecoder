@@ -1,13 +1,16 @@
 
 package jp.ddo.haselab.timerecoder;
 
+import java.util.List;
+
 import jp.ddo.haselab.timerecoder.dataaccess.DatabaseHelper;
+import jp.ddo.haselab.timerecoder.dataaccess.LocationDao;
 import jp.ddo.haselab.timerecoder.util.MyLog;
 import jp.ddo.haselab.timerecoder.util.YesJumpDialog;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,9 +20,9 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
 
 /**
- * @author hasegawa
  * 
  */
 public final class MyMapActivity extends
@@ -59,6 +62,19 @@ public final class MyMapActivity extends
         this.mMapController.animateTo(FIRST_POINT);
         this.mMapController.setZoom(FIRST_ZOOM_LEVEL);
 
+        Drawable pin = getResources().getDrawable(R.drawable.icon);
+        pin.setBounds(0,
+                  0,
+                pin.getMinimumWidth(),
+                pin.getMinimumHeight());
+        LocationDao dao = new LocationDao(this.mDb);
+        Cursor cur = dao.findByCategoryId(0);
+
+        LocationOverlay overlay = new LocationOverlay(pin,
+                cur);
+        overlay.pop();
+        List<Overlay> overlays = this.mMapView.getOverlays();
+        overlays.add(overlay);
     }
 
     @Override
@@ -93,7 +109,6 @@ public final class MyMapActivity extends
     }
 
     /**
-     * menu処理の分岐. menu押下時の処理です。 終了や、同一カテゴリのデータ削除などあります。
      * 
      * @param item
      *            押下されたitem
@@ -117,7 +132,7 @@ public final class MyMapActivity extends
     }
 
     /**
-     * MyMapActivityへ遷移します。
+     * recodeActivityへ遷移します。
      */
     private void toRecodeActivity() {
 
